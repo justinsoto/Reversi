@@ -13,4 +13,24 @@ class BoardView:
                 game_string += ' ' + color_to_symbol[piece] + ' '
             game_string += '\n'
         return game_string
+    
+    def show_curr_player(self, curr_player):
+       print(f"It's {color_to_symbol[curr_player.color]}'s turn. ")
 
+    def get_move(self):
+        move = input('Enter your move (row, col): ')
+        values = move.split(',')
+        row, col = int(values[0]), int(values[1])
+        return row, col
+
+    def show_illegal_move(self, row, col):
+        print('Illegal move. Try again.')
+
+    def show_winner(self, player):
+        print(f"Player {color_to_symbol[player.color]} won!")  
+
+    def show_draw(self):
+        print('Game ended in a draw.')
+    
+    def display_board(self):
+        print(self.game_board)
