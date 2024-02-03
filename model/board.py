@@ -13,15 +13,19 @@ class Board:
             self.size = size + 1
         else:
             self.size = size
-        
+
         self.current_player = PlayerColor.Black
+        self.set_up_board()
         
     def set_up_board(self) -> None:
         self.board = [[PlayerColor.Empty for _ in range(self.size)] for _ in range(self.size)]
-        center = self.size / 2
+        center = self.size // 2
 
         self.board[center - 1][center - 1] = PlayerColor.Black
         self.board[center - 1][center] = PlayerColor.White
         self.board[center][center - 1] = PlayerColor.White
         self.board[center][center] = PlayerColor.Black
+
+    def get_board(self):
+        return self.board.copy()
 
