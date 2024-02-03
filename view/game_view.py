@@ -25,7 +25,7 @@ class GameView(ABC):
         pass
 
     def display_board(self):
-        self.board_view.display()
+        pass
 
     
 
