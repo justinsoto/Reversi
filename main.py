@@ -1,5 +1,8 @@
 from model.game import Game
-
+from view.board_view import BoardView
 game = Game()
-game.make_move(3, 3)
+view = BoardView(game.board)
+move = view.get_move()
+row,col = move
+game.make_move(row,col)
 print(game)
