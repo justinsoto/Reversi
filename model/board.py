@@ -1,4 +1,5 @@
 from model.player_color import PlayerColor
+from model.player import Player
 
 class Board:
     def __init__(self, size=8) -> None:
@@ -28,4 +29,10 @@ class Board:
 
     def get_board(self):
         return self.board.copy()
+    
+    def make_move(self, row, col, player: Player):
+        self.board[row][col] = Player.get_color()
+        
+
+        
 

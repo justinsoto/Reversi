@@ -7,7 +7,7 @@ class TextView:
 
     def __str__(self) -> str:
         game_string = ''
-        for row in self.game_board:
+        for row in self.game_board.get_board():
             for piece in row:
                 game_string += ' ' + color_to_symbol[piece] + ' '
             game_string += '\n'

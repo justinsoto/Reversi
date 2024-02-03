@@ -1,6 +1,8 @@
 from model.board import Board
 from view.text_view import TextView
+from model.game import Game
 
-board = Board(8)
-game = TextView(board.get_board())
-print(game.__str__())
+game = Game()
+game.make_move(0, 0)
+print(game)
+
