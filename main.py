@@ -1,5 +1,5 @@
 from model.board import Board
-from view.text_view import TextView
+from view.board_view import BoardView
 from model.game import Game
 
 game = Game()

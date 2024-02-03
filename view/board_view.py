@@ -1,11 +1,15 @@
-from abc import ABC, abstractmethod
 from model.board import Board
+from model.player_color import color_to_symbol
 
-class BoardView(ABC):
-    def __init__(self, board: Board) -> None:
-        self.board = board
+class BoardView:
+    def __init__(self, game_board: Board) -> None:
+        self.game_board = game_board
 
-    @abstractmethod
-    def display(self):
-        pass
-        
+    def __str__(self) -> str:
+        game_string = ''
+        for row in self.game_board.get_board():
+            for piece in row:
+                game_string += ' ' + color_to_symbol[piece] + ' '
+            game_string += '\n'
+        return game_string
+
