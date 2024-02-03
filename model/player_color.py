@@ -7,6 +7,6 @@ class PlayerColor(IntEnum):
 
 color_to_symbol = {
     PlayerColor.Empty: '_',
-    PlayerColor.Black: '@',
+    PlayerColor.Black: 'X',
     PlayerColor.White: 'O'
 }
