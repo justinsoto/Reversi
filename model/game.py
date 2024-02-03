@@ -1,7 +1,7 @@
 from model.board import Board
+from view.board_view import BoardView
 from model.player_color import PlayerColor
 from model.player import Player
-from view.text_view import TextView
 
 class Game:
     def __init__(self, size=8) -> None:
@@ -14,7 +14,7 @@ class Game:
                         (+1, -1), (+1, 0), (+1, +1)]
 
     def __str__(self) -> str:
-        view = TextView(self.board)
+        view = BoardView(self.board)
         return view.__str__()
 
     def make_move(self, row, col):
