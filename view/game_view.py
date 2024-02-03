@@ -22,7 +22,8 @@ class GameView(ABC):
     @abstractmethod
     def show_draw(self):
         pass
-
+    
+    @abstractmethod
     def display_board(self):
         pass
 
