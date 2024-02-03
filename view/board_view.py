@@ -6,6 +6,7 @@ class BoardView:
         self.game_board = game_board
 
     def __str__(self) -> str:
+        # Creates text-based version of the game 
         game_string = ''
         for row in self.game_board.get_board():
             for piece in row:
