@@ -1,5 +1,3 @@
-
-'''
 class GameController:
     def __init__(self, model, view) -> None:
         self.model = model
@@ -21,7 +19,7 @@ class GameController:
             self.model.make_move(row,col)
             self.view.display_board()
 
-            #check if win
+            # Check if game is won 
             winner = self.model.is_game_over()
             if winner != False:
                 if winner == None:
@@ -31,4 +29,3 @@ class GameController:
                 break
 
             self.model.switch_players()
-'''
