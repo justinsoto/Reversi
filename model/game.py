@@ -22,7 +22,7 @@ class Game:
             self.board.board[row][col] = self.current_player.get_color()
             self.board.num_tiles[self.current_player.color - 1] += 1
             self.flip_tiles([row, col])
-            self.switch_turns()
+            self.swap_turns()
 
     def is_legal_move(self, move):
         #checks if the player's move is legal
@@ -30,7 +30,6 @@ class Game:
             for direction in self.move_dirs:
                 if self.has_tile_to_flip(move, direction):
                     return True
-        print("not legal move")
         return False
 
     def has_tile_to_flip(self, move, direction):
@@ -62,8 +61,8 @@ class Game:
                         break
                     else:
                         self.board.board[row][col] = curr_tile
-                        self.board.num_tiles[self.current_player.color] += 1
-                        self.board.num_tiles[(self.current_player.color + 1) % 2] -= 1
+                        self.board.num_tiles[self.current_player.color - 1] += 1
+                        self.board.num_tiles[(self.current_player.color) % 2] -= 1
                         i += 1
 
     def is_valid_coord(self, row, col):
@@ -72,11 +71,11 @@ class Game:
             return True
         return False
 
-    def switch_turns(self):
+    def swap_turns(self) -> None:
         if self.current_player == self.player1:
-            self.current_player == self.player2
-        if self.current_player == self.player2:
-            self.current_player == self.player1
+            self.current_player = self.player2
+        else:
+            self.current_player = self.player1
 
     def has_legal_move(self):
         for row in range(self.board.size):
