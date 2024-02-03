@@ -6,14 +6,14 @@ class BoardView:
         self.game_board = game_board
 
     def __str__(self) -> str:
-        # Creates text-based version of the game 
+        # Creates text-based version of the game
         game_string = ''
         for row in self.game_board.get_board():
             for piece in row:
                 game_string += ' ' + color_to_symbol[piece] + ' '
             game_string += '\n'
         return game_string
-    
+
     def show_curr_player(self, curr_player):
        print(f"It's {color_to_symbol[curr_player.color]}'s turn. ")
 
@@ -27,10 +27,10 @@ class BoardView:
         print('Illegal move. Try again.')
 
     def show_winner(self, player):
-        print(f"Player {color_to_symbol[player.color]} won!")  
+        print(f"Player {color_to_symbol[player.color]} won!")
 
     def show_draw(self):
         print('Game ended in a draw.')
-    
+
     def display_board(self):
         print(self.game_board)

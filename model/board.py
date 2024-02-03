@@ -7,7 +7,7 @@ class Board:
                 - Must be minimum of 4x4
                 - Must be (n x n) where n is even
         """
-    
+
         if size < 4:
             self.size = 4
         elif size % 2 != 0:
@@ -16,8 +16,10 @@ class Board:
             self.size = size
 
         self.current_player = PlayerColor.Black
+        self.num_tiles = [2, 2]
+        self.board = []
         self.set_up_board()
-        
+
     def set_up_board(self) -> None:
         self.board = [[PlayerColor.Empty for _ in range(self.size)] for _ in range(self.size)]
         center = self.size // 2
@@ -29,13 +31,9 @@ class Board:
 
     def get_board(self):
         return self.board.copy()
-    
-    def make_move(self, row, col, player: Player):
-        self.board[row][col] = player.get_color()
+
+    # def make_move(self, row, col, player: Player):
+    #     self.board[row][col] = player.get_color()
 
     def is_cell_empty(self, row, col) -> bool:
         return self.board[row][col] == PlayerColor.Empty
-        
-
-        
-
