@@ -3,16 +3,15 @@ from model.player_color import PlayerColor
 from model.player import Player
 from view.text_view import TextView
 
-MOVE_DIRS = [(-1, -1), (-1, 0), (-1, +1),
-             (0, -1),           (0, +1),
-             (+1, -1), (+1, 0), (+1, +1)]
-
 class Game:
     def __init__(self, size=8) -> None:
         self.player1 = Player(PlayerColor.Black)
         self.player2 = Player(PlayerColor.White)
         self.board = Board(size)
         self.current_player = self.player1
+        self.move_dirs = [(-1, -1), (-1, 0), (-1, +1),
+                        (0, -1),           (0, +1),
+                        (+1, -1), (+1, 0), (+1, +1)]
 
     def __str__(self) -> str:
         view = TextView(self.board)
@@ -28,7 +27,7 @@ class Game:
     def is_legal_move(self, move):
         #checks if the player's move is legal
         if self.is_valid_coord(move[0], move[1]) and self.board.board[move[0]][move[1]] == 0:
-            for direction in MOVE_DIRS:
+            for direction in self.move_dirs:
                 if self.has_tile_to_flip(move, direction):
                     return True
         print("not legal move")
@@ -53,7 +52,7 @@ class Game:
     def flip_tiles(self, move):
         #flips tiles based on current move
         curr_tile = self.current_player.color
-        for direction in MOVE_DIRS:
+        for direction in self.move_dirs:
             if self.has_tile_to_flip(move, direction):
                 i = 1
                 while True:

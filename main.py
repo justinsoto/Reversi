@@ -1,10 +1,10 @@
 from view.text_view import TextView
 from model.game import Game
-
+from view.board_view import BoardView
 game = Game()
-print(game)
-game.make_move(2, 4)
-print(game)
-game.has_legal_move()
-game.make_move(2, 5)
+
+view = BoardView(game.board)
+move = view.get_move()
+row,col = move
+game.make_move(row,col)
 print(game)

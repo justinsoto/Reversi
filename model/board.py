@@ -31,3 +31,9 @@ class Board:
 
     def get_board(self):
         return self.board.copy()
+
+    # def make_move(self, row, col, player: Player):
+    #     self.board[row][col] = player.get_color()
+
+    def is_cell_empty(self, row, col) -> bool:
+        return self.board[row][col] == PlayerColor.Empty
