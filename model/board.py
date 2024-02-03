@@ -31,7 +31,7 @@ class Board:
         return self.board.copy()
     
     def make_move(self, row, col, player: Player):
-        self.board[row][col] = Player.get_color()
+        self.board[row][col] = player.get_color()
         
 
         
