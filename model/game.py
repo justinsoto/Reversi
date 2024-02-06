@@ -27,6 +27,13 @@ class Game:
             self.flip_tiles(row, col)
             self.swap_turns()
 
+    def has_legal_move_remaining(self, player: Player):
+        for row in range(self.board.get_size()):
+            for col in range(self.board.get_size()):
+                if self.is_move_legal(row, col, player):
+                    return True
+        return False
+
     # Checks if the player's move is legal
     def is_move_legal(self, row, col, player: Player) -> bool:
         return self.is_valid_coord(row, col) \
@@ -40,6 +47,7 @@ class Game:
         x, y = direction
 
         while self.is_valid_coord(row + x, col + y):
+            # Disqualify this direction if the adjacent cell is empty
             if self.board.is_cell_empty(row + x, col + y):
                 break
             # Disqualify this direction if the adjacent piece belongs to the curerent player
@@ -53,8 +61,6 @@ class Game:
             col += y
 
         return False 
-
-
 
         # i = 1
         # if self.is_valid_coord(row, col):
@@ -103,3 +109,8 @@ class Game:
             for col in range(self.board.get_size()):
                 if self.is_move_legal(row, col, self.current_player):
                     print(f'(row, col): {row}, {col}')
+
+    def game_over(self) -> bool:
+        return not self.has_legal_move_remaining(self.player1) \
+                and not self.has_legal_move_remaining(self.player2)
+    
