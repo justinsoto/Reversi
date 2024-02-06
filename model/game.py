@@ -9,24 +9,26 @@ class Game:
         self.player2 = Player(PlayerColor.White)
         self.board = Board(size)
         self.current_player = self.player1
-        self.move_dirs = [(-1, -1), (-1, 0), (-1, +1),
-                        (0, -1),           (0, +1),
-                        (+1, -1), (+1, 0), (+1, +1)]
+        self.move_dirs = [(-1, -1), (-1, 0), 
+                          (-1, +1), (0, -1),           
+                          (0, +1), (+1, -1), 
+                          (+1, 0), (+1, +1)]
 
     def __str__(self) -> str:
         view = BoardView(self.board)
         return view.__str__()
 
     def make_move(self, row, col):
-        if self.is_legal_move([row, col]):
-            self.board.board[row][col] = self.current_player.get_color()
+        if self.is_legal_move(row, col):
+            self.board.fill_cell(row, col, self.current_player.get_color())
             self.board.num_tiles[self.current_player.color - 1] += 1
-            self.flip_tiles([row, col])
+            self.flip_tiles(row, col)
             self.swap_turns()
 
     def is_legal_move(self, move):
         #checks if the player's move is legal
-        if self.is_valid_coord(move[0], move[1]) and self.board.board[move[0]][move[1]] == 0:
+        row, col = move
+        if self.is_valid_coord(row, col) and self.board.is_cell_empty(row, col):
             for direction in self.move_dirs:
                 if self.has_tile_to_flip(move, direction):
                     return True
@@ -67,7 +69,7 @@ class Game:
 
     def is_valid_coord(self, row, col):
         #checks if a move's coordinates are within board coordinates
-        if 0 <= row < self.board.size and 0 <= col < self.board.size:
+        if 0 <= row < self.board.get_size() and 0 <= col < self.board.get_size():
             return True
         return False
 
@@ -77,10 +79,10 @@ class Game:
         else:
             self.current_player = self.player1
 
-    def has_legal_move(self):
-        for row in range(self.board.size):
-            for col in range(self.board.size):
+    def print_legal_moves(self):
+        print("Legal moves available:")
+        for row in range(self.board.get_size()):
+            for col in range(self.board.get_size()):
                 move = (row, col)
                 if self.is_legal_move(move):
-                    print("row: ", row)
-                    print("column: ", col)
+                    print(f'(row, col): {row}, {col}')

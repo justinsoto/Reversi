@@ -3,9 +3,10 @@ from view.board_view import BoardView
 game = Game()
 
 view = BoardView(game.board)
+print(game)
 for i in range(5):
-    move = view.get_move()
-    row,col = move
+    game.print_legal_moves()
+    row, col = view.get_move()
     game.make_move(row,col)
     print(game)
-    game.has_legal_move()
+    
