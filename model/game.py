@@ -114,3 +114,20 @@ class Game:
         return not self.has_legal_move_remaining(self.player1) \
                 and not self.has_legal_move_remaining(self.player2)
     
+    def get_player_score(self, player: Player):
+        player1_score, player2_score = self.board.get_scores
+        if player == self.player1:
+            return player1_score
+        else:
+            return player2_score
+        
+    def declare_winner(self) -> None:
+        if self.get_player_score(self.player1) > self.get_player_score(self.player2):
+            self.winner = self.player1
+        else:
+            self.winner = self.player2
+        
+    def print_winner(self) -> None:
+        print(f'Winner: {self.winner} {max(self.get_player_score(self.player1), self.get_player_score(self.player2))} points')
+
+    

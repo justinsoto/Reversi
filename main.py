@@ -11,3 +11,4 @@ while not game.game_over():
     game.make_move(row, col)
     print(view)
 
+game.print_winner()

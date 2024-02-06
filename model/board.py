@@ -47,5 +47,8 @@ class Board:
     def get_size(self) -> int:
         return self.size
     
+    def get_scores(self) -> int:
+        return self.num_tiles
+    
 
     
