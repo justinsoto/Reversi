@@ -15,7 +15,7 @@ class Board:
         else:
             self.size = size
 
-        self.current_player = PlayerColor.Black
+        self.curr_player = PlayerColor.Black
         self.num_tiles = [2, 2]
         self.board = []
         self.set_up_board()
@@ -46,5 +46,6 @@ class Board:
 
     def get_size(self) -> int:
         return self.size
+    
 
     

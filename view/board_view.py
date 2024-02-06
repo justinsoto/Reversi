@@ -1,9 +1,11 @@
+from model.game import Game
 from model.board import Board
 from model.player_color import color_to_symbol
 
 class BoardView:
-    def __init__(self, game_board: Board) -> None:
-        self.game_board = game_board
+    def __init__(self, game: Game) -> None:
+        self.game = game
+        self.game_board = game.board
 
     def __str__(self) -> str:
         # Creates text-based version of the game
@@ -14,8 +16,9 @@ class BoardView:
             game_string += '\n'
         return game_string
 
-    def show_curr_player(self, curr_player):
-       print(f"It's {color_to_symbol[curr_player.color]}'s turn. ")
+    def show_curr_player(self):
+       curr_player = self.game.get_current_player_color()
+       print(f"It's {color_to_symbol[curr_player]}'s turn. ")
 
     def get_move(self):
         move = input('Enter your move (row, col): ')
