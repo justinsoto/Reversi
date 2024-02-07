@@ -1,9 +1,11 @@
 from model.game import Game
+from view.game_view import GameView
 from model.board import Board
 from model.player_color import color_to_symbol
 
-class BoardView:
+class BoardView(GameView):
     def __init__(self, game: Game) -> None:
+        super.__init__()
         self.game = game
         self.game_board = game.board
 
@@ -16,7 +18,7 @@ class BoardView:
             game_string += '\n'
         return game_string
 
-    def show_curr_player(self):
+    def display_current_player(self):
        curr_player = self.game.get_current_player_color()
        print(f"It's {color_to_symbol[curr_player]}'s turn. ")
 
@@ -26,10 +28,10 @@ class BoardView:
         row, col = int(values[0]), int(values[1])
         return row, col
 
-    def show_illegal_move(self, row, col):
+    def display_illegal_move_message(self, row, col):
         print('Illegal move. Try again.')
 
-    def show_winner(self, player):
+    def display_winner(self, player):
         print(f"Player {color_to_symbol[player.color]} won!")
 
     def show_draw(self):
