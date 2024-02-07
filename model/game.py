@@ -1,5 +1,6 @@
 from model.board import Board
 from model.player_color import PlayerColor
+from model.player_color import color_to_symbol
 from model.player import Player
 
 class Game:
@@ -8,25 +9,27 @@ class Game:
         self.player2 = Player(PlayerColor.White)
         self.board = Board(size)
         self.current_player = self.player1
+        self.player_scores = {self.player1: 2,
+                              self.player2: 2}
         self.move_dirs = [(-1, -1), (-1, 0), 
                           (-1, +1), (0, -1),           
                           (0, +1), (+1, -1), 
                           (+1, 0), (+1, +1)]
 
-    # def __str__(self) -> str:
-    #     view = BoardView(self.board)
-    #     return view.__str__()
-    
+    # Returns the current player's color 
     def get_current_player_color(self):
         return self.current_player.get_color()
 
+    # Executes move on the given cell coordinates if the move is legal 
+    # Allows reattempt if move is illegal
     def make_move(self, row, col):
         if self.is_move_legal(row, col, self.current_player):
             self.board.fill_cell(row, col, self.current_player.get_color())
-            self.board.num_tiles[self.current_player.get_color() - 1] += 1
-            self.flip_tiles(row, col)
+            self.flip_pieces(row, col)
+            self.update_scores()
             self.swap_turns()
 
+    # Determines if this player a legal move left to play
     def has_legal_move_remaining(self, player: Player):
         for row in range(self.board.get_size()):
             for col in range(self.board.get_size()):
@@ -39,10 +42,10 @@ class Game:
         return self.is_valid_coord(row, col) \
                 and self.board.is_cell_empty(row, col) \
                 and player == self.current_player \
-                and True in [self.has_tile_to_flip(row, col, direction) for direction in self.move_dirs]
+                and True in [self.has_piece_to_flip(row, col, direction) for direction in self.move_dirs]
 
-    # Checks if the player's move can flip a tile in the given direction
-    def has_tile_to_flip(self, row, col, direction) -> bool:
+    # Checks if the player's move can flip a piece in the given direction
+    def has_piece_to_flip(self, row, col, direction) -> bool:
         start_x, start_y = row, col
         x, y = direction
 
@@ -54,37 +57,24 @@ class Game:
             if self.current_player.get_color() \
                     == self.board.get_cell(start_x + x, start_y + y):
                 break
+            # Return true if the current place has a non-adjacent piece in the given direction
             if self.current_player.get_color() \
                     == self.board.get_cell(row + x, col + y):
                 return True
+            # Update cell location 
             row += x
             col += y
 
         return False 
-
-        # i = 1
-        # if self.is_valid_coord(row, col):
-        #     curr_tile = self.current_player.get_color()
-        #     while True:
-        #         row = row + direction[0] * i
-        #         col = col + direction[1] * i
-        #         if self.board.is_cell_empty(row, col):
-        #             return False
-        #         elif self.board.get_cell(row, col) == curr_tile:
-        #             break
-        #         else:
-        #             i += 1
-        # return i > 1
     
-    # Flips tiles based on current move
-    def flip_tiles(self, row, col) -> None:
+    # Flips pieces based on current move
+    def flip_pieces(self, row, col) -> None:
         curr_tile = self.current_player.get_color()
         start_x, start_y = row, col
         for direction in self.move_dirs:
             x, y = direction
             row, col = start_x, start_y
-            if self.has_tile_to_flip(row, col, direction):
-                print(direction)
+            if self.has_piece_to_flip(row, col, direction):
                 while self.is_valid_coord(row + x, col + y):
                     row += x
                     col += y
@@ -92,45 +82,76 @@ class Game:
                         break
                     else:
                         self.board.fill_cell(row, col, curr_tile)
-                        self.board.num_tiles[self.current_player.color - 1] += 1
-                        self.board.num_tiles[(self.current_player.color) % 2] -= 1
-
+                       
     # Checks if a move's coordinates are within board coordinates
-    def is_valid_coord(self, row, col):
+    def is_valid_coord(self, row, col) -> bool:
         board_size = self.board.get_size()
         return 0 <= row < board_size and 0 <= col < board_size
 
+    # Gives turn to other player
     def swap_turns(self) -> None:
         if self.current_player == self.player1:
             self.current_player = self.player2
         else:
             self.current_player = self.player1
 
-    def print_legal_moves(self):
+    # Prints cell coordinates of all legal moves available to the current player
+    def print_legal_moves(self) -> None:
         print("Legal moves available:")
         for row in range(self.board.get_size()):
             for col in range(self.board.get_size()):
                 if self.is_move_legal(row, col, self.current_player):
                     print(f'(row, col): {row}, {col}')
 
+    # Checks if the game is over, the game is over when no legal moves
+    # remain for either player 
     def game_over(self) -> bool:
         return not self.has_legal_move_remaining(self.player1) \
                 and not self.has_legal_move_remaining(self.player2)
     
-    def get_player_score(self, player: Player):
-        player1_score, player2_score = self.board.get_scores
-        if player == self.player1:
-            return player1_score
-        else:
-            return player2_score
+    # Returns this player's score (number of pieces)
+    def get_player_score(self, player: Player) -> int:
+        return self.player_scores[self.current_player]
         
-    def declare_winner(self) -> None:
-        if self.get_player_score(self.player1) > self.get_player_score(self.player2):
-            self.winner = self.player1
-        else:
-            self.winner = self.player2
+    # Returns the winner player, None if the game ends in draw
+    def declare_winner(self) -> Player:
+        scores = self.player_scores.values()
+
+        # Handles draw
+        if list(set(scores)) != list(scores):
+            return None
         
+        winning_score = max(self.player_scores.values())
+        for player in self.player_scores.keys():
+            if self.player_scores[player] == winning_score:
+                return player
+    
+    # Prints the winning player and their score on the console
     def print_winner(self) -> None:
-        print(f'Winner: {self.winner} {max(self.get_player_score(self.player1), self.get_player_score(self.player2))} points')
+        winner = self.declare_winner()
+
+        if not winner:
+            print('Game is a draw.')
+            return 
+        
+        score = self.player_scores[winner]
+        print(f'Winner: {color_to_symbol[winner.get_color()]} {score} points')
+
+    # Updates both players' scores 
+    def update_scores(self) -> None:
+        self.player_scores[self.player1] = 0
+        self.player_scores[self.player2] = 0
+
+        for row in range(self.board.get_size()):
+            for col in range(self.board.get_size()):
+                if self.board.get_cell(row, col) == self.player1.get_color():
+                    self.player_scores[self.player1] += 1
+                if self.board.get_cell(row, col) == self.player2.get_color():
+                    self.player_scores[self.player2] += 1
+
+    def print_score(self) -> None:
+        print(f'Score: {self.player_scores[self.current_player]} points.')
+
+    
 
     
