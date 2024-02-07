@@ -8,6 +8,7 @@ class Game:
         self.player1 = Player(PlayerColor.Black)
         self.player2 = Player(PlayerColor.White)
         self.board = Board(size)
+        self.size = self.board.get_size()
         self.current_player = self.player1
         self.player_scores = {self.player1: 2,
                               self.player2: 2}
@@ -96,12 +97,12 @@ class Game:
             self.current_player = self.player1
 
     # Prints cell coordinates of all legal moves available to the current player
-    def print_legal_moves(self) -> None:
-        print("Legal moves available:")
-        for row in range(self.board.get_size()):
-            for col in range(self.board.get_size()):
+    def find_legal_moves(self) -> [int, int]:
+        moves = []
+        for row in range(self.size):
+            for col in range(self.size):
                 if self.is_move_legal(row, col, self.current_player):
-                    print(f'(row, col): {row}, {col}')
+                    moves.append([row, col])
 
     # Checks if the game is over, the game is over when no legal moves
     # remain for either player 
@@ -113,7 +114,7 @@ class Game:
     def get_player_score(self, player: Player) -> int:
         return self.player_scores[self.current_player]
         
-    # Returns the winner player, None if the game ends in draw
+    # Returns the winning player, None if the game ends in draw
     def declare_winner(self) -> Player:
         scores = self.player_scores.values()
 
@@ -127,15 +128,20 @@ class Game:
                 return player
     
     # Prints the winning player and their score on the console
-    def print_winner(self) -> None:
-        winner = self.declare_winner()
+    # def print_winner(self) -> None:
+    #     winner = self.declare_winner()
 
-        if not winner:
-            print('Game is a draw.')
-            return 
+    #     if not winner:
+    #         print('Game is a draw.')
+    #         return 
         
+<<<<<<< Updated upstream
         score = self.player_scores[winner]
         print(f'Winner: {color_to_symbol[winner.get_color()]} with {score} points')
+=======
+    #     score = self.player_scores[winner]
+    #     print(f'Winner: {color_to_symbol[winner.get_color()]} {score} points')
+>>>>>>> Stashed changes
 
     # Updates both players' scores 
     def update_scores(self) -> None:

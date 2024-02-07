@@ -24,5 +24,14 @@ class GameView(ABC):
     def display_draw_message(self):
         pass
 
-    
+    @abstractmethod
+    def display_score(self, player):
+        pass 
 
+    @abstractmethod
+    def display_legal_moves(self, player):
+        pass 
+    
+    @abstractmethod
+    def display_legal_moves(self):
+        pass
