@@ -20,6 +20,9 @@ class Game:
     # Returns the current player's color 
     def get_current_player_color(self):
         return self.current_player.get_color()
+    
+    def get_current_player(self):
+        return self.current_player
 
     # Executes move on the given cell coordinates if the move is legal 
     # Allows reattempt if move is illegal

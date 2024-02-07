@@ -15,7 +15,7 @@ class GameController:
         while not self.model.game_over():
             self.view.display_board()
             self.view.display_current_player()
-            self.view.display_score(self.model.get_current_player_color())
+            self.view.display_score(self.model.get_current_player())
             self.view.display_legal_moves()
            
             row, col = self.get_move()
