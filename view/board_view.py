@@ -5,7 +5,7 @@ from model.player_color import color_to_symbol
 
 class BoardView(GameView):
     def __init__(self, game: Game) -> None:
-        super.__init__()
+        super().__init__(self)
         self.game = game
         self.game_board = game.board
 

@@ -126,22 +126,6 @@ class Game:
         for player in self.player_scores.keys():
             if self.player_scores[player] == winning_score:
                 return player
-    
-    # Prints the winning player and their score on the console
-    # def print_winner(self) -> None:
-    #     winner = self.declare_winner()
-
-    #     if not winner:
-    #         print('Game is a draw.')
-    #         return 
-        
-<<<<<<< Updated upstream
-        score = self.player_scores[winner]
-        print(f'Winner: {color_to_symbol[winner.get_color()]} with {score} points')
-=======
-    #     score = self.player_scores[winner]
-    #     print(f'Winner: {color_to_symbol[winner.get_color()]} {score} points')
->>>>>>> Stashed changes
 
     # Updates both players' scores 
     def update_scores(self) -> None:
@@ -154,10 +138,5 @@ class Game:
                     self.player_scores[self.player1] += 1
                 if self.board.get_cell(row, col) == self.player2.get_color():
                     self.player_scores[self.player2] += 1
-
-    def print_score(self) -> None:
-        print(f'Score: {self.player_scores[self.current_player]} points.')
-
-    
 
     
