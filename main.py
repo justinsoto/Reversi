@@ -4,5 +4,4 @@ from controller.controller import GameController
 game = Game(4)
 view = BoardView(game)
 controller = GameController (game,view)
-view.display_board()
 controller.start_game()
