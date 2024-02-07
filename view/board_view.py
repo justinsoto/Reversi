@@ -5,7 +5,7 @@ from model.player_color import color_to_symbol
 
 class BoardView(GameView):
     def __init__(self, game: Game) -> None:
-        super().__init__(self)
+        super().__init__()
         self.game = game
         self.game_board = game.board
 
@@ -21,12 +21,6 @@ class BoardView(GameView):
     def display_current_player(self):
        curr_player = self.game.get_current_player_color()
        print(f"It's {color_to_symbol[curr_player]}'s turn. ")
-
-    # def get_move(self):
-    #     move = input('Enter your move (row, col): ')
-    #     values = move.split(',')
-    #     row, col = int(values[0]), int(values[1])
-    #     return row, col
 
     def display_illegal_move_message(self):
         print('Illegal move. Try again.')

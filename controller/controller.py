@@ -1,7 +1,8 @@
 from model.game import Game
+from view.board_view import BoardView
 
 class GameController:
-    def __init__(self, model:Game, view) -> None:
+    def __init__(self, model: Game, view: BoardView) -> None:
         self.model = model
         self.view = view
     
@@ -12,11 +13,18 @@ class GameController:
         #display board
         print(self.view)
         while not self.model.game_over():
-            #self.view.display_board()
-            self.view.show_curr_player()
-            self.model.print_score()
-            self.model.print_legal_moves()
-            row, col = self.view.get_move()
+            self.view.display_board()
+            self.view.display_current_player()
+            self.view.display_score(self.model.get_current_player_color())
+            self.view.display_legal_moves()
+           
+            row, col = self.get_move()
             self.model.make_move(row, col)
-            print(self.view)
+
         self.model.print_winner()
+
+    def get_move(self) -> [int, int]:
+        move = input('Enter your move (row, col): ')
+        values = move.split(',')
+        row, col = int(values[0]), int(values[1])
+        return row, col
