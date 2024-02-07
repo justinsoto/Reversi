@@ -79,9 +79,12 @@ class Game:
     # Flips tiles based on current move
     def flip_tiles(self, row, col) -> None:
         curr_tile = self.current_player.get_color()
+        start_x, start_y = row, col
         for direction in self.move_dirs:
             x, y = direction
+            row, col = start_x, start_y
             if self.has_tile_to_flip(row, col, direction):
+                print(direction)
                 while self.is_valid_coord(row + x, col + y):
                     row += x
                     col += y
