@@ -149,7 +149,6 @@ class Game:
                 if self.board.get_cell(row, col) == self.player2.get_color():
                     self.player_scores[self.player2] += 1
 
-    # Prints score for the current player 
     def print_score(self) -> None:
         print(f'Score: {self.player_scores[self.current_player]} points.')
 
