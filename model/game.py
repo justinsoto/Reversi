@@ -135,7 +135,7 @@ class Game:
             return 
         
         score = self.player_scores[winner]
-        print(f'Winner: {color_to_symbol[winner.get_color()]} {score} points')
+        print(f'Winner: {color_to_symbol[winner.get_color()]} with {score} points')
 
     # Updates both players' scores 
     def update_scores(self) -> None:

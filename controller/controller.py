@@ -1,5 +1,7 @@
+from model.game import Game
+
 class GameController:
-    def __init__(self, model, view) -> None:
+    def __init__(self, model:Game, view) -> None:
         self.model = model
         self.view = view
     
@@ -8,24 +10,13 @@ class GameController:
         Runs the main loop of the game
         """
         #display board
-        self.view.display_board()
-        while True:
+        print(self.view)
+        while not self.model.game_over():
+            #self.view.display_board()
+            self.view.show_curr_player()
+            self.model.print_score()
+            self.model.print_legal_moves()
             row, col = self.view.get_move()
-
-            while not self.model.is_legal_move(row, col):
-                self.view.show_illegal_move()
-                row, col = self.view.get_move()
-            
-            self.model.make_move(row,col)
-            self.view.display_board()
-
-            # Check if game is won 
-            winner = self.model.is_game_over()
-            if winner != False:
-                if winner == None:
-                    self.view.show_draw()
-                else:
-                    self.view.show_winner(winner)
-                break
-
-            self.model.switch_players()
+            self.model.make_move(row, col)
+            print(self.view)
+        self.model.print_winner()
