@@ -29,7 +29,8 @@ class GameController:
             self.view.display_draw_message()
         else:
             self.view.display_winner(winner)
-            self.view.display_final_scorebaord()
+        
+        self.view.display_final_scorebaord()
 
     def get_move(self) -> [int, int]:
         move = input('Enter your move (row, col): ')
