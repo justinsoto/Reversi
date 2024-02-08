@@ -25,8 +25,7 @@ class BoardView(GameView):
     def display_illegal_move_message(self):
         print('Illegal move. Try again.')
 
-    def display_winner(self, player):
-        winner = self.game.declare_winner()
+    def display_winner(self, winner: Player):
         print(f"Player {color_to_symbol[winner.get_color()]} won!")
 
     def display_draw_message(self):
@@ -37,11 +36,16 @@ class BoardView(GameView):
 
     def display_score(self, player: Player):
          score = self.game.get_player_score(player)
-         player_symbol = color_to_symbol[player.get_color()]
-         print(f'Score: {score} points. (Player {player_symbol})')
+         # player_symbol = color_to_symbol[player.get_color()]
+         print(f'Score: {score} points.')
 
     def display_legal_moves(self):
         moves = self.game.find_legal_moves()
+
+        if not moves:
+            print("No legal moves available :(")
+            return 
+        
         print("Legal moves available:")
         for move in moves:
             row, col = move

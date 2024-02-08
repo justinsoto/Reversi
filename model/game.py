@@ -106,6 +106,7 @@ class Game:
             for col in range(self.size):
                 if self.is_move_legal(row, col, self.current_player):
                     moves.append([row, col])
+        return moves
 
     # Checks if the game is over, the game is over when no legal moves
     # remain for either player 
