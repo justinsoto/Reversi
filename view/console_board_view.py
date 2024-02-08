@@ -3,8 +3,8 @@ from model.player_color import color_to_symbol
 from model.game import Game
 
 class ConsoleBoardView():
-    def __init__(self):
-        self.board = self.game.board
+    def __init__(self, game: Game):
+        self.board = game.board
 
     def __str__(self) -> str:
         # Creates text-based version of the game
