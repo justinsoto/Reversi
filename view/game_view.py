@@ -15,10 +15,6 @@ class GameView(ABC):
     @abstractmethod
     def display_winner(self):
         pass
-    
-    @abstractmethod
-    def display_board(self):
-        pass
 
     @abstractmethod
     def display_draw_message(self):
