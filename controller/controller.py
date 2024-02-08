@@ -10,8 +10,6 @@ class GameController:
         """
         Runs the main loop of the game
         """
-        #display board
-        print(self.view)
         while not self.model.game_over():
             self.view.display_board()
             self.view.display_current_player()
