@@ -44,6 +44,7 @@ class BoardView(GameView):
 
         if not moves:
             print("No legal moves available :(")
+            self.game.swap_turns()
             return 
         
         print("Legal moves available:")
