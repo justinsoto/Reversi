@@ -22,16 +22,16 @@ class GameView(ABC):
 
     @abstractmethod
     def display_score(self, player):
-        pass 
+        pass
 
     @abstractmethod
     def display_legal_moves(self, player):
-        pass 
-    
+        pass
+
     @abstractmethod
     def display_legal_moves(self):
         pass
 
     @abstractmethod
-    def display_final_scorebaord(self):
+    def display_final_scoreboard(self):
         pass
