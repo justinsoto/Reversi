@@ -3,7 +3,7 @@ from view.console_game_view import ConsoleGameView
 from model.player import Player
 from model.player_color import color_to_symbol
 
-class ConsoleBoardView(ConsoleGameView):
+class ConsoleBoardView():
     def __init__(self, game: Game) -> None:
         super().__init__()
         self.game = game
