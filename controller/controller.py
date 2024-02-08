@@ -1,8 +1,8 @@
 from model.game import Game
-from view.board_view import BoardView
+from view.console_board_view import ConsoleBoardView
 
 class GameController:
-    def __init__(self, model: Game, view: BoardView) -> None:
+    def __init__(self, model: Game, view: ConsoleBoardView) -> None:
         self.model = model
         self.view = view
     

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class GameView(ABC):
+class ConsoleGameView(ABC):
     def __init__(self) -> None:
         pass
 

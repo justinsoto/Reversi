@@ -1,8 +1,9 @@
 from model.game import Game
-from view.board_view import BoardView
+from view.console_board_view import ConsoleBoardView
 from controller.controller import GameController
 
 game = Game(4)
-view = BoardView(game)
+#this will need to be game view not board view
+view = ConsoleBoardView(game)
 controller = GameController(game,view)
 controller.start_game()
