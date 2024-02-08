@@ -1,11 +1,11 @@
 from model.game import Game
-from view.console_board_view import ConsoleBoardView
+from view.test import ConsoleBoardView
 
 class GameController:
     def __init__(self, model: Game, view: ConsoleBoardView) -> None:
         self.model = model
         self.view = view
-    
+
     def start_game(self):
         """
         Runs the main loop of the game
@@ -15,7 +15,7 @@ class GameController:
             self.view.display_current_player()
             self.view.display_score(self.model.get_current_player())
             self.view.display_legal_moves()
-           
+
             move = self.get_move()
             if move == "p":
                 self.model.swap_turns()
@@ -29,7 +29,7 @@ class GameController:
             self.view.display_draw_message()
         else:
             self.view.display_winner(winner)
-        
+
         self.view.display_final_scorebaord()
 
     def get_move(self) -> [int, int]:
@@ -38,11 +38,11 @@ class GameController:
         # Pass turn key
         if move == "p":
             return move
-        
+
         values = move.split(',')
         row, col = int(values[0]), int(values[1])
         return row, col
-    
+
     # Calls the model to make a move if it is legal
     def execute_move(self, row, col) -> None:
         current_player = self.model.get_current_player()
@@ -50,4 +50,3 @@ class GameController:
             self.view.display_illegal_move_message()
         else:
             self.model.make_move(row, col)
-

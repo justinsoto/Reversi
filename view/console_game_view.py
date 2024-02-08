@@ -1,35 +1,49 @@
+from model.game import Game
 from view.console_board_view import ConsoleBoardView
 from model.player import Player
 from model.player_color import color_to_symbol
-from model.game import Game
 
 class ConsoleGameView(ConsoleBoardView):
-    def __init__(self):
-        pass
+    def __init__(self, game: Game) -> None:
+        super().__init__()
+        self.game = game
+        self.game_board = game.board
+
+    def display_board(self):
+        print(self.game_board)
 
     def display_current_player(self):
-        pass
+       curr_player = self.game.get_current_player_color()
+       print(f"It's {color_to_symbol[curr_player]}'s turn. ")
 
-    def display_illegal_move_message(self, row, col):
-        pass
+    def display_illegal_move_message(self):
+        print('Illegal move. Try again.')
 
-    def display_winner(self):
-        pass
+    def display_winner(self, winner: Player):
+        print(f"Player {color_to_symbol[winner.get_color()]} won!")
 
     def display_draw_message(self):
-        pass
+        print('Game has ended in a draw.')
 
-    def display_score(self, player):
-        pass
-
-    def display_legal_moves(self, player):
-        pass
+    def display_score(self, player: Player):
+         score = self.game.get_player_score(player)
+         player_symbol = color_to_symbol[player.get_color()]
+         print(f'Player {player_symbol} Score: {score} points.')
 
     def display_legal_moves(self):
-        pass
+        moves = self.game.find_legal_moves()
 
-    def display_final_scoreboard(self):
-        pass
+        if not moves:
+            print("No legal moves available :(")
+            self.game.swap_turns()
+            return
 
-    def get_move(self):
-        pass
+        print("Legal moves available:")
+        for move in moves:
+            row, col = move
+            print(f'(row, col): {row}, {col}')
+
+    # Displays all final scores after the game ends
+    def display_final_scorebaord(self):
+        for player in self.game.get_all_players():
+            self.display_score(player)
