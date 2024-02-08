@@ -35,3 +35,7 @@ class GameView(ABC):
     @abstractmethod
     def display_legal_moves(self):
         pass
+
+    @abstractmethod
+    def display_final_scorebaord(self):
+        pass

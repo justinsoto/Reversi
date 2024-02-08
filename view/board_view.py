@@ -36,8 +36,8 @@ class BoardView(GameView):
 
     def display_score(self, player: Player):
          score = self.game.get_player_score(player)
-         # player_symbol = color_to_symbol[player.get_color()]
-         print(f'Score: {score} points.')
+         player_symbol = color_to_symbol[player.get_color()]
+         print(f'Player {player_symbol} Score: {score} points.')
 
     def display_legal_moves(self):
         moves = self.game.find_legal_moves()
@@ -50,3 +50,8 @@ class BoardView(GameView):
         for move in moves:
             row, col = move
             print(f'(row, col): {row}, {col}')
+
+    # Displays all final scores after the game ends 
+    def display_final_scorebaord(self):
+        for player in self.game.get_all_players():
+            self.display_score(player)

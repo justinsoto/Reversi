@@ -21,8 +21,13 @@ class Game:
     def get_current_player_color(self):
         return self.current_player.get_color()
     
+    # Returns the current player
     def get_current_player(self):
         return self.current_player
+    
+    # Returns all players in the game
+    def get_all_players(self):
+        return [player for player in self.player_scores.keys()]
 
     # Executes move on the given cell coordinates if the move is legal 
     # Allows reattempt if move is illegal
@@ -116,7 +121,7 @@ class Game:
     
     # Returns this player's score (number of pieces)
     def get_player_score(self, player: Player) -> int:
-        return self.player_scores[self.current_player]
+        return self.player_scores[player]
         
     # Returns the winning player, None if the game ends in draw
     def declare_winner(self) -> Player:

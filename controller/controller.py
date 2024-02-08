@@ -23,7 +23,7 @@ class GameController:
                 self.model.swap_turns()
             else:
                 row, col = move
-                self.model.make_move(row, col)
+                self.execute_move(row, col)
 
         self.view.display_board()
         winner = self.model.declare_winner()
@@ -31,7 +31,7 @@ class GameController:
             self.view.display_draw_message()
         else:
             self.view.display_winner(winner)
-            self.view.display_score(winner)
+            self.view.display_final_scorebaord()
 
     def get_move(self) -> [int, int]:
         move = input('Enter your move (row, col): ')
@@ -43,3 +43,12 @@ class GameController:
         values = move.split(',')
         row, col = int(values[0]), int(values[1])
         return row, col
+    
+    # Calls the model to make a move if it is legal
+    def execute_move(self, row, col) -> None:
+        current_player = self.model.get_current_player()
+        if not self.model.is_move_legal(row, col, current_player):
+            self.view.display_illegal_move_message()
+        else:
+            self.model.make_move(row, col)
+
