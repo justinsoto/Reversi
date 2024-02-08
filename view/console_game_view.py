@@ -1,16 +1,15 @@
 from model.game import Game
-from view.console_board_view import ConsoleBoardView
 from model.player import Player
 from model.player_color import color_to_symbol
+from view.console_board_view import ConsoleBoardView
 
-class ConsoleGameView(ConsoleBoardView):
+class ConsoleGameView():
     def __init__(self, game: Game) -> None:
-        super().__init__()
         self.game = game
-        self.game_board = game.board
+        self.board_view = ConsoleBoardView(game.board)
 
     def display_board(self):
-        print(self.game_board)
+        print(self.board_view)
 
     def display_current_player(self):
        curr_player = self.game.get_current_player_color()
