@@ -46,3 +46,14 @@ class ConsoleGameView():
     def display_final_scorebaord(self):
         for player in self.game.get_all_players():
             self.display_score(player)
+
+    def get_move(self) -> [int, int]:
+        move = input('Enter your move (row, col): ')
+
+        # Pass turn key
+        if move == "p":
+            return move
+
+        values = move.split(',')
+        row, col = int(values[0]), int(values[1])
+        return row, col

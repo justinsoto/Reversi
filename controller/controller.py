@@ -16,7 +16,7 @@ class GameController:
             self.view.display_score(self.model.get_current_player())
             self.view.display_legal_moves()
 
-            move = self.get_move()
+            move = self.view.get_move()
             if move == "p":
                 self.model.swap_turns()
             else:
@@ -31,17 +31,6 @@ class GameController:
             self.view.display_winner(winner)
 
         self.view.display_final_scorebaord()
-
-    def get_move(self) -> [int, int]:
-        move = input('Enter your move (row, col): ')
-
-        # Pass turn key
-        if move == "p":
-            return move
-
-        values = move.split(',')
-        row, col = int(values[0]), int(values[1])
-        return row, col
 
     # Calls the model to make a move if it is legal
     def execute_move(self, row, col) -> None:
