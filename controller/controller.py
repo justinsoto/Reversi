@@ -1,8 +1,8 @@
 from model.game import Game
-from view.console_game_view import ConsoleGameView
+from view.test_board_view import BoardView
 
 class GameController:
-    def __init__(self, model: Game, view: ConsoleGameView) -> None:
+    def __init__(self, model: Game, view: BoardView) -> None:
         self.model = model
         self.view = view
 
@@ -10,27 +10,14 @@ class GameController:
         """
         Runs the main loop of the game
         """
-        while not self.model.game_over():
-            self.view.display_board()
-            self.view.display_current_player()
-            self.view.display_score(self.model.get_current_player())
-            self.view.display_legal_moves()
+        if not self.model.game_over():
+            self.view.root.mainloop()
 
-            move = self.view.get_move()
-            if move == "p":
-                self.model.swap_turns()
-            else:
-                row, col = move
-                self.execute_move(row, col)
-
-        self.view.display_board()
-        winner = self.model.declare_winner()
-        if not winner:
+        temp = self.model.declare_winner()
+        if temp == None:
             self.view.display_draw_message()
         else:
-            self.view.display_winner(winner)
-
-        self.view.display_final_scorebaord()
+            self.view.display_winner(temp)
 
     # Calls the model to make a move if it is legal
     def execute_move(self, row, col) -> None:

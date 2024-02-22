@@ -37,6 +37,9 @@ class Game:
             self.flip_pieces(row, col)
             self.update_scores()
             self.swap_turns()
+            return True
+        else:
+            return False
 
     # Determines if this player a legal move left to play
     def has_legal_move_remaining(self, player: Player):

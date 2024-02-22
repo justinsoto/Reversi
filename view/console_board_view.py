@@ -1,5 +1,7 @@
 from model.board import Board
 from model.player_color import color_to_symbol
+import tkinter as tk
+import tkinter.font as tkFont
 
 class ConsoleBoardView():
     def __init__(self, board: Board):
