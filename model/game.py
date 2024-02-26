@@ -107,7 +107,7 @@ class Game:
             self.current_player = self.player1
 
     # Prints cell coordinates of all legal moves available to the current player
-    def find_legal_moves(self) -> [int, int]:
+    def find_legal_moves(self):
         moves = []
         for row in range(self.size):
             for col in range(self.size):

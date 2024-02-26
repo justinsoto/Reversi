@@ -8,7 +8,10 @@ class GameController:
         self.view = view
         self.ai_dec = input("would you like to play against AI? (y/n)") == "y"
         if self.ai_dec:
-            depth = int(input("Please enter the difficulty level you would like (1-10)"))
+            depth = int(input("Please enter the difficulty level you would like (1-5)"))
+            while depth < 1 or depth > 5:
+                print("Invalid Selection")
+                depth = int(input("Please enter the difficulty level you would like (1-5)"))
             self.ai = ai(self.model, depth)
 
     def start_game(self):
