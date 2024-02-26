@@ -30,17 +30,13 @@ class Board:
         return self.board.copy()
 
     def get_cell(self, row, col) -> PlayerColor:
-        return self.board[row][col] 
+        return self.board[row][col]
 
     def is_cell_empty(self, row, col) -> bool:
         return self.get_cell(row, col) == PlayerColor.Empty
-    
+
     def fill_cell(self, row, col, color) -> None:
          self.board[row][col] = color
 
     def get_size(self) -> int:
         return self.size
-    
-    
-
-    

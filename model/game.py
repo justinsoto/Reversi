@@ -2,6 +2,8 @@ from model.board import Board
 from model.player_color import PlayerColor
 from model.player_color import color_to_symbol
 from model.player import Player
+import math
+import copy
 
 class Game:
     def __init__(self, size=8) -> None:
@@ -146,3 +148,63 @@ class Game:
                     self.player_scores[self.player1] += 1
                 if self.board.get_cell(row, col) == self.player2.get_color():
                     self.player_scores[self.player2] += 1
+
+    def copy(self):
+        # Create a new instance of the Game class
+        new_game = Game(size=self.size)
+
+        # Copy the board state
+        new_game.board = copy.deepcopy(self.board)
+
+        # Copy player attributes
+        new_game.player1 = copy.deepcopy(self.player1)
+        new_game.player2 = copy.deepcopy(self.player2)
+
+        # Copy current player
+        new_game.current_player = self.current_player
+
+        # Copy player scores
+        new_game.player_scores = copy.deepcopy(self.player_scores)
+
+        # Copy move directions
+        new_game.move_dirs = self.move_dirs[:]
+
+        return new_game
+
+    def minimax(self, depth, maximizing_player):
+        if depth == 0 or self.game_over():
+            return self.evaluate_board(), None
+
+        if maximizing_player:
+            max_eval = -math.inf
+            best_move = None
+            for move in self.find_legal_moves():
+                game_copy = self.copy()
+                game_copy.make_move(move[0], move[1])
+                eval, _ = game_copy.minimax(depth - 1, False)
+                if eval > max_eval:
+                    max_eval = eval
+                    best_move = move
+            return max_eval, best_move
+        else:
+            min_eval = math.inf
+            best_move = None
+            for move in self.find_legal_moves():
+                game_copy = self.copy()  # Create a copy of the game state
+                game_copy.make_move(move[0], move[1])
+                eval, _ = game_copy.minimax(depth - 1, True)
+                if eval < min_eval:
+                    min_eval = eval
+                    best_move = move
+            return min_eval, best_move
+
+    def get_best_move(self, depth):
+        _, best_move = self.minimax(depth, True)
+        return best_move
+
+    def evaluate_board(self):
+        # You can implement your own heuristic evaluation function here
+        # For simplicity, let's just return the difference between AI's score and opponent's score
+        ai_score = self.get_player_score(self.player2)
+        opponent_score = self.get_player_score(self.player1)
+        return ai_score - opponent_score
