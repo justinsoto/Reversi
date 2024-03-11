@@ -1,0 +1,123 @@
+body {
+    margin: 0;
+    background-color: #9a4de1;
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 3em;
+    height: 10vh;
+    color: black;
+    background-color: hsl(120, 88%, 40%);
+    border: 3px solid white;
+    border-radius: 20px;
+}
+
+.game {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    min-width: 50vw;
+    min-height: 90vh;
+    background-color: hsl(120, 88%, 40%);
+    border: 3px solid white;
+    border-radius: 20px;
+}
+
+.board {
+    display: grid;
+    border: 5px solid black;
+    border-radius: 5px;
+    max-width: 80%;
+    max-height: 80%;
+}
+
+.row {
+    display: flex;
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: hsl(120, 75%, 30%);
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.cell:hover {
+    background-color: hsl(120, 75%, 20%);
+}
+
+.disc {
+    background-color: black;
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+}
+
+.score-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.score-label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5em;
+    color: black;
+}
+
+.player1-score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: white;
+    font-size: 2em;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;    
+    margin: 5px;
+}
+
+.player2-score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: black;
+    font-size: 2em;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;    
+    margin: 5px;
+}
+
+.pass-button {
+    font-size: 2em;
+    padding: 10px 20px;
+    margin: 10px;
+    background: hsl(0, 0%, 80%);
+    color: black;
+    border: 5px solid black;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.pass-button:hover {
+    background: hsl(0, 0%, 90%);
+}
