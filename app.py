@@ -1,10 +1,13 @@
 # app.py (Flask App to serve as backend)
 from flask import Flask, jsonify
+from flask_cors import CORS
 from model.game import Game
 from model.player import Player
 
 app = Flask(__name__)
-game = Game(10)
+CORS(app)
+
+game = Game(8)
 
 @app.route('/')
 def main_page():
@@ -18,10 +21,10 @@ def hello():
 def get_score(player: Player):
     return game.get_player_score(player)
 
-@app.route('/game-size')
-def get_game_size():
+@app.route('/board-size')
+def get_board_size():
     size = game.board.get_size()
     return jsonify({'size': size})
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

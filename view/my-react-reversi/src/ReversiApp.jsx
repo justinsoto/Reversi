@@ -13,8 +13,10 @@ export default function ReversiApp() {
     fetchAPI();
 
     function fetchAPI() {
-        axios.get(baseURL + '/hello')
-            .then(response => console.log(response.data))
+        axios.get(baseURL + '/board-size')
+            .then(response => {
+                setSize(response.data['size']);
+            })
     }
 
     return (
