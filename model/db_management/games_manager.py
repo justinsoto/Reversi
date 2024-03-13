@@ -1,11 +1,12 @@
 import mysql.connector
 
 class Game_DB: #maybe we add a timestamp field?
-    def __init__(self, game_id, player1_id, player2_id, winner_id) -> None:
+    def __init__(self, game_id, player1_id, player2_id, winner_id, game_state) -> None:
         self.game_id = game_id
         self.player1_id = player1_id
         self.player2_id = player2_id
         self.winner_id = winner_id
+        self.game_state = game_state
 
 class GamesManager:
     def __init__(self, connection) -> None:
@@ -64,3 +65,31 @@ class GamesManager:
 
         except mysql.connector.Error as err:
             print("Error deleting game:", err)
+
+    def update_game_state(self, game_id, new_game_state):
+        try:
+            cursor = self.connection.cursor()
+            query = "UPDATE Games SET Game_State = %s WHERE Game_ID = %s"
+            cursor.execute(query, (new_game_state, game_id))
+            self.connection.commit()
+            cursor.close()
+            
+        except mysql.connector.Error as err:
+            print("Error updating game state:", err)
+
+    def get_game_state(self, game_id):
+        try:
+            cursor = self.connection.cursor()
+            query = "SELECT Game_State FROM Games WHERE Game_ID = %s"
+            cursor.execute(query, (game_id,))
+            game_state = cursor.fetchone()
+            cursor.close()
+            
+            if game_state:
+                return game_state[0]  # Returning the game state if found
+            else:
+                return None
+            
+        except mysql.connector.Error as err:
+            print("Error retrieving game state:", err)
+            return None

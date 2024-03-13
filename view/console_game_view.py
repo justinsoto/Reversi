@@ -6,9 +6,12 @@ from view.console_board_view import ConsoleBoardView
 class ConsoleGameView():
     def __init__(self, game: Game) -> None:
         self.game = game
-        self.board_view = ConsoleBoardView(game.board)
+        self.board_view = ConsoleBoardView(game.board) 
 
     def display_board(self):
+        #necessary to update board view if game is pulled from database
+        self.board = self.game.board
+        self.board_view = ConsoleBoardView(self.board)
         print(self.board_view)
 
     def display_current_player(self):
