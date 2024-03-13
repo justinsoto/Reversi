@@ -1,12 +1,13 @@
-'''from model.game import Game
+from model.game import Game
 from view.console_game_view import ConsoleGameView
 from controller.controller import GameController
 
 game = Game(16)
 view = ConsoleGameView(game)
 controller = GameController(game,view)
-controller.start_game()'''
+controller.start_game()
 
+'''
 from model.game import Game
 from view.console_game_view import ConsoleGameView
 from controller.controller import GameController
@@ -47,3 +48,4 @@ except Error as err:
 
 finally:
         connection.close()
+'''
