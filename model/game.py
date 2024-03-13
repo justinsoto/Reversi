@@ -2,6 +2,7 @@ from model.board import Board
 from model.player_color import PlayerColor
 from model.player_color import color_to_symbol
 from model.player import Player
+import json
 import math
 import copy
 
@@ -77,6 +78,7 @@ class Game:
             col += y
 
         return False
+    
 
     # Flips pieces based on current move
     def flip_pieces(self, row, col) -> None:
@@ -148,3 +150,54 @@ class Game:
                     self.player_scores[self.player1] += 1
                 if self.board.get_cell(row, col) == self.player2.get_color():
                     self.player_scores[self.player2] += 1
+
+
+    def update_game_from_db(self, board, current_player, player_scores):
+        self.board = board
+        self.current_player = current_player
+        self.player_scores = player_scores
+
+    #serializes game state to pass to store game state in database
+    def serialize_game_state(self):
+        game_state = {
+            'current_player_symbol': color_to_symbol[self.get_current_player_color()],
+            'board': [[color_to_symbol[cell] for cell in row] for row in self.board.get_board()],
+            'player_scores':{color_to_symbol[self.player1.get_color()]: self.get_player_score(self.player1),
+                             color_to_symbol[self.player2.get_color()]: self.get_player_score(self.player2)}
+        }
+        return json.dumps(game_state)
+    
+    #deserialize game state to reconstruct game from game state stored in database
+    def deserialize_game_state(self, json_string):
+
+        game_state = json.loads(json_string)
+        board_size = len(game_state['board'])
+        current_player_symbol = game_state['current_player_symbol']
+        board_data = game_state['board']
+
+        for player in self.get_all_players():
+            if color_to_symbol[player.get_color()] == current_player_symbol:
+                current_player = player
+
+        board = Board(board_size)
+        for row in range(board_size):
+            for col in range(board_size):
+                cell_symbol = board_data[row][col]
+                cell_color = None
+                for color, symbol in color_to_symbol.items():
+                    if symbol == cell_symbol:
+                        cell_color = color
+                    board.fill_cell(row,col,cell_color)
+    
+        player1_score = game_state['player_scores'][color_to_symbol[self.player1.get_color()]]
+        player2_score = game_state['player_scores'][color_to_symbol[self.player2.get_color()]]
+        player_scores = {
+            self.player1: player1_score,
+            self.player2: player2_score
+        }
+
+        self.update_game_from_db(board, current_player, player_scores)
+
+        
+
+
