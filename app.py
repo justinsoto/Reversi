@@ -4,7 +4,7 @@ from model.game import Game
 from model.player import Player
 
 app = Flask(__name__)
-game = Game(8)
+game = Game(10)
 
 @app.route('/')
 def main_page():
@@ -20,7 +20,8 @@ def get_score(player: Player):
 
 @app.route('/game-size')
 def get_game_size():
-    return game.board.get_size()
+    size = game.board.get_size()
+    return jsonify({'size': size})
 
 if __name__ == '__main__':
     app.run()

@@ -1,6 +1,6 @@
 import Title from "./Title";
 import Game from "./Game";
-import React, { useState } from "react";
+import React, { Component, useState } from "react";
 import axios from "axios";
 
 export default function ReversiApp() {
@@ -13,8 +13,8 @@ export default function ReversiApp() {
     fetchAPI();
 
     function fetchAPI() {
-        axios.get(baseURL + '/game-size')
-            .then(response => setSize(s => s = response.data))
+        axios.get(baseURL + '/hello')
+            .then(response => console.log(response.data))
     }
 
     return (
