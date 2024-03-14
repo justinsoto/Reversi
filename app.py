@@ -21,16 +21,17 @@ def hello():
 # Returns the size of the board 
 @app.route('/board-size')
 def get_board_size():
-    size = game.board.get_size()
+    size = game.get_board_size()
     return jsonify({'size': size})
 
 # Returns the player's current score 
 @app.route('/scores')
-def get_score():
+def get_scores():
     scores = [game.get_player_score(player) for player in game.get_all_players()]
     return jsonify({'player1': scores[0],
                     'player2': scores[1]})
 
+<<<<<<< Updated upstream
 # Return the current state of the board
 @app.route('/board', methods=['GET'])
 def get_board_state():
@@ -54,6 +55,23 @@ def pass_turn():
 
 @app.route('/messages')
 def messages():
+=======
+# @app.route('/board')
+# def get_board():
+#     board = game.board.get_board()
+#     for row in range(len(board)):
+#         for col in range(len(board[row])):
+#             cell = board[row][col]
+#             if cell == PlayerColor.Black:
+#                 cell = 'black'
+#             if cell == PlayerColor.White:
+#                 cell = 'white'
+#             if cell == PlayerColor.Empty:
+#                 cell = 'empty'
+#     return jsonify({'board': board})
+
+
+>>>>>>> Stashed changes
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -17,14 +17,22 @@ class Game:
                           (0, +1), (+1, -1),
                           (+1, 0), (+1, +1)]
 
-    # Returns the current player's color
-    def get_current_player_color(self):
-        return self.current_player.get_color()
-
     # Returns the current player
     def get_current_player(self):
         return self.current_player
+    
+    # Returns this player's score (number of pieces)
+    def get_player_score(self, player: Player) -> int:
+        return self.player_scores[player]
 
+    # Returns the current player's color
+    def get_current_player_color(self):
+        return self.current_player.get_color()
+    
+    # Returns the size of the game board
+    def get_board_size(self):
+        return self.size
+    
     # Returns all players in the game
     def get_all_players(self):
         return [player for player in self.player_scores.keys()]
@@ -118,10 +126,6 @@ class Game:
     def game_over(self) -> bool:
         return not self.has_legal_move_remaining(self.player1) \
                 and not self.has_legal_move_remaining(self.player2)
-
-    # Returns this player's score (number of pieces)
-    def get_player_score(self, player: Player) -> int:
-        return self.player_scores[player]
 
     # Returns the winning player, None if the game ends in draw
     def declare_winner(self) -> Player:
