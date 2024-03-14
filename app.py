@@ -31,5 +31,18 @@ def get_score():
     return jsonify({'player1': scores[0],
                     'player2': scores[1]})
 
+@app.route('/board', methods=['GET'])
+def get_board_state():
+    # assuming our Game class has a method to get the board's current state 
+    # and that it returns a 2D list (or similar) that represents the board
+    board_state = game.board.get_state()
+    return jsonify(board_state)
+
+@app.route('/pass-turn')
+def pass_turn():
+
+@app.route('/messages')
+def messages():
+
 if __name__ == '__main__':
     app.run(debug=True)
