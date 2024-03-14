@@ -37,12 +37,11 @@ body {
     display: grid;
     border: 5px solid black;
     border-radius: 5px;
-    max-width: 80%;
-    max-height: 80%;
 }
 
 .row {
     display: flex;
+    /* border: 2px solid yellow */
 }
 
 .cell {

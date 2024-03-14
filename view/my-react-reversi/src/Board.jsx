@@ -1,11 +1,9 @@
 import Row from "./Row";
 import { useState } from "react";
 import axios from "axios";
+import { baseURL } from "./ReversiApp";
 
 function Board(props) {
-
-    const baseURL = 'http://127.0.0.1:5000';
-
     const rows = []
     const size = props.size
     const [board, setBoard] = useState([[]*size])

@@ -1,6 +1,7 @@
 import Board from "./Board";
 import { useState } from "react";
 import axios from "axios";
+import { baseURL } from "./ReversiApp";
 
 function Game(props) {
 
@@ -9,7 +10,6 @@ function Game(props) {
     const [player2Score, setPlayer2Score] = useState(0);
     const [currentPlayer, setCurrentPlayer] = useState(null)
 
-    const baseURL = 'http://127.0.0.1:5000';
     getPlayerScores();
     getCurrentPlayer()
 
