@@ -4,12 +4,17 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export default function ReversiApp() {
+    const baseURL = 'http://127.0.0.1:5000';
 
     document.title = "Reversi";
 
+    const size1 = () => {
+        axios.get(baseURL + '/board-size')
+            .then(response => size1 = response.data['size']);
+    }
     const [size, setSize] = useState(8);
 
-    const baseURL = 'http://127.0.0.1:5000';
+
     fetchAPI();
 
     function fetchAPI() {

@@ -10,6 +10,13 @@ CORS(app)
 
 game = Game(8)
 
+players = game.get_all_players()
+player_to_string = {
+    players[0]: "Player 1",
+    players[1]: "Player 2"
+}
+
+
 @app.route('/')
 def main_page():
     return "Main Page"
@@ -31,47 +38,25 @@ def get_scores():
     return jsonify({'player1': scores[0],
                     'player2': scores[1]})
 
-<<<<<<< Updated upstream
-# Return the current state of the board
-@app.route('/board', methods=['GET'])
-def get_board_state():
-    # assuming our Game class has a method to get the board's current state 
-    # and that it returns a 2D list (or similar) that represents the board
-    board_state = game.board.get_state()
-    return jsonify(board_state)
-
+# Swaps player's turn 
 @app.route('/pass-turn')
 def pass_turn():
-    # Simple toggle between player1 and player2 as the current player
-    if game.current_player == game.player1:
-        game.current_player = game.player2
-    else:
-        game.current_player = game.player1
+    game.swap_turns()
+    return
+
+# Returns the player whose currently making a move
+@app.route('/current-player')
+def get_current_player():
+    return jsonify(player_to_string[game.get_current_player()])
     
     # Assuming we have a method to return the current player's identifier (e.g., name, color, or ID)
     # If not, we might simply return a message indicating the turn has been passed
     # We just need to make sure both our game and player class support this logic    
-    return jsonify({"currentPlayer": game.current_player.get_identifier()})
+    #return jsonify({"currentPlayer": game.current_player.get_identifier()})
 
 @app.route('/messages')
 def messages():
-=======
-# @app.route('/board')
-# def get_board():
-#     board = game.board.get_board()
-#     for row in range(len(board)):
-#         for col in range(len(board[row])):
-#             cell = board[row][col]
-#             if cell == PlayerColor.Black:
-#                 cell = 'black'
-#             if cell == PlayerColor.White:
-#                 cell = 'white'
-#             if cell == PlayerColor.Empty:
-#                 cell = 'empty'
-#     return jsonify({'board': board})
-
-
->>>>>>> Stashed changes
+    pass
 
 if __name__ == '__main__':
     app.run(debug=True)

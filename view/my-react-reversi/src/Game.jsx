@@ -2,23 +2,33 @@ import Board from "./Board";
 import { useState } from "react";
 import axios from "axios";
 
-
 function Game(props) {
 
     const size = props.size;
     const [player1Score, setPlayer1Score] = useState(0);
     const [player2Score, setPlayer2Score] = useState(0);
+    const [currentPlayer, setCurrentPlayer] = useState(null)
 
     const baseURL = 'http://127.0.0.1:5000';
     getPlayerScores();
+    getCurrentPlayer()
 
     function getPlayerScores() {
-        console.log();
         axios.get(baseURL + '/scores')
             .then(response => {
                 setPlayer1Score(response.data['player1']);
                 setPlayer2Score(response.data['player2']);
             })
+    }
+
+    function getCurrentPlayer() {
+        axios.get(baseURL + '/current-player')
+            .then(response => setCurrentPlayer(response.data))
+    }
+
+    function passTurn() {
+        axios.get(baseURL + '/pass-turn')
+        getCurrentPlayer()
     }
 
     return (
@@ -30,12 +40,17 @@ function Game(props) {
 
             <Board size={size} />
 
+            <div className="message">{currentPlayer}'s turn</div>
+
             <div className="score-container">
                 <div className="player1-score">{player1Score}</div>
                 <div className="score-label">Player 1</div>
             </div>
 
-            <button className="pass-button">Pass</button>
+            <button
+                className="pass-button"
+                onClick={passTurn}>
+                Pass</button>
         </div>
     );
 }

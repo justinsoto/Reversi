@@ -121,3 +121,10 @@ body {
 .pass-button:hover {
     background: hsl(0, 0%, 90%);
 }
+
+.message {
+    color: whitesmoke;
+    font-size: 1.5em;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 10px;
+}
