@@ -2,9 +2,14 @@ CREATE TABLE Users (
     User_ID INT PRIMARY KEY AUTO_INCREMENT,
     Username VARCHAR(20) UNIQUE NOT NULL,
     Password_Hash VARCHAR(20) NOT NULL,
+);
+
+CREATE TABLE Ratings (
+    User_ID INT PRIMARY KEY AUTO_INCREMENT,
     Top_Score INT,
     Number_Wins INT,
-    Number_Loses INT
+    Number_Loses INT,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
 );
 
 CREATE TABLE Games (
