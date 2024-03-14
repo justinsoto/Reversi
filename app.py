@@ -31,6 +31,7 @@ def get_score():
     return jsonify({'player1': scores[0],
                     'player2': scores[1]})
 
+# Return the current state of the board
 @app.route('/board', methods=['GET'])
 def get_board_state():
     # assuming our Game class has a method to get the board's current state 
@@ -40,6 +41,16 @@ def get_board_state():
 
 @app.route('/pass-turn')
 def pass_turn():
+    # Simple toggle between player1 and player2 as the current player
+    if game.current_player == game.player1:
+        game.current_player = game.player2
+    else:
+        game.current_player = game.player1
+    
+    # Assuming we have a method to return the current player's identifier (e.g., name, color, or ID)
+    # If not, we might simply return a message indicating the turn has been passed
+    # We just need to make sure both our game and player class support this logic    
+    return jsonify({"currentPlayer": game.current_player.get_identifier()})
 
 @app.route('/messages')
 def messages():
