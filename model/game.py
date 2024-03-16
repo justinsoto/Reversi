@@ -1,6 +1,5 @@
 from model.board import Board
 from model.player_color import PlayerColor
-from model.player_color import color_to_symbol
 from model.player import Player
 
 class Game:
@@ -36,6 +35,17 @@ class Game:
     # Returns all players in the game
     def get_all_players(self):
         return [player for player in self.player_scores.keys()]
+    
+    # Returns player at cell, None if empty
+    def get_player_at_cell(self, row, col):
+        # Gets the color stored in cell 
+        color = self.board.get_cell(row, col)
+        for player in self.get_all_players():
+            if player.get_color() == color:
+                return player
+            
+        # Cell is empty if this point is reached
+        return None 
 
     # Executes move on the given cell coordinates if the move is legal
     # Allows reattempt if move is illegal
@@ -102,8 +112,7 @@ class Game:
 
     # Checks if a move's coordinates are within board coordinates
     def is_valid_coord(self, row, col) -> bool:
-        board_size = self.board.get_size()
-        return 0 <= row < board_size and 0 <= col < board_size
+        return 0 <= row < self.size and 0 <= col < self.size
 
     # Gives turn to other player
     def swap_turns(self) -> None:

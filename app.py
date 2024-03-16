@@ -3,19 +3,19 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from model.game import Game
 from model.player import Player
-from model.player_color import PlayerColor
+from controller.gui_controller import GUIController
 
 app = Flask(__name__)
 CORS(app)
 
 game = Game(8)
+controller = GUIController(game)
 
 players = game.get_all_players()
 player_to_string = {
     players[0]: "Player 1",
     players[1]: "Player 2"
 }
-
 
 @app.route('/')
 def main_page():
@@ -41,18 +41,35 @@ def get_scores():
 # Swaps player's turn 
 @app.route('/pass-turn')
 def pass_turn():
-    game.swap_turns()
+    controller.pass_turn()
     return
 
 # Returns the player whose currently making a move
 @app.route('/current-player')
 def get_current_player():
     return jsonify(player_to_string[game.get_current_player()])
+
+# Returns the state of the cell (empty, taken, legal)
+@app.route('/cell-state/<row>/<col>')
+def get_cell_state(row, col):
+    row, col = int(row), int(col)
+
+    legal_moves = game.find_legal_moves()
+    if [row, col] in legal_moves:
+        return "Legal"
     
-    # Assuming we have a method to return the current player's identifier (e.g., name, color, or ID)
-    # If not, we might simply return a message indicating the turn has been passed
-    # We just need to make sure both our game and player class support this logic    
-    #return jsonify({"currentPlayer": game.current_player.get_identifier()})
+    if not game.board.is_cell_empty(row, col):
+        player = game.get_player_at_cell(row, col)
+        return player_to_string[player]
+    
+    return "Empty"
+
+# Calls controller to execute a move
+@app.route('/execute-move/<row>/<col>')
+def execute_move(row, col):
+    row, col = int(row), int(col)
+    controller.execute_move(row, col)
+    return
 
 @app.route('/messages')
 def messages():

@@ -1,18 +1,44 @@
 import { useState } from "react";
 import Disc from "./Disc";
+import axios from "axios";
+import { baseURL } from "./ReversiApp";
 
-function Cell() {
+function Cell(props) {
 
-    const [cellState, setCellState] = useState(false);
-
+    const [cellState, setCellState] = useState(null);
+    const rowIndex = props.row
+    const colIndex = props.index
+    let disc = renderDisc()
+    changeCellState()
+    
     function changeCellState() {
-        setCellState(!cellState);
-        console.log(cellState);
+        axios.get(baseURL + '/cell-state/'+ rowIndex + '/' + colIndex)
+            .then(response => setCellState(response.data))
+    }
+
+    function renderDisc() {
+        if (cellState === 'Player 1') {
+            return <div className="black-disc" />
+        }
+        else if (cellState === 'Player 2') {
+            return <div className="white-disc" />
+        }
+        else if (cellState === "Legal") {
+            return <div className="legal-space" onClick={executeMove}/>;
+        }
+        else {
+            return null
+        }
+    }
+
+    function executeMove() {
+        axios.get(baseURL + '/execute-move/'+ rowIndex + '/' + colIndex)
+            .then(response => setCellState(response.data))
     }
 
     return (
-        <div className="cell" onClick={changeCellState}>
-            {cellState ? <Disc className="disc" /> : null}
+        <div className="cell">
+            {disc}
         </div>
     );
 }

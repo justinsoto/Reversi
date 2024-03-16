@@ -6,7 +6,7 @@ function Row(props) {
     const rowLength = props.size
 
     for (let i = 0; i < rowLength; i++) {
-        cells.push(<Cell key={i} index={i}/>)
+        cells.push(<Cell key={i} row={index} index={i}/>)
     }
 
     return (

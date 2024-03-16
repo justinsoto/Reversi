@@ -10,21 +10,21 @@ function Game(props) {
     const [player2Score, setPlayer2Score] = useState(0);
     const [currentPlayer, setCurrentPlayer] = useState(null)
 
-    getPlayerScores();
+    updatePlayerScores()
     getCurrentPlayer()
-
-    function getPlayerScores() {
-        axios.get(baseURL + '/scores')
-            .then(response => {
-                setPlayer1Score(response.data['player1']);
-                setPlayer2Score(response.data['player2']);
-            })
-    }
 
     function getCurrentPlayer() {
         axios.get(baseURL + '/current-player')
             .then(response => setCurrentPlayer(response.data))
     }
+
+    function updatePlayerScores() {
+        axios.get(baseURL + '/scores')
+            .then(response => {
+                setPlayer1Score(response.data['player1']);
+                setPlayer2Score(response.data['player2']);
+            })
+    } 
 
     function passTurn() {
         axios.get(baseURL + '/pass-turn')
@@ -32,7 +32,7 @@ function Game(props) {
     }
 
     return (
-        <div className="game">
+        <div className="game" onClick={updatePlayerScores}>
             <div className="score-container">
                 <div className="score-label">Player 2</div>
                 <div className="player2-score">{player2Score}</div>

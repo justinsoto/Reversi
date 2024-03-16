@@ -1,4 +1,5 @@
 from model.player_color import PlayerColor
+from copy import deepcopy
 
 class Board:
     def __init__(self, size=8) -> None:
@@ -13,7 +14,6 @@ class Board:
         else:
             self.size = size
 
-        self.curr_player = PlayerColor.Black
         self.board = []
         self.set_up_board()
 
@@ -27,7 +27,7 @@ class Board:
         self.board[center][center] = PlayerColor.Black
 
     def get_board(self):
-        return self.board.copy()
+        return deepcopy(self.board)
 
     def get_cell(self, row, col) -> PlayerColor:
         return self.board[row][col]

@@ -55,15 +55,29 @@ body {
     cursor: pointer;
 }
 
-.cell:hover {
-    background-color: hsl(120, 75%, 20%);
-}
-
-.disc {
+.black-disc {
     background-color: black;
     width: 75%;
     height: 75%;
     border-radius: 50%;
+}
+
+.white-disc {
+    background-color: white;
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+}
+
+.legal-space {
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.legal-space:hover {
+    border: 1px solid yellow;
 }
 
 .score-container {

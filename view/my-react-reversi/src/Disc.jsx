@@ -1,9 +1,7 @@
-function Disc(props) {
-
-    const visible = props.visible;
+function Disc() {
 
     return(
-        <div className="disc" visibility={visible ? "visible" : "hidden"}></div>
+        <div className="disc"></div>
     );
 }
 
