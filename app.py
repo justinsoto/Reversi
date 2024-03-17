@@ -47,7 +47,13 @@ def pass_turn():
 # Returns the player whose currently making a move
 @app.route('/current-player')
 def get_current_player():
-    return jsonify(player_to_string[game.get_current_player()])
+    return player_to_string[game.get_current_player()]
+
+@app.route('/board')
+def get_board_state():
+    size = game.get_board_size()
+    board = [[get_cell_state(row, col) for col in range(size)] for row in range(size)]
+    return jsonify({'board': board})
 
 # Returns the state of the cell (empty, taken, legal)
 @app.route('/cell-state/<row>/<col>')
@@ -69,6 +75,12 @@ def get_cell_state(row, col):
 def execute_move(row, col):
     row, col = int(row), int(col)
     controller.execute_move(row, col)
+    return
+
+# Restarts the game
+@app.route('/reset')
+def reset_game():
+    controller.reset_game()
     return
 
 @app.route('/messages')

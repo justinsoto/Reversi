@@ -46,6 +46,10 @@ class Game:
             
         # Cell is empty if this point is reached
         return None 
+    
+    # Returns True if cell is empty
+    def is_cell_empty(self, row, col):
+        return self.board.is_cell_empty(row, col)
 
     # Executes move on the given cell coordinates if the move is legal
     # Allows reattempt if move is illegal
@@ -129,6 +133,12 @@ class Game:
                 if self.is_move_legal(row, col, self.current_player):
                     moves.append([row, col])
         return moves
+    
+    # Restores the game's initial state
+    def reset_game(self):
+        self.board.set_up_board()
+        self.current_player = self.player1
+        self.update_scores()
 
     # Checks if the game is over, the game is over when no legal moves
     # remain for either player

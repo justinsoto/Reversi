@@ -6,6 +6,7 @@ import { baseURL } from "./ReversiApp";
 function Cell(props) {
 
     const [cellState, setCellState] = useState(null);
+    // const cellState = props.state
     const rowIndex = props.row
     const colIndex = props.index
     let disc = renderDisc()
@@ -33,7 +34,6 @@ function Cell(props) {
 
     function executeMove() {
         axios.get(baseURL + '/execute-move/'+ rowIndex + '/' + colIndex)
-            .then(response => setCellState(response.data))
     }
 
     return (

@@ -120,7 +120,7 @@ body {
     margin: 5px;
 }
 
-.pass-button {
+button {
     font-size: 2em;
     padding: 10px 20px;
     margin: 10px;
@@ -131,7 +131,7 @@ body {
     cursor: pointer;
 }
 
-.pass-button:hover {
+button:hover {
     background: hsl(0, 0%, 90%);
 }
 

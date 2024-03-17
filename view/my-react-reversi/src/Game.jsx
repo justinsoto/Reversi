@@ -24,15 +24,25 @@ function Game(props) {
                 setPlayer1Score(response.data['player1']);
                 setPlayer2Score(response.data['player2']);
             })
-    } 
+    }
 
     function passTurn() {
         axios.get(baseURL + '/pass-turn')
         getCurrentPlayer()
     }
 
+    function resetGame() {
+        axios.get(baseURL + '/reset')
+    }
+
     return (
         <div className="game" onClick={updatePlayerScores}>
+            <button
+                className="new-game-button"
+                onClick={resetGame}>
+                New Game
+            </button>
+
             <div className="score-container">
                 <div className="score-label">Player 2</div>
                 <div className="player2-score">{player2Score}</div>
@@ -50,7 +60,8 @@ function Game(props) {
             <button
                 className="pass-button"
                 onClick={passTurn}>
-                Pass</button>
+                Pass
+            </button>
         </div>
     );
 }
