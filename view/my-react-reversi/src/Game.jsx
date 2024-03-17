@@ -9,9 +9,11 @@ function Game(props) {
     const [player1Score, setPlayer1Score] = useState(0);
     const [player2Score, setPlayer2Score] = useState(0);
     const [currentPlayer, setCurrentPlayer] = useState(null)
+    const [message, setMessage] = useState("")
 
     updatePlayerScores()
     getCurrentPlayer()
+    updateMessage()
 
     function getCurrentPlayer() {
         axios.get(baseURL + '/current-player')
@@ -35,6 +37,11 @@ function Game(props) {
         axios.get(baseURL + '/reset')
     }
 
+    function updateMessage() {
+        axios.get(baseURL + '/message')
+            .then(response => setMessage(response.data))
+    }
+
     return (
         <div className="game" onClick={updatePlayerScores}>
             <button
@@ -50,7 +57,7 @@ function Game(props) {
 
             <Board size={size} />
 
-            <div className="message">{currentPlayer}'s turn</div>
+            <div className="message">{message}</div>
 
             <div className="score-container">
                 <div className="player1-score">{player1Score}</div>

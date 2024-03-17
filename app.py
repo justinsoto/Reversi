@@ -83,9 +83,14 @@ def reset_game():
     controller.reset_game()
     return
 
-@app.route('/messages')
-def messages():
-    pass
+@app.route('/message')
+def get_message():
+    if game.game_over():
+        winner = game.declare_winner()
+        return f"{player_to_string[winner]} won!"
+    
+    current_player = game.get_current_player()
+    return f"{player_to_string[current_player]}'s turn"
 
 if __name__ == '__main__':
     app.run(debug=True)
