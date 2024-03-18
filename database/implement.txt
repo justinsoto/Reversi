@@ -1,43 +1,46 @@
-README: THE SCHEMA ONLY NEEDS TO BE RUN ONE SINGLE TIME -- I JUST DID IT FROM MYSQL SERVER
+CREATE DATABASE Othello;
+CREATE USER 'my_user'@'localhost' IDENTIFIED BY 'my_password';
+GRANT ALL PRIVILEGES ON Othello.* TO 'my_user'@'localhost';
+FLUSH PRIVILEGES;
 
-RAN: 
-    CREATE DATABASE my_database;
-    CREATE USER 'my_user'@'localhost' IDENTIFIED BY 'my_password';
-    GRANT ALL PRIVILEGES ON my_database.* TO 'my_user'@'localhost';
-    FLUSH PRIVILEGES;
-
-THEN JUST COPIED THE SCHEMA AND RAN THAT TOO
+use othello;
 
 
+CREATE TABLE Users (
+    User_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(20) UNIQUE NOT NULL,
+    Password_Hash VARCHAR(20) NOT NULL
+);
 
-from mysql.connector import connect, Error
-from getpass import getpass
-from model.db_management.user_manager import UserManager
-from model.db_management.games_manager import GamesManager
-from model.db_management.ratings_manager import RatingsManager
-from model.db_management.leaderboard_manager import LeaderboardManager
+CREATE TABLE Ratings (
+    User_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Top_Score INT,
+    Number_Wins INT,
+    Number_Loses INT
+);
 
-EXAMPLE OF CONNECTING AND SETTING UP MANAGERS:
+CREATE TABLE Games (
+    Game_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Player1_ID INT,
+    Player2_ID INT,
+    Winner_ID INT,
+    Game_State VARCHAR(2000),
+    FOREIGN KEY (Player1_ID) REFERENCES Users(User_ID),
+    FOREIGN KEY (Player2_ID) REFERENCES Users(User_ID),
+    FOREIGN KEY (Winner_ID) REFERENCES Users(User_ID)
+);
 
-try:
-        connection = connect(
-            host ='localhost',
-            user = input('Enter Username: '),
-            password = getpass('Enter Pasword: '),
-            database="Othello" 
-        )
-    
-    #can probaly pass these managers or the connection itself
-    user_manager = UserManager(connection)
+CREATE TABLE Leaderboard (
+    Leaderboard_ID INT PRIMARY KEY AUTO_INCREMENT,
+    User_ID INT,
+    Top_Score INT,
+    Game_ID INT UNIQUE,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+    FOREIGN KEY (Game_ID) REFERENCES Games(Game_ID)
+);
 
-    games_manager = GamesManager(connection)
 
-    ratings_manager = RatingsManager(connection)
 
-    leaderboard_manager = LeaderboardManager(connection)
 
-except Error as err:
-    print("Error:", err)
 
-finally:
-    connection.close()
+

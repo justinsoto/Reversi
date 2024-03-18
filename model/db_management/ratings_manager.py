@@ -1,41 +1,50 @@
 import mysql.connector
+import math
 
 class Rating:
-    def __init__(self, rating_id, user_id, top_score, number_wins, number_losses) -> None:
-        self.rating_id = rating_id
+    def __init__(self, user_id, top_score, number_wins, number_losses, elo_rating) -> None:
         self.user_id = user_id
         self.top_score = top_score
         self.number_wins = number_wins
         self.number_losses = number_losses
+        self.elo_rating = elo_rating
+
+    def get_user_id(self):
+        return self.user_id
+    #Probably need to add a display method for the rating class
 
 class RatingsManager:
     def __init__(self, connection):
         self.connection = connection
 
-    def create_rating(self, top_score, number_wins, number_losses):
+    def create_rating(self, top_score, number_wins, number_losses, elo_rating=1000):
         try:
             cursor = self.connection.cursor()
-            query = "INSERT INTO Ratings (User_ID, Top_Score, Number_Wins, Number_Loses) VALUES (%s, %s, %s, %s)"
-            cursor.execute(query, (top_score, number_wins, number_losses))
+            query = "INSERT INTO Ratings (Top_Score, Number_Wins, Number_Loses, ELO_Rating) VALUES (%s, %s, %s, %s)"
+            cursor.execute(query, (top_score, number_wins, number_losses, elo_rating))
             self.connection.commit()
+
+            cursor.execute("SELECT LAST_INSERT_ID()")
+            last_id_tuple = cursor.fetchone()
+            last_id = last_id_tuple[0]
+            self.curr_rating = Rating(last_id, top_score, number_wins, number_losses, elo_rating)
             cursor.close()
 
         except mysql.connector.Error as err:
             print("Error creating rating:", err)
 
-    def get_rating(self, rating_id):
+    def get_rating(self, user_id):
         try:
             cursor = self.connection.cursor(dictionary=True)
-            query = "SELECT * FROM Ratings WHERE Rating_ID = %s"
-            cursor.execute(query, (rating_id,))
+            query = "SELECT * FROM Ratings WHERE User_ID = %s"
+            cursor.execute(query, (user_id,))
             rating_data = cursor.fetchone()
             cursor.close()
             if rating_data:
-                print("FOUND") #just for now --> implement displays for rating class based on views
-                return Rating(rating_data['Rating_ID'], rating_data['User_ID'], rating_data['Top_Score'], rating_data['Number_Wins'], rating_data['Number_Loses'])
+                return Rating(rating_data['User_ID'], rating_data['Top_Score'], rating_data['Number_Wins'], rating_data['Number_Loses'], rating_data['ELO_Rating'])
             else:
                 return None
-            
+
         except mysql.connector.Error as err:
             print("Error retrieving rating:", err)
             return None
@@ -51,26 +60,96 @@ class RatingsManager:
             print("Error updating top score:", err)
             return None
 
-    def update_wins(self, user_id, new_wins):
+    def update_wins(self, user_id):
         try:
             cursor = self.connection.cursor()
             query = "UPDATE Ratings SET Number_Wins = %s WHERE User_ID = %s"
-            cursor.execute(query, (new_wins, user_id))
+            cursor.execute(query, (1, user_id))
             self.connection.commit()
             cursor.close()
 
         except mysql.connector.Error as err:
             print("Error updating number of wins:", err)
             return None
-        
-    def update_losses(self, user_id, new_losses):
+
+    def update_losses(self, user_id):
         try:
             cursor = self.connection.cursor()
             query = "UPDATE Ratings SET Number_Loses = %s WHERE User_ID = %s"
-            cursor.execute(query, (new_losses, user_id))
+            cursor.execute(query, (1, user_id))
             self.connection.commit()
             cursor.close()
 
         except mysql.connector.Error as err:
             print("Error updating number of losses:", err)
+            return None
+        
+    def update_ties(self, user_id):
+        try:
+            cursor = self.connection.cursor()
+            query = "UPDATE Ratings SET Number_Ties = %s WHERE User_ID = %s"
+            cursor.execute(query, (1, user_id))
+            self.connection.commit()
+            cursor.close()
+
+        except mysql.connector.Error as err:
+            print("Error updating number of ties:", err)
+            return None
+        
+    def get_current_rating(self):
+        return self.curr_rating
+    
+    def get_leaderboard(self):
+        try:
+            cursor = self.connection.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM Ratings ORDER BY Top_Score DESC LIMIT 5")
+            leaderboards = cursor.fetchall()
+            return leaderboards
+
+        except mysql.connector.Error as err:
+            print("Error fetching leaderboard entries:", err)
+
+    def update_elo_rating(self, user_id, opponent_elo_rating, result):
+        try:
+            cursor = self.connection.cursor()
+            query = "SELECT ELO_Rating FROM Ratings WHERE User_ID = %s"
+            cursor.execute(query, (user_id,))
+            user_elo_rating = cursor.fetchone()[0]
+
+            expected_score = 1 / (1 + math.pow(10, (opponent_elo_rating - user_elo_rating) / 400))
+            actual_score = 1 if result == 1 else 0.5 if result == 0 else 0
+            k_factor = 32  # You can adjust the K-factor based on your ELO rating system's requirements
+
+            new_elo_rating = user_elo_rating + k_factor * (actual_score - expected_score)
+            query_update_elo = "UPDATE Ratings SET ELO_Rating = %s WHERE User_ID = %s"
+            cursor.execute(query_update_elo, (new_elo_rating, user_id))
+            self.connection.commit()
+            cursor.close()
+
+            self.curr_rating.elo_rating = new_elo_rating  # Update the current rating object as well
+
+        except mysql.connector.Error as err:
+            print("Error updating ELO rating:", err)
+
+    def get_elo_rating(self, user_id):
+        try:
+            cursor = self.connection.cursor()
+            query = "SELECT ELO_Rating FROM Ratings WHERE User_ID = %s"
+            cursor.execute(query, (user_id,))
+            elo_rating = cursor.fetchone()[0]
+            cursor.close()
+            return elo_rating
+
+        except mysql.connector.Error as err:
+            print("Error fetching ELO rating:", err)
+            
+    def delete_rating(self, user_id):
+        try:
+            cursor = self.connection.cursor()
+            query = "DELETE FROM Ratings WHERE User_ID = %s"
+            cursor.execute(query, (user_id,))
+            self.connection.commit()
+            cursor.close()
+        except mysql.connector.Error as err:
+            print("Error deleting rating:", err)
             return None

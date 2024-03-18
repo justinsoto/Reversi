@@ -1,6 +1,13 @@
 from model.game import Game
 from model.ai import ai
 from view.console_game_view import ConsoleGameView
+from mysql.connector import connect, Error
+from getpass import getpass
+from model.db_management.user_manager import UserManager
+from model.db_management.games_manager import GamesManager
+from model.db_management.ratings_manager import RatingsManager
+from model.db_management.leaderboard_manager import LeaderboardManager
+
 
 class GameController:
     def __init__(self, model: Game, view: ConsoleGameView) -> None:
@@ -18,7 +25,6 @@ class GameController:
         """
         Runs the main loop of the game
         """
-
         while not self.model.game_over():
             self.view.display_board()
             self.view.display_current_player()
@@ -42,6 +48,13 @@ class GameController:
             self.view.display_draw_message()
         else:
             self.view.display_winner(winner)
+
+        if winner == self.model.player1:
+            loser = self.model.player2
+        else:
+            loser = self.model.player1
+
+        #Viraj - I'm a little confused on what we're going to be adding to the leaderboard so I'm not going to implement it yet
 
         self.view.display_final_scorebaord()
 

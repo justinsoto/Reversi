@@ -1,15 +1,16 @@
 CREATE TABLE Users (
     User_ID INT PRIMARY KEY AUTO_INCREMENT,
     Username VARCHAR(20) UNIQUE NOT NULL,
-    Password_Hash VARCHAR(20) NOT NULL,
+    Password_Hash VARCHAR(20) NOT NULL
 );
-
+/**The auto increment is just for the time being and add FOREIGN KEY (User_ID) REFERENCES Users(User_ID)**/
 CREATE TABLE Ratings (
     User_ID INT PRIMARY KEY AUTO_INCREMENT,
     Top_Score INT,
-    Number_Wins INT,
-    Number_Loses INT,
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
+    Number_Wins INT DEFAULT 0,
+    Number_Loses INT DEFAULT 0,
+    Number_Ties INT DEFAULT 0,
+    ELO_Rating INT DEFAULT 1000
 );
 
 CREATE TABLE Games (
@@ -23,14 +24,7 @@ CREATE TABLE Games (
     FOREIGN KEY (Winner_ID) REFERENCES Users(User_ID)
 );
 
-CREATE TABLE Leaderboard (
-    Leaderboard_ID INT PRIMARY KEY AUTO_INCREMENT,
-    User_ID INT,
-    Top_Score INT,
-    Game_ID INT UNIQUE,
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
-    FOREIGN KEY (Game_ID) REFERENCES Games(Game_ID)
-);
+
 
 
 

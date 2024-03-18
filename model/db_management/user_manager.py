@@ -6,9 +6,14 @@ class User:
         self.username = username
         self.password_hash = password_hash
 
+    def get_user_id(self):
+        return self.user_id
+    # Probably need to add a display method for the user class
+
 class UserManager:
     def __init__(self, connection) -> None:
         self.connection = connection
+        self.curr_user = None
 
     def create_user(self, username, password_hash):
         try:
@@ -16,12 +21,19 @@ class UserManager:
             query= "INSERT INTO Users (Username, Password_Hash) VALUES (%s, %s)"
             cursor.execute(query,(username, password_hash))
             self.connection.commit()
+            cursor.execute("SELECT LAST_INSERT_ID()")
+            last_id_tuple = cursor.fetchone()
+            last_id = last_id_tuple[0]
+            self.curr_user = User(last_id, username, password_hash)
             cursor.close()
             return True
         
         except mysql.connector.Error as err:
              print("Error creating user:", err)
              return False
+    
+    def get_current_user(self):
+        return self.curr_user
 
     def get_user_by_id(self, user_id):
         try:
@@ -57,37 +69,15 @@ class UserManager:
             print("Error getting user by username:", err)
             return None
         
-    def update_top_score(self, user_id, new_top_score):
+    def delete_user(self, user_id):
         try:
             cursor = self.connection.cursor()
-            query = "UPDATE Users SET Top_Score = %s WHERE User_ID = %s"
-            cursor.execute(query, (new_top_score, user_id))
+            query = "DELETE FROM Users WHERE User_ID = %s"
+            cursor.execute(query, (user_id,))
             self.connection.commit()
             cursor.close()
+            return True
 
         except mysql.connector.Error as err:
-            print("Error updating top score:", err)
-            return None
-        
-    def update_wins(self, user_id, new_wins):
-        try:
-            cursor = self.connection.cursor()
-            query = "UPDATE Users SET Number_Wins = %s WHERE User_ID = %s"
-            cursor.execute(query, (new_wins, user_id))
-            self.connection.commit()
-            cursor.close()
-
-        except mysql.connector.Error as err:
-            print("Error updating number of wins:", err)
-
-    def update_losses(self, user_id, new_losses):
-        try:
-            cursor = self.connection.cursor()
-            query = "UPDATE Users SET Number_Loses = %s WHERE User_ID = %s"
-            cursor.execute(query, (new_losses, user_id))
-            self.connection.commit()
-            cursor.close()
-
-        except mysql.connector.Error as err:
-            print("Error updating number of losses:", err)
+            print("Error deleting user:", err)
             return False
