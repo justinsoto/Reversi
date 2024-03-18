@@ -1,12 +1,6 @@
 from model.game import Game
 from model.ai import ai
 from view.console_game_view import ConsoleGameView
-from mysql.connector import connect, Error
-from getpass import getpass
-from model.db_management.user_manager import UserManager
-from model.db_management.games_manager import GamesManager
-from model.db_management.ratings_manager import RatingsManager
-from model.db_management.leaderboard_manager import LeaderboardManager
 
 
 class GameController:
