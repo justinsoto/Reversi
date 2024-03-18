@@ -7,6 +7,9 @@ class Game_DB: #maybe we add a timestamp field?
         self.player2_id = player2_id
         self.winner_id = winner_id
         self.game_state = game_state
+    
+    def get_game_id(self):
+        return self.game_id
 
 class GamesManager:
     def __init__(self, connection) -> None:
@@ -21,14 +24,17 @@ class GamesManager:
             cursor.execute("SELECT LAST_INSERT_ID()")
             last_id_tuple = cursor.fetchone()
             last_id = last_id_tuple[0]
-            curr_game = Game_DB(last_id, player1_id, player2_id, None, None)
+            self.curr_game = Game_DB(last_id, player1_id, player2_id, None, None)
             cursor.close()
             return cursor.lastrowid  # Return the ID of the newly inserted game
 
         except mysql.connector.Error as err:
             print("Error creating game:", err)
             return None
-
+        
+    def get_current_game(self):
+        return self.curr_game
+    
     def get_game(self, game_id):
         try:
             cursor = self.connection.cursor(dictionary=True)
