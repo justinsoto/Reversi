@@ -115,9 +115,12 @@ def get_message():
         winner = game.declare_winner()
         if winner == game.player1:
             ratings_manager.update_top_score(user_id, game.get_player_score(game.player1))
-            ratings_manager.update_wins(user_id, 1)
+            ratings_manager.update_wins(user_id)
+            ratings_manager.update_losses(user_id2)
         elif winner == game.player2 and not ai_flag:
-            pass
+            ratings_manager.update_top_score(user_id2, game.get_player_score(game.player2))
+            ratings_manager.update_wins(user_id2)
+            ratings_manager.update_losses(user_id)
 
         return f"{player_to_string[winner]} won!"
 
