@@ -94,7 +94,7 @@ The console interface of the Reversi game presents a text-based version of the g
    - The web interface will continuously update to reflect the current state of the game, including available moves. Players can proceed with their turns, with the game logic ensuring all moves are valid according to the rules of Reversi.
 
 5. **Ending the Game:**
-   - The game concludes when no legal moves are available for either player. The web page will display the final scores and announce the winner: ![Endgame screenshot of Reversi showing Player 2's victory with options to 'New Game' or 'Pass.'](assets/reversi-endgame-player2-win.png)
+   - The game concludes when no legal moves are available for either player. The web page will display the final scores and announce the winner: ![Endgame screenshot of Reversi showing Player 2's victory with options to 'New Game' or 'Pass.'](https://github.com/justinsoto/Reversi/blob/main/assets/reversi-endgame-player2-win.png?raw=true)
 
 
 
