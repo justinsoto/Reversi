@@ -113,15 +113,24 @@ def reset_game():
 def get_message():
     if game.game_over():
         winner = game.declare_winner()
+        u1_elo = ratings_manager.get_elo_rating(user_id)
+        u2_elo = ratings_manager.get_elo_rating(user_id2)
         if winner == game.player1:
             ratings_manager.update_top_score(user_id, game.get_player_score(game.player1))
             ratings_manager.update_wins(user_id)
             ratings_manager.update_losses(user_id2)
+            ratings_manager.update_elo_rating(user_id, u2_elo, 1)
+            ratings_manager.update_elo_rating(user_id2, u1_elo, -1)
         elif winner == game.player2 and not ai_flag:
             ratings_manager.update_top_score(user_id2, game.get_player_score(game.player2))
             ratings_manager.update_wins(user_id2)
             ratings_manager.update_losses(user_id)
-
+            ratings_manager.update_elo_rating(user_id2, u1_elo, 1)
+            ratings_manager.update_elo_rating(user_id, u2_elo, -1)
+        elif winner == None:
+            #update draws for both players once function is available
+            ratings_manager.update_elo_rating(user_id2, u1_elo, 0)
+            ratings_manager.update_elo_rating(user_id, u2_elo, 0)
         return f"{player_to_string[winner]} won!"
 
     current_player = game.get_current_player()
