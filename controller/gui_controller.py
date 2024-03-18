@@ -8,7 +8,7 @@ class GUIController:
     def __init__(self, model: Game):
         self.model = model
         self.aiEnabled = False
-        self.ai = ai(self.model, 3)
+        self.ai = ai(self.model, 5)
 
     def execute_move(self, row: int, col: int):
         self.model.make_move(row, col)

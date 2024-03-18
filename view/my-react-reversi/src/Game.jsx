@@ -14,8 +14,10 @@ function Game(props) {
 
     updatePlayerScores()
     updateMessage()
+    updateAI()
 
-    if (isAIEnabled() && getCurrentPlayer === "Player 2") {
+
+    if (aiEnabled && currentPlayer === "Player 2") {
         axios.get(baseURL + '/trigger-AI')
     }
 
@@ -48,10 +50,11 @@ function Game(props) {
 
     function toggleAI() {
         axios.get(baseURL + '/toggle-AI')
+        updateAI()
         resetGame()
     }
 
-    function isAIEnabled() {
+    function updateAI() {
         axios.get(baseURL + '/AI-enabled')
             .then(response => setAIEnabled(response.data['AI']))
     }
@@ -87,7 +90,7 @@ function Game(props) {
             <button
                 className="multiplayer-button"
                 onClick={toggleAI}>
-                {isAIEnabled() ? "Multiplayer" : "Play AI"}
+                {aiEnabled ? "Multiplayer" : "Play AI"}
             </button>
         </div>
     );
