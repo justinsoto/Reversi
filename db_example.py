@@ -9,9 +9,10 @@ from model.db_management.games_manager import GamesManager
 from model.db_management.ratings_manager import RatingsManager
 from model.db_management.leaderboard_manager import LeaderboardManager
 
-
+connection = None # initialize connection variable to None to handle connection closure in the finally block at the bottom of file
 try:
-    connection = connect(host ='localhost', user = input('Enter Username: '), password = getpass('Enter Pasword: '), database="Othello" )
+    # attempt to establish a database connection with credentials provided by the user
+    connection = connect(host='localhost', user=input('Enter Username: '), password=getpass('Enter Password: '), database="Othello" )
     user_manager = UserManager(connection)
     ratings_manager = RatingsManager(connection)
     games_manager = GamesManager(connection)
@@ -48,10 +49,11 @@ try:
     ratings_manager.delete_rating(rating_user_id2)
     ratings_manager.delete_rating(rating_user_id3)
 
-
-
 except Error as err:
+    # catch and print any errors that occur during connection or database operations
     print("Error:", err)
 
 finally:
+    # close the databse connection if it was successfully established
+    if connection is not None:
         connection.close()
