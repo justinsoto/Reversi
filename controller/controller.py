@@ -1,17 +1,18 @@
 from model.game import Game
 from model.ai import ai
 from view.console_game_view import ConsoleGameView
-from model.db_management import games_manager
-from model.db_management import user_manager
+from mysql.connector import connect, Error
+from getpass import getpass
+from model.db_management.user_manager import UserManager
+from model.db_management.games_manager import GamesManager
+from model.db_management.ratings_manager import RatingsManager
+from model.db_management.leaderboard_manager import LeaderboardManager
+
 
 class GameController:
     def __init__(self, model: Game, view: ConsoleGameView) -> None:
         self.model = model
         self.view = view
-        self.player1ID = 1
-        self.player2ID = 2
-        self.gamesManager = games_manager()
-        self.userManager = user_manager()
         self.ai_dec = input("would you like to play against AI? (y/n)") == "y"
         if self.ai_dec:
             depth = int(input("Please enter the difficulty level you would like (1-5)"))
