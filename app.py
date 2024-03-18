@@ -1,26 +1,25 @@
-# app.py (Flask App to serve as backend)
 from flask import Flask, jsonify
 from flask_cors import CORS
 from model.game import Game
 from model.player import Player
 from controller.gui_controller import GUIController
-from mysql.connector import connect, Error
-from getpass import getpass
-from model.db_management.user_manager import UserManager
-from model.db_management.games_manager import GamesManager
-from model.db_management.ratings_manager import RatingsManager
-from model.db_management.leaderboard_manager import LeaderboardManager
+# from mysql.connector import connect, Error
+# from getpass import getpass
+# from model.db_management.user_manager import UserManager
+# from model.db_management.games_manager import GamesManager
+# from model.db_management.ratings_manager import RatingsManager
+# from model.db_management.leaderboard_manager import LeaderboardManager
 
 app = Flask(__name__)
 CORS(app)
 
 game = Game(8)
 controller = GUIController(game)
-connection = connect(host ='localhost', user = input('Enter Username: '), password = getpass('Enter Pasword: '), database="Othello" )
-user_manager = UserManager(connection)
-ratings_manager = RatingsManager(connection)
-games_manager = GamesManager(connection)
-leaderboard_manager = LeaderboardManager(connection)
+# connection = connect(host ='localhost', user = input('Enter Username: '), password = getpass('Enter Pasword: '), database="Othello" )
+# user_manager = UserManager(connection)
+# ratings_manager = RatingsManager(connection)
+# games_manager = GamesManager(connection)
+# leaderboard_manager = LeaderboardManager(connection)
 
 players = game.get_all_players()
 player_to_string = {
@@ -28,17 +27,17 @@ player_to_string = {
     players[1]: "Player 2"
 }
 
-user_manager.create_user("User1","test")
-user_id = user_manager.get_current_user().get_user_id()
+# user_manager.create_user("User1","test")
+# user_id = user_manager.get_current_user().get_user_id()
 
-user_manager.create_user("User2","test1")
-user_id2 = user_manager.get_current_user().get_user_id()
+# user_manager.create_user("User2","test1")
+# user_id2 = user_manager.get_current_user().get_user_id()
 
-ratings_manager.create_rating(0, 0, 0)
-ratings_manager.create_rating(0, 0, 0)
+# ratings_manager.create_rating(0, 0, 0)
+# ratings_manager.create_rating(0, 0, 0)
 
-games_manager.create_game(user_id, user_id2)
-game_id = games_manager.get_current_game().get_game_id()
+# games_manager.create_game(user_id, user_id2)
+# game_id = games_manager.get_current_game().get_game_id()
 
 ai_flag = False
 
@@ -78,7 +77,7 @@ def get_current_player():
 def get_board_state():
     size = game.get_board_size()
     board = [[get_cell_state(row, col) for col in range(size)] for row in range(size)]
-    games_manager.update_game_state(game_id, game.serialize_game_state())
+    # games_manager.update_game_state(game_id, game.serialize_game_state())
     return jsonify({'board': board})
 
 # Returns the state of the cell (empty, taken, legal)
@@ -103,6 +102,22 @@ def execute_move(row, col):
     controller.execute_move(row, col)
     return
 
+# Triggers the AI to execute a move
+@app.route('/trigger-AI')
+def trigger_AI():
+    controller.execute_AI_move()
+    return 
+
+# Returns True if the AI feature is enabled
+@app.route('/AI-enabled')
+def is_AI_enabled():
+    return jsonify({'AI': controller.aiEnabled})
+
+@app.route('/toggle-AI')
+def toggle_AI():
+    controller.toggle_AI()
+    return
+
 # Restarts the game
 @app.route('/reset')
 def reset_game():
@@ -111,27 +126,27 @@ def reset_game():
 
 @app.route('/message')
 def get_message():
-    if game.game_over():
-        winner = game.declare_winner()
-        u1_elo = ratings_manager.get_elo_rating(user_id)
-        u2_elo = ratings_manager.get_elo_rating(user_id2)
-        if winner == game.player1:
-            ratings_manager.update_top_score(user_id, game.get_player_score(game.player1))
-            ratings_manager.update_wins(user_id)
-            ratings_manager.update_losses(user_id2)
-            ratings_manager.update_elo_rating(user_id, u2_elo, 1)
-            ratings_manager.update_elo_rating(user_id2, u1_elo, -1)
-        elif winner == game.player2 and not ai_flag:
-            ratings_manager.update_top_score(user_id2, game.get_player_score(game.player2))
-            ratings_manager.update_wins(user_id2)
-            ratings_manager.update_losses(user_id)
-            ratings_manager.update_elo_rating(user_id2, u1_elo, 1)
-            ratings_manager.update_elo_rating(user_id, u2_elo, -1)
-        elif winner == None:
-            #update draws for both players once function is available
-            ratings_manager.update_elo_rating(user_id2, u1_elo, 0)
-            ratings_manager.update_elo_rating(user_id, u2_elo, 0)
-        return f"{player_to_string[winner]} won!"
+    # if game.game_over():
+    #     winner = game.declare_winner()
+    #     u1_elo = ratings_manager.get_elo_rating(user_id)
+    #     u2_elo = ratings_manager.get_elo_rating(user_id2)
+    #     if winner == game.player1:
+    #         ratings_manager.update_top_score(user_id, game.get_player_score(game.player1))
+    #         ratings_manager.update_wins(user_id)
+    #         ratings_manager.update_losses(user_id2)
+    #         ratings_manager.update_elo_rating(user_id, u2_elo, 1)
+    #         ratings_manager.update_elo_rating(user_id2, u1_elo, -1)
+    #     elif winner == game.player2 and not ai_flag:
+    #         ratings_manager.update_top_score(user_id2, game.get_player_score(game.player2))
+    #         ratings_manager.update_wins(user_id2)
+    #         ratings_manager.update_losses(user_id)
+    #         ratings_manager.update_elo_rating(user_id2, u1_elo, 1)
+    #         ratings_manager.update_elo_rating(user_id, u2_elo, -1)
+    #     elif winner == None:
+    #         #update draws for both players once function is available
+    #         ratings_manager.update_elo_rating(user_id2, u1_elo, 0)
+    #         ratings_manager.update_elo_rating(user_id, u2_elo, 0)
+    #     return f"{player_to_string[winner]} won!"
 
     current_player = game.get_current_player()
     return f"{player_to_string[current_player]}'s turn"
