@@ -3,7 +3,7 @@ CREATE TABLE Users (
     Username VARCHAR(20) UNIQUE NOT NULL,
     Password_Hash VARCHAR(20) NOT NULL,
 );
-
+/**The auto increment is just for the time being**/
 CREATE TABLE Ratings (
     User_ID INT PRIMARY KEY AUTO_INCREMENT,
     Top_Score INT,

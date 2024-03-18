@@ -6,6 +6,8 @@ class User:
         self.username = username
         self.password_hash = password_hash
 
+    # Probably need to add a display method for the user class
+
 class UserManager:
     def __init__(self, connection) -> None:
         self.connection = connection
@@ -16,6 +18,9 @@ class UserManager:
             query= "INSERT INTO Users (Username, Password_Hash) VALUES (%s, %s)"
             cursor.execute(query,(username, password_hash))
             self.connection.commit()
+            cursor.execute("SELECT LAST_INSERT_ID()")
+            last_id = cursor.fetchone()
+            curr_user = User(last_id, username, password_hash)
             cursor.close()
             return True
         

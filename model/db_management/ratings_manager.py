@@ -7,6 +7,7 @@ class Rating:
         self.top_score = top_score
         self.number_wins = number_wins
         self.number_losses = number_losses
+    #Probably need to add a display method for the rating class
 
 class RatingsManager:
     def __init__(self, connection):
@@ -18,6 +19,10 @@ class RatingsManager:
             query = "INSERT INTO Ratings (User_ID, Top_Score, Number_Wins, Number_Loses) VALUES (%s, %s, %s, %s)"
             cursor.execute(query, (top_score, number_wins, number_losses))
             self.connection.commit()
+
+            cursor.execute("SELECT LAST_INSERT_ID()")
+            last_id = cursor.fetchone()
+            curr_rating = Rating(last_id, top_score, number_wins, number_losses)
             cursor.close()
 
         except mysql.connector.Error as err:
