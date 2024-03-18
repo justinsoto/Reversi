@@ -6,14 +6,18 @@ import { baseURL } from "./ReversiApp";
 function Game(props) {
 
     const size = props.size;
-    const [player1Score, setPlayer1Score] = useState(0);
-    const [player2Score, setPlayer2Score] = useState(0);
-    const [currentPlayer, setCurrentPlayer] = useState(null)
+    const [player1Score, setPlayer1Score] = useState(0)
+    const [player2Score, setPlayer2Score] = useState(0)
     const [message, setMessage] = useState("")
+    const [currentPlayer, setCurrentPlayer] = useState(null)
+    const [aiEnabled, setAIEnabled] = useState(null)
 
     updatePlayerScores()
-    getCurrentPlayer()
     updateMessage()
+
+    if (isAIEnabled() && getCurrentPlayer === "Player 2") {
+        axios.get(baseURL + '/trigger-AI')
+    }
 
     function getCurrentPlayer() {
         axios.get(baseURL + '/current-player')
@@ -42,6 +46,16 @@ function Game(props) {
             .then(response => setMessage(response.data))
     }
 
+    function toggleAI() {
+        axios.get(baseURL + '/toggle-AI')
+        resetGame()
+    }
+
+    function isAIEnabled() {
+        axios.get(baseURL + '/AI-enabled')
+            .then(response => setAIEnabled(response.data['AI']))
+    }
+
     return (
         <div className="game" onClick={updatePlayerScores}>
             <button
@@ -68,6 +82,12 @@ function Game(props) {
                 className="pass-button"
                 onClick={passTurn}>
                 Pass
+            </button>
+
+            <button
+                className="multiplayer-button"
+                onClick={toggleAI}>
+                {isAIEnabled() ? "Multiplayer" : "Play AI"}
             </button>
         </div>
     );

@@ -1,4 +1,3 @@
-# app.py (Flask App to serve as backend)
 from flask import Flask, jsonify
 from flask_cors import CORS
 from model.game import Game
@@ -75,6 +74,22 @@ def get_cell_state(row, col):
 def execute_move(row, col):
     row, col = int(row), int(col)
     controller.execute_move(row, col)
+    return
+
+# Triggers the AI to execute a move
+@app.route('/trigger-AI')
+def trigger_AI():
+    controller.execute_AI_move()
+    return 
+
+# Returns True if the AI feature is enabled
+@app.route('/AI-enabled')
+def is_AI_enabled():
+    return jsonify({'AI': controller.aiEnabled})
+
+@app.route('/toggle-AI')
+def toggle_AI():
+    controller.toggle_AI()
     return
 
 # Restarts the game
