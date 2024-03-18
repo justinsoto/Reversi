@@ -10,7 +10,7 @@ CREATE TABLE Ratings (
     Number_Wins INT DEFAULT 0,
     Number_Loses INT DEFAULT 0,
     Number_Ties INT DEFAULT 0,
-    ELO_Rating INT DEFAULT 400
+    ELO_Rating INT DEFAULT 1000
 );
 
 CREATE TABLE Games (
