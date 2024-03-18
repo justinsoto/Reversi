@@ -129,6 +129,8 @@ Inspiration for the game's development came from several sources, to help our un
   
 - [Reversi Strategy Video](https://youtu.be/zFrlu3E18BA?si=txmLHLvpIMgSu8lu): A helpful video on Reversi gameplay and strategy.
 
+- Integrating Python APIs with a React front-end, using Flask: [Building a Python API and Fetching it in React: A Step-by-Step Guide](https://python.plainenglish.io/building-a-python-api-and-fetching-it-in-react-a-step-by-step-guide-5024ba4ed9dd)
+
 ## Misc.
 Updated Class Diagram:
 ![UpdatedClassDiagram](https://github.com/justinsoto/Reversi/assets/107148168/cb21d382-a7ff-4062-8dd8-687fec32e47a)
