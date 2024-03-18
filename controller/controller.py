@@ -25,9 +25,6 @@ class GameController:
         """
         Runs the main loop of the game
         """
-
-        self.gamesManager.create_game(self.player1ID, self.player2ID)
-
         while not self.model.game_over():
             self.view.display_board()
             self.view.display_current_player()
@@ -44,7 +41,6 @@ class GameController:
             elif self.ai_dec:
                 move = self.ai.get_best_move()
                 self.execute_move(move[0], move[1])
-            self.gamesManager.update_game_state(game_id, game_state)
 
         self.view.display_board()
         winner = self.model.declare_winner()
@@ -57,10 +53,6 @@ class GameController:
             loser = self.model.player2
         else:
             loser = self.model.player1
-
-        self.gamesManager.delete_game(game_id)
-        self.userManager.update_winner(winner, 1)
-        self.userManager.update_losses(loser, 1)
 
         #Viraj - I'm a little confused on what we're going to be adding to the leaderboard so I'm not going to implement it yet
 

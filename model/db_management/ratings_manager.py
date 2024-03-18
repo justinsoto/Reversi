@@ -42,7 +42,7 @@ class RatingsManager:
                 return Rating(rating_data['User_ID'], rating_data['Top_Score'], rating_data['Number_Wins'], rating_data['Number_Loses'])
             else:
                 return None
-            
+
         except mysql.connector.Error as err:
             print("Error retrieving rating:", err)
             return None
@@ -58,33 +58,33 @@ class RatingsManager:
             print("Error updating top score:", err)
             return None
 
-    def update_wins(self, user_id, new_wins):
+    def update_wins(self, user_id):
         try:
             cursor = self.connection.cursor()
             query = "UPDATE Ratings SET Number_Wins = %s WHERE User_ID = %s"
-            cursor.execute(query, (new_wins, user_id))
+            cursor.execute(query, (1, user_id))
             self.connection.commit()
             cursor.close()
 
         except mysql.connector.Error as err:
             print("Error updating number of wins:", err)
             return None
-        
-    def update_losses(self, user_id, new_losses):
+
+    def update_losses(self, user_id):
         try:
             cursor = self.connection.cursor()
             query = "UPDATE Ratings SET Number_Loses = %s WHERE User_ID = %s"
-            cursor.execute(query, (new_losses, user_id))
+            cursor.execute(query, (1, user_id))
             self.connection.commit()
             cursor.close()
 
         except mysql.connector.Error as err:
             print("Error updating number of losses:", err)
             return None
-        
+
     def get_current_rating(self):
         return self.curr_rating
-    
+
     def delete_rating(self, user_id):
         try:
             cursor = self.connection.cursor()
