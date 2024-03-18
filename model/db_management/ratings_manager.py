@@ -84,6 +84,16 @@ class RatingsManager:
 
     def get_current_rating(self):
         return self.curr_rating
+    
+    def get_leaderboard(self):
+        try:
+            cursor = self.connection.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM Ratings ORDER BY Top_Score DESC LIMIT 5")
+            leaderboards = cursor.fetchall()
+            return leaderboards
+
+        except mysql.connector.Error as err:
+            print("Error fetching leaderboard entries:", err)
 
     def delete_rating(self, user_id):
         try:
