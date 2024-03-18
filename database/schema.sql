@@ -22,13 +22,17 @@ CREATE TABLE Games (
     FOREIGN KEY (Winner_ID) REFERENCES Users(User_ID)
 );
 
+/**The auto increment primary key is just for the time being and add FOREIGN KEY (User_ID) REFERENCES Users(User_ID)**/
 CREATE TABLE Leaderboard (
     Leaderboard_ID INT PRIMARY KEY AUTO_INCREMENT,
     User_ID INT,
     Top_Score INT,
-    Game_ID INT UNIQUE,
+    Number_Wins INT,
+    Number_Loses INT,
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
-    FOREIGN KEY (Game_ID) REFERENCES Games(Game_ID)
+    FOREIGN KEY (Top_Score) REFERENCES Ratings(Top_Score),
+    FOREIGN KEY (Number_Wins) REFERENCES Ratings(Number_Wins),
+    FOREIGN KEY (Number_Loses) REFERENCES Ratings(Number_Loses)
 );
 
 
