@@ -20,7 +20,7 @@ class GamesManager:
             self.connection.commit()
             cursor.close()
             return cursor.lastrowid  # Return the ID of the newly inserted game
-        
+
         except mysql.connector.Error as err:
             print("Error creating game:", err)
             return None
@@ -34,25 +34,26 @@ class GamesManager:
             cursor.close()
             if game:
                 print( "FOUND") #just for now
-                return Game_DB(game['Game_ID'], game['Player1_ID'], game['Player2_ID'], game['Winner_ID']) 
+                return Game_DB(game['Game_ID'], game['Player1_ID'], game['Player2_ID'], game['Winner_ID'])
             else:
                 return None
-        
+
         except mysql.connector.Error as err:
             print("Error retrieving game:", err)
             return None
 
-    #need to have a way to store game id then update once game ends
-    def update_winner(self, game_id, winner_id):
-        try:
-            cursor = self.connection.cursor()
-            query = "UPDATE Games SET Winner_ID = %s WHERE Game_ID = %s"
-            cursor.execute(query, (winner_id, game_id))
-            self.connection.commit()
-            cursor.close()
-            
-        except mysql.connector.Error as err:
-            print("Error updating winner:", err)
+    # Viraj - assuming that we're going to delete the games once a winner is determined, we don't really need this function i think
+    # #need to have a way to store game id then update once game ends
+    # def update_winner(self, game_id, winner_id):
+    #     try:
+    #         cursor = self.connection.cursor()
+    #         query = "UPDATE Games SET Winner_ID = %s WHERE Game_ID = %s"
+    #         cursor.execute(query, (winner_id, game_id))
+    #         self.connection.commit()
+    #         cursor.close()
+
+    #     except mysql.connector.Error as err:
+    #         print("Error updating winner:", err)
 
 
     def delete_game(self, game_id):
@@ -73,7 +74,7 @@ class GamesManager:
             cursor.execute(query, (new_game_state, game_id))
             self.connection.commit()
             cursor.close()
-            
+
         except mysql.connector.Error as err:
             print("Error updating game state:", err)
 
@@ -84,12 +85,12 @@ class GamesManager:
             cursor.execute(query, (game_id,))
             game_state = cursor.fetchone()
             cursor.close()
-            
+
             if game_state:
                 return game_state[0]  # Returning the game state if found
             else:
                 return None
-            
+
         except mysql.connector.Error as err:
             print("Error retrieving game state:", err)
             return None

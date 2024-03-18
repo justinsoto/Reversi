@@ -1,11 +1,17 @@
 from model.game import Game
 from model.ai import ai
 from view.console_game_view import ConsoleGameView
+from model.db_management import games_manager
+from model.db_management import user_manager
 
 class GameController:
     def __init__(self, model: Game, view: ConsoleGameView) -> None:
         self.model = model
         self.view = view
+        self.player1ID = 1
+        self.player2ID = 2
+        self.gamesManager = games_manager()
+        self.userManager = user_manager()
         self.ai_dec = input("would you like to play against AI? (y/n)") == "y"
         if self.ai_dec:
             depth = int(input("Please enter the difficulty level you would like (1-5)"))
@@ -18,6 +24,8 @@ class GameController:
         """
         Runs the main loop of the game
         """
+
+        self.gamesManager.create_game(self.player1ID, self.player2ID)
 
         while not self.model.game_over():
             self.view.display_board()
@@ -35,6 +43,7 @@ class GameController:
             elif self.ai_dec:
                 move = self.ai.get_best_move()
                 self.execute_move(move[0], move[1])
+            self.gamesManager.update_game_state(game_id, game_state)
 
         self.view.display_board()
         winner = self.model.declare_winner()
@@ -42,6 +51,17 @@ class GameController:
             self.view.display_draw_message()
         else:
             self.view.display_winner(winner)
+
+        if winner == self.model.player1:
+            loser = self.model.player2
+        else:
+            loser = self.model.player1
+
+        self.gamesManager.delete_game(game_id)
+        self.userManager.update_winner(winner, 1)
+        self.userManager.update_losses(loser, 1)
+
+        #Viraj - I'm a little confused on what we're going to be adding to the leaderboard so I'm not going to implement it yet
 
         self.view.display_final_scorebaord()
 
