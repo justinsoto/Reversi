@@ -19,7 +19,8 @@ class GamesManager:
             cursor.execute(query, (player1_id, player2_id))
             self.connection.commit()
             cursor.execute("SELECT LAST_INSERT_ID()")
-            last_id = cursor.fetchone()
+            last_id_tuple = cursor.fetchone()
+            last_id = last_id_tuple[0]
             curr_game = Game_DB(last_id, player1_id, player2_id, None, None)
             cursor.close()
             return cursor.lastrowid  # Return the ID of the newly inserted game

@@ -7,6 +7,10 @@ class Leaderboard:
         self.top_score = top_score
         self.game_id = game_id
 
+    def get_leaderboard_id(self):
+        return self.leaderboard_id
+    # Probably need to add a display method for the leaderboard class - will call from get leaderboard method?
+
 class LeaderboardManager:
     def __init__(self, connection):
         self.connection = connection
@@ -18,6 +22,10 @@ class LeaderboardManager:
             query = "INSERT INTO Leaderboard (User_ID, Top_Score, Game_ID) VALUES (%s, %s, %s)"
             cursor.execute(query, (user_id, top_score, game_id))
             self.connection.commit()
+            cursor.execute("SELECT LAST_INSERT_ID()")
+            last_id_tuple = cursor.fetchone()
+            last_id = last_id_tuple[0]
+            self.curr_leaderboard = Leaderboard(last_id, user_id, top_score, game_id)
             cursor.close()
 
         except mysql.connector.Error as err:
@@ -56,3 +64,6 @@ class LeaderboardManager:
             cursor.close()
         except mysql.connector.Error as err:
             print("Error deleting leaderboard:", err)
+
+    def get_current_leaderboard(self):
+        return self.curr_leaderboard
