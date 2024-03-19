@@ -109,8 +109,8 @@ def trigger_AI():
     return 
 
 # Returns True if the AI feature is enabled
-@app.route('/AI-enabled')
-def is_AI_enabled():
+@app.route('/AI-status')
+def AI_status():
     return jsonify({'AI': controller.aiEnabled})
 
 @app.route('/toggle-AI')
@@ -148,8 +148,7 @@ def get_message():
     #         ratings_manager.update_elo_rating(user_id, u2_elo, 0)
     #     return f"{player_to_string[winner]} won!"
 
-    current_player = game.get_current_player()
-    return f"{player_to_string[current_player]}'s turn"
+    return f"{get_current_player()}'s turn"
 
 if __name__ == '__main__':
     app.run(debug=True)

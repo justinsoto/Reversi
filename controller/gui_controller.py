@@ -1,6 +1,7 @@
 # this implementation of the controller is for the GUI/React App, transforming the CLI interaction model into
 # one that works through http requests and responses. This means this version of the GameController
 # would not use input() or print statements.
+from time import sleep
 from model.game import Game
 from model.ai import ai
 
@@ -8,13 +9,13 @@ class GUIController:
     def __init__(self, model: Game):
         self.model = model
         self.aiEnabled = False
-        self.ai = ai(self.model, 5)
+        self.ai = ai(self.model, 3)
 
     def execute_move(self, row: int, col: int):
         self.model.make_move(row, col)
 
     def execute_AI_move(self):
-        # If the AI is enabled it will execute a move for player 2
+        # # If the AI is enabled it will execute a move for player      
         if self.aiEnabled and self.model.get_current_player() == self.model.player2:
             row, col = self.ai.get_best_move()
             self.execute_move(row, col)
@@ -45,8 +46,5 @@ class GUIController:
         self.model.reset_game()
 
     def toggle_AI(self):
-        if self.aiEnabled:
-            self.aiEnabled = False
-        else:
-            self.aiEnabled = True
+        self.aiEnabled = not self.aiEnabled
 

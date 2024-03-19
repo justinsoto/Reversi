@@ -1,27 +1,26 @@
 import Board from "./Board";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { baseURL } from "./ReversiApp";
 
 function Game(props) {
-
     const size = props.size;
     const [player1Score, setPlayer1Score] = useState(0)
     const [player2Score, setPlayer2Score] = useState(0)
-    const [message, setMessage] = useState("")
     const [currentPlayer, setCurrentPlayer] = useState(null)
+    const [message, setMessage] = useState("")
     const [aiEnabled, setAIEnabled] = useState(null)
 
-    updatePlayerScores()
-    updateMessage()
-    updateAI()
-
-
-    if (aiEnabled && currentPlayer === "Player 2") {
-        axios.get(baseURL + '/trigger-AI')
+    const refresh = () => {
+        updatePlayerScores()
+        updateCurrentPlayer()
+        updateMessage()
+        updateAIStatus()
     }
 
-    function getCurrentPlayer() {
+    refresh()
+
+    function updateCurrentPlayer() {
         axios.get(baseURL + '/current-player')
             .then(response => setCurrentPlayer(response.data))
     }
@@ -34,33 +33,33 @@ function Game(props) {
             })
     }
 
-    function passTurn() {
-        axios.get(baseURL + '/pass-turn')
-        getCurrentPlayer()
-    }
-
-    function resetGame() {
-        axios.get(baseURL + '/reset')
-    }
-
     function updateMessage() {
         axios.get(baseURL + '/message')
             .then(response => setMessage(response.data))
     }
 
-    function toggleAI() {
-        axios.get(baseURL + '/toggle-AI')
-        updateAI()
-        resetGame()
-    }
-
-    function updateAI() {
-        axios.get(baseURL + '/AI-enabled')
+    function updateAIStatus() {
+        axios.get(baseURL + '/AI-status')
             .then(response => setAIEnabled(response.data['AI']))
     }
 
+    function passTurn() {
+        axios.get(baseURL + '/pass-turn')
+        refresh()
+    }
+
+    function resetGame() {
+        axios.get(baseURL + '/reset')
+        refresh()
+    }
+
+    function toggleAI() {
+        axios.get(baseURL + '/toggle-AI')
+        resetGame()
+    }
+
     return (
-        <div className="game" onClick={updatePlayerScores}>
+        <div className="game" onClick={refresh}>
             <button
                 className="new-game-button"
                 onClick={resetGame}>
@@ -97,3 +96,4 @@ function Game(props) {
 }
 
 export default Game
+

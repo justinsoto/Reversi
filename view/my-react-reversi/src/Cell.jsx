@@ -1,21 +1,11 @@
-import { useEffect, useState } from "react";
-import Disc from "./Disc";
 import axios from "axios";
 import { baseURL } from "./ReversiApp";
 
 function Cell(props) {
-
-    const [cellState, setCellState] = useState(null);
-    // const cellState = props.state
+    const cellState = props.state
     const rowIndex = props.row
     const colIndex = props.index
     let disc = renderDisc()
-    updateCellState()
-
-    function updateCellState() {
-        axios.get(baseURL + '/cell-state/' + rowIndex + '/' + colIndex)
-            .then(response => setCellState(response.data))
-    }
 
     function renderDisc() {
         if (cellState === 'Player 1') {
@@ -34,6 +24,7 @@ function Cell(props) {
 
     function executeMove() {
         axios.get(baseURL + '/execute-move/' + rowIndex + '/' + colIndex)
+        axios.get(baseURL + '/trigger-AI')
     }
 
     return (
