@@ -5,10 +5,10 @@ from model.player import Player
 from controller.gui_controller import GUIController
 # from mysql.connector import connect, Error
 # from getpass import getpass
-# from model.db_management.user_manager import UserManager
-# from model.db_management.games_manager import GamesManager
-# from model.db_management.ratings_manager import RatingsManager
-# from model.db_management.leaderboard_manager import LeaderboardManager
+# from database.db_management.user_manager import UserManager
+# from database.db_management.games_manager import GamesManager
+# from database.db_management.ratings_manager import RatingsManager
+# from database.db_management.leaderboard_manager import LeaderboardManager
 
 app = Flask(__name__)
 CORS(app)
@@ -29,13 +29,21 @@ player_to_string = {
 
 # user_manager.create_user("User1","test")
 # user_id = user_manager.get_current_user().get_user_id()
+# user_manager.create_user("User1","test")
+# user_id = user_manager.get_current_user().get_user_id()
 
+# user_manager.create_user("User2","test1")
+# user_id2 = user_manager.get_current_user().get_user_id()
 # user_manager.create_user("User2","test1")
 # user_id2 = user_manager.get_current_user().get_user_id()
 
 # ratings_manager.create_rating(0, 0, 0)
 # ratings_manager.create_rating(0, 0, 0)
+# ratings_manager.create_rating(0, 0, 0)
+# ratings_manager.create_rating(0, 0, 0)
 
+# games_manager.create_game(user_id, user_id2)
+# game_id = games_manager.get_current_game().get_game_id()
 # games_manager.create_game(user_id, user_id2)
 # game_id = games_manager.get_current_game().get_game_id()
 
@@ -106,7 +114,7 @@ def execute_move(row, col):
 @app.route('/trigger-AI')
 def trigger_AI():
     controller.execute_AI_move()
-    return 
+    return
 
 # Returns True if the AI feature is enabled
 @app.route('/AI-status')

@@ -1,13 +1,12 @@
 
 from model.game import Game
-from view.console_game_view import ConsoleGameView
+from view.console_items.console_game_view import ConsoleGameView
 from controller.controller import GameController
 from mysql.connector import connect, Error
 from getpass import getpass
-from model.db_management.user_manager import UserManager
-from model.db_management.games_manager import GamesManager
-from model.db_management.ratings_manager import RatingsManager
-from model.db_management.leaderboard_manager import LeaderboardManager
+from database.db_management.user_manager import UserManager
+from database.db_management.games_manager import GamesManager
+from database.db_management.ratings_manager import RatingsManager
 
 connection = None # initialize connection variable to None to handle connection closure in the finally block at the bottom of file
 try:
@@ -16,7 +15,6 @@ try:
     user_manager = UserManager(connection)
     ratings_manager = RatingsManager(connection)
     games_manager = GamesManager(connection)
-    leaderboard_manager = LeaderboardManager(connection)
 
     #create user
     user_manager.create_user("User11","MyPassword")

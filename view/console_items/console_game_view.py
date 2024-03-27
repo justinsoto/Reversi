@@ -1,12 +1,12 @@
 from model.game import Game
 from model.player import Player
 from model.player_color import color_to_symbol
-from view.console_board_view import ConsoleBoardView
+from view.console_items.console_board_view import ConsoleBoardView
 
 class ConsoleGameView():
     def __init__(self, game: Game) -> None:
         self.game = game
-        self.board_view = ConsoleBoardView(game.board) 
+        self.board_view = ConsoleBoardView(game.board)
 
     def display_board(self):
         #necessary to update board view if game is pulled from database
@@ -50,7 +50,7 @@ class ConsoleGameView():
         for player in self.game.get_all_players():
             self.display_score(player)
 
-    def get_move(self) -> [int, int]:
+    def get_move(self):
         move = input('Enter your move (row, col): ')
 
         # Pass turn key

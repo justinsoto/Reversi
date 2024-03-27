@@ -1,6 +1,6 @@
 from model.game import Game
 from model.ai import ai
-from view.console_game_view import ConsoleGameView
+from view.console_items.console_game_view import ConsoleGameView
 
 
 class GameController:
@@ -39,14 +39,14 @@ class GameController:
         self.view.display_board()
         winner = self.model.declare_winner()
         if not winner:
-            self.view.display_draw_message()
+           self.view.display_draw_message()
         else:
-            self.view.display_winner(winner)
+           self.view.display_winner(winner)
 
         if winner == self.model.player1:
-            loser = self.model.player2
+           loser = self.model.player2
         else:
-            loser = self.model.player1
+           loser = self.model.player1
 
         #Viraj - I'm a little confused on what we're going to be adding to the leaderboard so I'm not going to implement it yet
 
