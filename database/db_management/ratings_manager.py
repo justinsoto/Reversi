@@ -17,11 +17,11 @@ class RatingsManager:
     def __init__(self, connection):
         self.connection = connection
 
-    def create_rating(self, top_score, number_wins, number_losses, elo_rating=1000):
+    def create_rating(self, user_id, top_score, number_wins, number_losses, elo_rating=1000):
         try:
             cursor = self.connection.cursor()
-            query = "INSERT INTO Ratings (Top_Score, Number_Wins, Number_Loses, ELO_Rating) VALUES (%s, %s, %s, %s)"
-            cursor.execute(query, (top_score, number_wins, number_losses, elo_rating))
+            query = "INSERT INTO Ratings (User_ID, Top_Score, Number_Wins, Number_Loses, ELO_Rating) VALUES (%s, %s, %s, %s, %s)"
+            cursor.execute(query, (user_id, top_score, number_wins, number_losses, elo_rating))
             self.connection.commit()
 
             cursor.execute("SELECT LAST_INSERT_ID()")
@@ -83,7 +83,7 @@ class RatingsManager:
         except mysql.connector.Error as err:
             print("Error updating number of losses:", err)
             return None
-        
+
     def update_ties(self, user_id):
         try:
             cursor = self.connection.cursor()
@@ -95,10 +95,10 @@ class RatingsManager:
         except mysql.connector.Error as err:
             print("Error updating number of ties:", err)
             return None
-        
+
     def get_current_rating(self):
         return self.curr_rating
-    
+
     def get_leaderboard(self):
         try:
             cursor = self.connection.cursor(dictionary=True)
@@ -142,7 +142,7 @@ class RatingsManager:
 
         except mysql.connector.Error as err:
             print("Error fetching ELO rating:", err)
-            
+
     def delete_rating(self, user_id):
         try:
             cursor = self.connection.cursor()

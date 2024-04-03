@@ -5,12 +5,13 @@ CREATE TABLE Users (
 );
 /**The auto increment is just for the time being and add FOREIGN KEY (User_ID) REFERENCES Users(User_ID)**/
 CREATE TABLE Ratings (
-    User_ID INT PRIMARY KEY AUTO_INCREMENT,
+    User_ID INT FOREIGN KEY,
     Top_Score INT,
     Number_Wins INT DEFAULT 0,
     Number_Loses INT DEFAULT 0,
     Number_Ties INT DEFAULT 0,
     ELO_Rating INT DEFAULT 1000
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
 );
 
 CREATE TABLE Games (
@@ -23,8 +24,3 @@ CREATE TABLE Games (
     FOREIGN KEY (Player2_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Winner_ID) REFERENCES Users(User_ID)
 );
-
-
-
-
-

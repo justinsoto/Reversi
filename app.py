@@ -3,23 +3,15 @@ from flask_cors import CORS
 from model.game import Game
 from model.player import Player
 from controller.gui_controller import GUIController
-# from mysql.connector import connect, Error
-# from getpass import getpass
-# from database.db_management.user_manager import UserManager
-# from database.db_management.games_manager import GamesManager
-# from database.db_management.ratings_manager import RatingsManager
-# from database.db_management.leaderboard_manager import LeaderboardManager
+from mysql.connector import connect, Error
+from getpass import getpass
+from database.db_facade import database
 
 app = Flask(__name__)
 CORS(app)
 
 game = Game(8)
 controller = GUIController(game)
-# connection = connect(host ='localhost', user = input('Enter Username: '), password = getpass('Enter Pasword: '), database="Othello" )
-# user_manager = UserManager(connection)
-# ratings_manager = RatingsManager(connection)
-# games_manager = GamesManager(connection)
-# leaderboard_manager = LeaderboardManager(connection)
 
 players = game.get_all_players()
 player_to_string = {
@@ -27,25 +19,15 @@ player_to_string = {
     players[1]: "Player 2"
 }
 
-# user_manager.create_user("User1","test")
-# user_id = user_manager.get_current_user().get_user_id()
-# user_manager.create_user("User1","test")
-# user_id = user_manager.get_current_user().get_user_id()
+db = database()
 
-# user_manager.create_user("User2","test1")
-# user_id2 = user_manager.get_current_user().get_user_id()
-# user_manager.create_user("User2","test1")
-# user_id2 = user_manager.get_current_user().get_user_id()
+createUserFlag = input("Do you need to create a new user (1) or log in (2)?")
+if createUserFlag == 1:
+    db.create_users()
+elif createUserFlag == 2:
+    db.login_users()
 
-# ratings_manager.create_rating(0, 0, 0)
-# ratings_manager.create_rating(0, 0, 0)
-# ratings_manager.create_rating(0, 0, 0)
-# ratings_manager.create_rating(0, 0, 0)
-
-# games_manager.create_game(user_id, user_id2)
-# game_id = games_manager.get_current_game().get_game_id()
-# games_manager.create_game(user_id, user_id2)
-# game_id = games_manager.get_current_game().get_game_id()
+db.check_ratings_exist()
 
 ai_flag = False
 
@@ -85,7 +67,7 @@ def get_current_player():
 def get_board_state():
     size = game.get_board_size()
     board = [[get_cell_state(row, col) for col in range(size)] for row in range(size)]
-    # games_manager.update_game_state(game_id, game.serialize_game_state())
+    db.update_game_state(game.serialize_game_state())
     return jsonify({'board': board})
 
 # Returns the state of the cell (empty, taken, legal)
@@ -134,28 +116,14 @@ def reset_game():
 
 @app.route('/message')
 def get_message():
-    # if game.game_over():
-    #     winner = game.declare_winner()
-    #     u1_elo = ratings_manager.get_elo_rating(user_id)
-    #     u2_elo = ratings_manager.get_elo_rating(user_id2)
-    #     if winner == game.player1:
-    #         ratings_manager.update_top_score(user_id, game.get_player_score(game.player1))
-    #         ratings_manager.update_wins(user_id)
-    #         ratings_manager.update_losses(user_id2)
-    #         ratings_manager.update_elo_rating(user_id, u2_elo, 1)
-    #         ratings_manager.update_elo_rating(user_id2, u1_elo, -1)
-    #     elif winner == game.player2 and not ai_flag:
-    #         ratings_manager.update_top_score(user_id2, game.get_player_score(game.player2))
-    #         ratings_manager.update_wins(user_id2)
-    #         ratings_manager.update_losses(user_id)
-    #         ratings_manager.update_elo_rating(user_id2, u1_elo, 1)
-    #         ratings_manager.update_elo_rating(user_id, u2_elo, -1)
-    #     elif winner == None:
-    #         #update draws for both players once function is available
-    #         ratings_manager.update_elo_rating(user_id2, u1_elo, 0)
-    #         ratings_manager.update_elo_rating(user_id, u2_elo, 0)
-    #     return f"{player_to_string[winner]} won!"
-
+    if game.game_over():
+        winner = game.declare_winner()
+        if winner == game.player1:
+            db.update_ratings_win(db.player1_id, db.player2_id, game.get_player_score(winner))
+        elif winner == game.player2 and not ai_flag:
+            db.update_ratings_win(db.player2_id, db.player1_id, game.get_player_score(winner))
+        else:
+            db.update_ratings_draw()
     return f"{get_current_player()}'s turn"
 
 if __name__ == '__main__':

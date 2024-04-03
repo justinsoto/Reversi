@@ -27,11 +27,30 @@ class UserManager:
             self.curr_user = User(last_id, username, password_hash)
             cursor.close()
             return True
-        
+
         except mysql.connector.Error as err:
              print("Error creating user:", err)
              return False
-    
+
+    def check_user_exists(self, username, password_hash):
+        try:
+            cursor = self.connection.cursor(buffered=True)
+            query = "SELECT * FROM Users WHERE Username = %s AND Password_Hash = %s"
+            cursor.execute(query, (username, password_hash))
+            self.connection.commit()
+            result = cursor.fetchone()
+            cursor.close()
+
+            # If result is greater than 0, it means the user exists
+            if result:
+                return result[0]
+            else:
+                return False
+
+        except mysql.connector.Error as err:
+            print("Error checking user existence:", err)
+            return False
+
     def get_current_user(self):
         return self.curr_user
 
@@ -43,14 +62,14 @@ class UserManager:
             user_data = cursor.fetchone()
             cursor.close()
             if user_data:
-                return User(user_data['User_ID'], user_data['Username'], user_data['Password_Hash']) 
+                return User(user_data['User_ID'], user_data['Username'], user_data['Password_Hash'])
             else:
                 return None
-            
+
         except mysql.connector.Error as err:
             print("Error getting User b ID:", err)
             return None
-        
+
     def get_user_by_username(self, username):
         try:
             cursor = self.connection.cursor(dictionary=True)
@@ -61,19 +80,19 @@ class UserManager:
             if user_data:
                 print('FOUND') #This is just for now --> need view displays for user
                 return User(user_data['User_ID'], user_data['Username'], user_data['Password_Hash'])
-           
+
             else:
                 return None
-            
+
         except mysql.connector.Error as err:
             print("Error getting user by username:", err)
             return None
-        
-    def delete_user(self, user_id):
+
+    def delete_user(self, username):
         try:
             cursor = self.connection.cursor()
-            query = "DELETE FROM Users WHERE User_ID = %s"
-            cursor.execute(query, (user_id,))
+            query = "DELETE FROM Users WHERE Username = %s"
+            cursor.execute(query, (username,))
             self.connection.commit()
             cursor.close()
             return True

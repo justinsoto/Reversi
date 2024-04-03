@@ -7,7 +7,7 @@ class Game_DB: #maybe we add a timestamp field?
         self.player2_id = player2_id
         self.winner_id = winner_id
         self.game_state = game_state
-    
+
     def get_game_id(self):
         return self.game_id
 
@@ -31,10 +31,10 @@ class GamesManager:
         except mysql.connector.Error as err:
             print("Error creating game:", err)
             return None
-        
+
     def get_current_game(self):
         return self.curr_game
-    
+
     def get_game(self, game_id):
         try:
             cursor = self.connection.cursor(dictionary=True)
@@ -51,20 +51,6 @@ class GamesManager:
         except mysql.connector.Error as err:
             print("Error retrieving game:", err)
             return None
-
-    # Viraj - assuming that we're going to delete the games once a winner is determined, we don't really need this function i think
-    # #need to have a way to store game id then update once game ends
-    # def update_winner(self, game_id, winner_id):
-    #     try:
-    #         cursor = self.connection.cursor()
-    #         query = "UPDATE Games SET Winner_ID = %s WHERE Game_ID = %s"
-    #         cursor.execute(query, (winner_id, game_id))
-    #         self.connection.commit()
-    #         cursor.close()
-
-    #     except mysql.connector.Error as err:
-    #         print("Error updating winner:", err)
-
 
     def delete_game(self, game_id):
         try:
