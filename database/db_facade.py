@@ -6,16 +6,19 @@ from getpass import getpass
 from database.db_management.user_manager import UserManager
 from database.db_management.games_manager import GamesManager
 from database.db_management.ratings_manager import RatingsManager
+from database.user_manager_decorator import LoginDecorator
 
 class database:
     def __init__(self):
         connection = connect(host='localhost', user='test', password='test123', database="reversi" )
+        self.connection = connection
         self.user_manager = UserManager(connection)
         self.ratings_manager = RatingsManager(connection)
         self.games_manager = GamesManager(connection)
         self.player1_id = None
         self.player2_id = None
         self.game_id = None
+        self.login_manager = LoginDecorator(connection, self.user_manager)
 
     def create_users(self):
         print("Player 1: \n")
@@ -30,7 +33,7 @@ class database:
         p = False
         while p == False:
             print("Player 1: \n")
-            p = self.user_manager.check_user_exists(input("Please enter your username"), input("Please enter your password"))
+            p = self.login_manager.login(input("Please enter your username"), input("Please enter your password"))
             if p == False:
                 print("Invalid Username/Password Combo. Please try again or create new user")
             else:
@@ -38,7 +41,7 @@ class database:
         q = False
         while q == False:
             print("Player 2: \n")
-            q = self.user_manager.check_user_exists(input("Please enter your username"), input("Please enter your password"))
+            q = self.login_manager.login(input("Please enter your username"), input("Please enter your password"))
             if q == False:
                 print("Invalid Username/Password Combo. Please try again or create new user")
             else:
