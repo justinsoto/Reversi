@@ -32,7 +32,7 @@ class UserManager:
              print("Error creating user:", err)
              return False
 
-    def check_user_exists(self, username, password_hash):
+    def login(self, username, password_hash):
         try:
             cursor = self.connection.cursor(buffered=True)
             query = "SELECT * FROM Users WHERE Username = %s AND Password_Hash = %s"
@@ -41,7 +41,6 @@ class UserManager:
             result = cursor.fetchone()
             cursor.close()
 
-            # If result is greater than 0, it means the user exists
             if result:
                 return result[0]
             else:
