@@ -2,7 +2,6 @@ from model.game import Game
 from abc import ABC, abstractmethod
 import random
 import math
-import copy
 
 class MoveStrategy(ABC):
     def __init__(self, depth, game: Game):
@@ -15,14 +14,7 @@ class MoveStrategy(ABC):
 
 class MinimaxStrategy(MoveStrategy):
     def copy(self):
-        new_game = Game(size=self.game.size)
-        new_game.board = copy.deepcopy(self.game.board)
-        new_game.player1 = copy.deepcopy(self.game.player1)
-        new_game.player2 = copy.deepcopy(self.game.player2)
-        new_game.current_player = self.game.current_player
-        new_game.player_scores = copy.deepcopy(self.game.player_scores)
-        new_game.move_dirs = self.game.move_dirs[:]
-        return new_game
+        return self.game.clone()
 
     def minimax(self, depth, maximizing_player):
         if depth == 0 or self.game.game_over():
@@ -72,14 +64,7 @@ class MinimaxStrategy(MoveStrategy):
 
 class MiniMaxAlphaBeta(MoveStrategy):
     def copy(self):
-        new_game = Game(size=self.game.size)
-        new_game.board = copy.deepcopy(self.game.board)
-        new_game.player1 = copy.deepcopy(self.game.player1)
-        new_game.player2 = copy.deepcopy(self.game.player2)
-        new_game.current_player = self.game.current_player
-        new_game.player_scores = copy.deepcopy(self.game.player_scores)
-        new_game.move_dirs = self.game.move_dirs[:]
-        return new_game
+        return self.game.clone()
 
     def minimaxAlphaBeta(self, depth, alpha, beta, maximizing_player):
         if depth == 0 or self.game.game_over():

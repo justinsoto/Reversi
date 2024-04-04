@@ -1,5 +1,5 @@
 from model.game import Game
-from model.ai import ai
+from model.ai import AI
 from view.console_items.console_game_view import ConsoleGameView
 from model.ai_strategy import MinimaxStrategy, RandomStrategy, MiniMaxAlphaBeta
 
@@ -12,14 +12,14 @@ class GameController:
         if self.ai_dec:
             p = int(input("Would you like to play against random moves (0) or minimax (1)? "))
             if p == 0:
-                self.ai = ai(self.model, RandomStrategy(0, self.model))
+                self.ai = AI(self.model, RandomStrategy(0, self.model))
             elif p == 1:
                 depth = int(input("Please enter the difficulty level you would like (1-5)"))
                 t = int(input('Would you like to play against minimax (0) or minimax with Alpha Beta Pruning (1)? '))
                 if t == 0:
-                    self.ai = ai(self.model, MinimaxStrategy(depth, self.model))
+                    self.ai = AI(self.model, MinimaxStrategy(depth, self.model))
                 elif t == 1:
-                    self.ai = ai(self.model, MiniMaxAlphaBeta(depth, self.model))
+                    self.ai = AI(self.model, MiniMaxAlphaBeta(depth, self.model))
 
     def start_game(self):
         """

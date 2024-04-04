@@ -1,7 +1,7 @@
 from model.game import Game
 from model.ai_strategy import MoveStrategy
 
-class ai():
+class AI():
     def __init__(self, game: Game, strategy: MoveStrategy):
         """
         Initializes the AI with the given game instance and strategy for making decisions.

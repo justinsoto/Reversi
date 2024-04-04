@@ -1,15 +1,19 @@
+from model.prototype import Prototype
 from model.player_color import PlayerColor
-from copy import deepcopy
 
-class Board:
-    def __init__(self, size=8) -> None:
+class Board(Prototype):
+    def __init__(self, size=8):
         """ Enforces specifications for the size of the board:
-                - Must be minimum of 4x4
+                - Must be minimum of 4x4, maximum of 10x10
                 - Must be (n x n) where n is even
         """
         if size < 4:
             self.size = 4
-        elif size % 2 != 0:
+
+        if size > 10:
+            self.size = 10
+
+        if size % 2 != 0:
             self.size = size + 1
         else:
             self.size = size
@@ -27,7 +31,7 @@ class Board:
         self.board[center][center] = PlayerColor.Black
 
     def get_board(self):
-        return deepcopy(self.board)
+        return [[color for color in row] for row in self.board]
 
     def get_cell(self, row, col) -> PlayerColor:
         return self.board[row][col]
@@ -40,3 +44,9 @@ class Board:
 
     def get_size(self) -> int:
         return self.size
+    
+    def clone(self):
+        clone = Board(self.size)
+        clone.board = self.get_board()
+        return clone
+
