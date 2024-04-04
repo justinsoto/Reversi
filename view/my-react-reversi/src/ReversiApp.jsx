@@ -1,18 +1,14 @@
 import Title from "./Title";
 import Game from "./Game";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function ReversiApp() {
     const [size, setSize] = useState(8);
-    getBoardSize();
 
-    function getBoardSize() {
-        axios.get(baseURL + '/board-size')
-            .then(response => {
-                setSize(response.data['size']);
-            })
-    }
+    useEffect(() => {
+        baseURL.get('/board-size').then(response => setSize(response.data['size']))
+    }, [])
 
     return (
         <>
@@ -23,4 +19,8 @@ function ReversiApp() {
 }
 
 export default ReversiApp
-export const baseURL = 'http://127.0.0.1:5000'
+export const baseURL = axios.create({
+    baseURL: 'http://127.0.0.1:5000',
+    timeout: 1000,
+    headers: { 'X-Custom-Header': 'foobar' }
+});
