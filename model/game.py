@@ -25,7 +25,8 @@ class Game(Prototype):
     # Returns a deep copy of this Game object
     def clone(self):
         clone = Game(self.size)
-        clone.load_game_state(self.current_player, self.player_scores, self.get_board())
+        state = GameState(self.current_player, self.player_scores, self.get_board())
+        clone.load_game_state(state)
         return clone
 
     # Returns a copy of the board
@@ -185,10 +186,10 @@ class Game(Prototype):
         self.state_history.append(state)
 
     # Loads game from saved game state
-    def load_game_state(self, current_player, scores, board):
-        self.current_player = current_player
-        self.player_scores = scores
-        self.board = board
+    def load_game_state(self, state: GameState):
+        self.current_player = state.current_player
+        self.player_scores = state.scores
+        self.board = state.board
 
     # Updates both players' scores
     def update_scores(self) -> None:
