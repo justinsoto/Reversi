@@ -28,7 +28,7 @@ class Game(Prototype):
         state = GameState(self.current_player, self.player_scores, self.get_board())
         clone.load_game_state(state)
         return clone
-    
+
     # Returns a copy of the board
     def get_board(self):
         return self.board.clone()
@@ -36,11 +36,11 @@ class Game(Prototype):
     # Returns the current player
     def get_current_player(self):
         return self.current_player
-    
+
     # Returns all scores
     def get_scores(self):
         return self.player_scores
-    
+
     # Returns this player's score (number of pieces)
     def get_player_score(self, player: Player) -> int:
         return self.player_scores[player]
@@ -48,26 +48,26 @@ class Game(Prototype):
     # Returns the current player's color
     def get_current_player_color(self):
         return self.current_player.get_color()
-    
+
     # Returns the size of the game board
     def get_board_size(self):
         return self.size
-    
+
     # Returns all players in the game
     def get_all_players(self):
         return [player for player in self.player_scores.keys()]
-    
+
     # Returns player at cell, None if empty
     def get_player_at_cell(self, row, col):
-        # Gets the color stored in cell 
+        # Gets the color stored in cell
         color = self.board.get_cell(row, col)
         for player in self.get_all_players():
             if player.get_color() == color:
                 return player
-            
+
         # Cell is empty if this point is reached
-        return None 
-    
+        return None
+
     # Returns True if cell is empty
     def is_cell_empty(self, row, col):
         return self.board.is_cell_empty(row, col)
@@ -154,7 +154,7 @@ class Game(Prototype):
                 if self.is_move_legal(row, col, self.current_player):
                     moves.append([row, col])
         return moves
-    
+
     # Restores the game's initial state
     def reset_game(self):
         self.board.set_up_board()
@@ -185,7 +185,7 @@ class Game(Prototype):
         state = GameState(self.current_player, self.player_scores, self.board)
         self.state_history.append(state)
 
-    # Loads game from saved game state 
+    # Loads game from saved game state
     def load_game_state(self, state: GameState):
         self.current_player = state.current_player
         self.player_scores = state.scores
@@ -210,7 +210,7 @@ class Game(Prototype):
                              color_to_symbol[self.player2.get_color()]: self.get_player_score(self.player2)}
         }
         return json.dumps(game_state)
-    
+
     #deserialize game state to reconstruct game from game state stored in database
     def deserialize_game_state(self, json_string):
 
@@ -232,7 +232,7 @@ class Game(Prototype):
                     if symbol == cell_symbol:
                         cell_color = color
                     board.fill_cell(row,col,cell_color)
-    
+
         player1_score = game_state['player_scores'][color_to_symbol[self.player1.get_color()]]
         player2_score = game_state['player_scores'][color_to_symbol[self.player2.get_color()]]
         player_scores = {

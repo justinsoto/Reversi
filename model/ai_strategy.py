@@ -13,9 +13,6 @@ class MoveStrategy(ABC):
         pass
 
 class MinimaxStrategy(MoveStrategy):
-    def copy(self):
-        return self.game.clone()
-
     def minimax(self, depth, maximizing_player):
         if depth == 0 or self.game.game_over():
             return self.evaluate_board(), None
@@ -24,7 +21,7 @@ class MinimaxStrategy(MoveStrategy):
             max_eval = -math.inf
             best_move = None
             for move in self.game.find_legal_moves():
-                game_copy = self.copy()
+                game_copy = self.game.clone()
                 game_copy.make_move(move[0], move[1])
                 eval, _ = self.minimax(depth - 1, False)
                 if eval > max_eval:
@@ -35,7 +32,7 @@ class MinimaxStrategy(MoveStrategy):
             min_eval = math.inf
             best_move = None
             for move in self.game.find_legal_moves():
-                game_copy = self.copy()
+                game_copy = self.game.clone()
                 game_copy.make_move(move[0], move[1])
                 eval, _ = self.minimax(depth - 1, True)
                 if eval < min_eval:
@@ -63,9 +60,6 @@ class MinimaxStrategy(MoveStrategy):
         return heuristic_score
 
 class MiniMaxAlphaBeta(MoveStrategy):
-    def copy(self):
-        return self.game.clone()
-
     def minimaxAlphaBeta(self, depth, alpha, beta, maximizing_player):
         if depth == 0 or self.game.game_over():
             return self.evaluate_board(), None
@@ -74,7 +68,7 @@ class MiniMaxAlphaBeta(MoveStrategy):
             max_eval = -math.inf
             best_move = None
             for move in self.game.find_legal_moves():
-                game_copy = self.copy()
+                game_copy = self.game.clone()
                 game_copy.make_move(move[0], move[1])
                 eval, _ = self.minimaxAlphaBeta(depth - 1, alpha, beta, False)
                 if eval > max_eval:
@@ -88,7 +82,7 @@ class MiniMaxAlphaBeta(MoveStrategy):
             min_eval = math.inf
             best_move = None
             for move in self.game.find_legal_moves():
-                game_copy = self.copy()
+                game_copy = self.game.clone()
                 game_copy.make_move(move[0], move[1])
                 eval, _ = self.minimaxAlphaBeta(depth - 1, alpha, beta, True)
                 if eval < min_eval:
