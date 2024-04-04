@@ -76,7 +76,7 @@ class Game(Prototype):
     # Allows reattempt if move is illegal
     def make_move(self, row, col):
         if self.is_move_legal(row, col, self.current_player):
-            self.board.fill_cell(row, col, self.get_current_player_color(self.current_player))
+            self.board.fill_cell(row, col, self.get_current_player_color())
             self.flip_pieces(row, col)
             self.update_scores()
             self.swap_turns()
@@ -199,7 +199,8 @@ class Game(Prototype):
         for row in range(self.size):
             for col in range(self.size):
                 player = self.get_player_at_cell(row, col)
-                self.player_scores[player] += 1
+                if player:
+                    self.player_scores[player] += 1
 
     #serializes game state to pass to store game state in database
     def serialize_game_state(self):
