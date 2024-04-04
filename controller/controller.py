@@ -1,6 +1,7 @@
 from model.game import Game
 from model.ai import ai
 from view.console_items.console_game_view import ConsoleGameView
+from model.ai_strategy import MinimaxStrategy, RandomStrategy, MiniMaxAlphaBeta
 
 
 class GameController:
@@ -9,11 +10,16 @@ class GameController:
         self.view = view
         self.ai_dec = input("would you like to play against AI? (y/n)") == "y"
         if self.ai_dec:
-            depth = int(input("Please enter the difficulty level you would like (1-5)"))
-            while depth < 1 or depth > 5:
-                print("Invalid Selection")
+            p = int(input("Would you like to play against random moves (0) or minimax (1)? "))
+            if p == 0:
+                self.ai = ai(self.model, RandomStrategy(0, self.model))
+            elif p == 1:
                 depth = int(input("Please enter the difficulty level you would like (1-5)"))
-            self.ai = ai(self.model, depth)
+                t = int(input('Would you like to play against minimax (0) or minimax with Alpha Beta Pruning (1)? '))
+                if t == 0:
+                    self.ai = ai(self.model, MinimaxStrategy(depth, self.model))
+                elif t == 1:
+                    self.ai = ai(self.model, MiniMaxAlphaBeta(depth, self.model))
 
     def start_game(self):
         """
@@ -33,7 +39,7 @@ class GameController:
                     row, col = move
                     self.execute_move(row, col)
             elif self.ai_dec:
-                move = self.ai.get_best_move()
+                move = self.ai.choose_move()
                 self.execute_move(move[0], move[1])
 
         self.view.display_board()
