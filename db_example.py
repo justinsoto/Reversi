@@ -4,25 +4,15 @@ from view.console_items.console_game_view import ConsoleGameView
 from controller.controller import GameController
 from mysql.connector import connect, Error
 from getpass import getpass
-from database.db_management.user_manager import UserManager
-from database.db_management.games_manager import GamesManager
-from database.db_management.ratings_manager import RatingsManager
 from database.db_facade import database
 
 connection = None # initialize connection variable to None to handle connection closure in the finally block at the bottom of file
 try:
     # attempt to establish a database connection with credentials provided by the user
-    connection = connect(host='localhost', user='test', password='test123', database="reversi" )
-    user_manager = UserManager(connection)
-    ratings_manager = RatingsManager(connection)
-    games_manager = GamesManager(connection)
     db = database()
 
     #create user
-    user_manager.delete_user("User11")
-    user_manager.create_user("User11","MyPassword")
-    user_manager.create_user("User12","MyPassword")
-    user_id = user_manager.get_current_user().get_user_id() # could use this in the future, when we have login
+    # could use this in the future, when we have login
     #then if create manager takes in user_id, we can use this to create ratings for the user --> rn its an auto incrementing primary key
     # user_manager.create_user("User21","MyPassword2")
     # user_id2 = user_manager.get_current_user().get_user_id()
