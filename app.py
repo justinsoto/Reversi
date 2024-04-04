@@ -94,6 +94,7 @@ def get_ai_status():
 @app.route('/toggle-ai')
 def toggle_ai_status():
     controller.toggle_ai_status()
+    controller.reset_game()
     return
 
 # Restarts the game
@@ -145,8 +146,8 @@ def get_message():
 def get_game_state():
     p1, p2 = get_scores()
     return jsonify({
-        'currentPlayer': get_current_player(),
-        'scores': {"player1": p1, "player2": p2},
+        'currentPlayer': controller.player_to_str(game.get_current_player()),
+        'scores': {"player1": game.get_player_score(game.player1), "player2": game.get_player_score(game.player2)},
         'message': get_message(),
         'aiStatus': get_ai_status(),
         # 'board': get_board_state()

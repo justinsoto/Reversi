@@ -6,14 +6,15 @@ import { baseURL } from "./ReversiApp";
 function Board(props) {
     const rows = []
     const size = props.size
-    const [board, setBoard] = useState([[] * size])
+    const [board, setBoard] = useState(null)
 
-    const updateBoard = () => {
-        axios.get(baseURL + '/board')
-            .then(response => setBoard(response.data['board']))
-    }
+    useEffect(() => {
+        baseURL.get('/board')
+            .then(response => setBoard(response.data.board))
+    }, [board])
 
-    updateBoard()
+    if (!board) { return <p>Loading...</p>}
+
     for (let row = 0; row < size; row++) {
         rows.push(<Row key={row} index={row} length={size} 
                         state={board[row] ? board[row] : "Empty"}/>);
