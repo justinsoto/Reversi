@@ -54,14 +54,14 @@ class Game(Prototype):
         return self.size
 
     # Returns all players in the game
-    def get_all_players(self):
-        return [player for player in self.player_scores.keys()]
+    def get_players(self):
+        return list(self.player_scores.keys())
 
     # Returns player at cell, None if empty
     def get_player_at_cell(self, row, col):
         # Gets the color stored in cell
         color = self.board.get_cell(row, col)
-        for player in self.get_all_players():
+        for player in self.get_players():
             if player.get_color() == color:
                 return player
 
@@ -176,7 +176,7 @@ class Game(Prototype):
             return None
 
         winning_score = max(self.player_scores.values())
-        for player in self.get_all_players():
+        for player in self.get_players():
             if self.player_scores[player] == winning_score:
                 return player
 
@@ -220,7 +220,7 @@ class Game(Prototype):
         current_player_symbol = game_state['current_player_symbol']
         board_data = game_state['board']
 
-        for player in self.get_all_players():
+        for player in self.get_players():
             if color_to_symbol[player.get_color()] == current_player_symbol:
                 current_player = player
 

@@ -1,42 +1,56 @@
 import Board from "./Board";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { baseURL } from "./ReversiApp";
 
 function Game(props) {
     const size = props.size;
     const [gameState, setGameState] = useState(null)
 
-    useEffect(() => updateGameState(), [gameState])
-
-    function updateGameState() {
-        baseURL.get('/game-state')
-            .then(response => {
-                setGameState({
-                    ...gameState,
-                    scores: response.data.scores,
-                    message: response.data.message,
-                    aiStatus: response.data.aiStatus
-                })
+    useEffect(() => {
+        async function updateGameState() {
+            const response = await baseURL.get('/game-state')
+            setGameState({
+                ...gameState,
+                currentPlayer: response.data.currentPlayer,
+                scores: response.data.scores,
+                message: response.data.message,
+                aiStatus: response.data.aiStatus,
+                board: response.data.board
             })
+        }
+        updateGameState()
+        console.log(gameState)
+    }, [gameState])
+
+    async function passTurn() {
+        const response = await baseURL.get('pass-turn')
+        console.log(response.data)
     }
 
-    function passTurn() {
-        baseURL.get('pass-turn')
+    async function resetGame() {
+        const response = await baseURL.get('/reset')
+        console.log(response.data)
     }
 
-    function resetGame() {
-        baseURL.get('/reset')
+    async function toggleAI() {
+        const response = await baseURL.get('/toggle-ai')
+        console.log(response.data)
     }
 
-    function toggleAI() {
-        baseURL.get('/toggle-ai')
+    async function triggerAI() {
+        const response = await baseURL.get('/trigger-ai')
+        console.log(response.data)
     }
 
     if (!gameState) { return <p>Loading...</p> }
 
+    if (gameState.aiStatus && gameState.currentPlayer === 'Player 2') {
+        // setGameState({...gameState, message: "AI is making a move..."})
+        // triggerAI()
+    }
+
     return (
-        <div className="game" onClick={updateGameState}>
+        <div className="game">
             <button
                 className="new-game-button"
                 onClick={resetGame}>
@@ -48,7 +62,7 @@ function Game(props) {
                 <div className="player2-score">{gameState.scores.player2}</div>
             </div>
 
-            <Board size={size} />
+            <Board size={size} state={gameState.board} />
 
             <div className="message">{gameState.message}</div>
 

@@ -22,9 +22,9 @@ function Cell(props) {
         }
     }
 
-    function executeMove() {
-        baseURL.get(`/execute-move/${rowIndex}/${colIndex}`)
-        // axios.get(baseURL + '/trigger-ai')
+    async function executeMove() {
+        const response = await baseURL.get(`/execute-move/${rowIndex}/${colIndex}`)
+        console.log(response.data)
     }
 
     return (

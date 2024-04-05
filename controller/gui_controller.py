@@ -4,13 +4,14 @@
 from time import sleep
 from model.game import Game
 from model.ai import AI
+from model.ai_strategy import MinimaxStrategy
 
 class GUIController:
     def __init__(self, model: Game):
         self.model = model
         self.aiEnabled = False
-        self.ai = AI(self.model, 3)
-        self.players = self.model.get_all_players()
+        self.ai = AI(self.model, MinimaxStrategy(3, self.model))
+        self.players = self.model.get_players()
         self.player_to_string = {
             self.players[0]: "Player 1",
             self.players[1]: "Player 2"
@@ -19,11 +20,11 @@ class GUIController:
     def execute_move(self, row: int, col: int):
         self.model.make_move(row, col)
 
-    def execute_AI_move(self):
+    def get_AI_move(self) -> tuple[int]:
         # If the AI is enabled it will execute a move for player      
         if self.aiEnabled and self.model.get_current_player() == self.model.player2:
-            row, col = self.ai.get_best_move()
-            self.execute_move(row, col)
+            row, col = self.ai.choose_move()
+            return row, col
 
     # Passes turn
     def pass_turn(self):

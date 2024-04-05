@@ -47,7 +47,7 @@ class ConsoleGameView():
 
     # Displays all final scores after the game ends
     def display_final_scorebaord(self):
-        for player in self.game.get_all_players():
+        for player in self.game.get_players():
             self.display_score(player)
 
     def get_move(self):

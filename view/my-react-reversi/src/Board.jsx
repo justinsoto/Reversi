@@ -1,17 +1,17 @@
 import Row from "./Row";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { baseURL } from "./ReversiApp";
 
 function Board(props) {
     const rows = []
     const size = props.size
-    const [board, setBoard] = useState(null)
+    // const [board, setBoard] = useState(null)
+    const board = props.state
 
-    useEffect(() => {
-        baseURL.get('/board')
-            .then(response => setBoard(response.data.board))
-    }, [board])
+    // useEffect(() => {
+    //     baseURL.get('/board')
+    //         .then(response => setBoard(response.data.board))
+    // }, [board])
 
     if (!board) { return <p>Loading...</p>}
 
