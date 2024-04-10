@@ -176,7 +176,6 @@ class RandomStrategy(MoveStrategy):
     def choose_move(self):
         # example of a simple strategy, selecting a move randomly
         possible_moves = self.game.find_legal_moves()
-        sleep(1)
         if possible_moves:
             move = random.choice(possible_moves)
             print(move)

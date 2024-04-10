@@ -19,7 +19,6 @@ function Game(props) {
             })
         }
         updateGameState()
-        console.log(gameState)
     }, [gameState])
 
     async function passTurn() {

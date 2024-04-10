@@ -5,6 +5,7 @@ from time import sleep
 from model.game import Game
 from model.ai import AI
 from model.ai_strategy import MinimaxStrategy, RandomStrategy, MiniMaxAlphaBeta
+from time import sleep
 
 class GUIController:
     def __init__(self, model: Game):
@@ -16,6 +17,10 @@ class GUIController:
             self.players[0]: "Player 1",
             self.players[1]: "Player 2"
         }
+
+    # Returns True if the AI is currently in the processing of choosing the next move
+    def is_AI_making_move(self) -> bool:
+        return self.aiEnabled and self.model.get_current_player() == self.model.player2
 
     def execute_move(self, row: int, col: int):
         self.model.make_move(row, col)

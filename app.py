@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from model.game import Game
 from controller.gui_controller import GUIController
+from time import sleep
 
 app = Flask(__name__)
 CORS(app)
@@ -52,19 +53,22 @@ def get_board_state():
 @app.route('/execute-move/<row>/<col>')
 def execute_move(row, col):
     row, col = int(row), int(col)
+    current = game.get_current_player()
     controller.execute_move(row, col)
-    return f'Move Executed {row} {col}'
+    return f'Move Executed {row} {col} by {controller.player_to_str(current)}'
 
 # Triggers the AI to execute a move
 @app.route('/trigger-ai')
 def trigger_AI():
     row, col = controller.get_AI_move()
 
-    if row == -1 or col == -1:
-        return "AI Disabled"
+    if row is None or col is None:
+        return f"AI Disabled {controller.player_to_str(game.current_player)}'s turn"
 
+    current = game.get_current_player()
+    sleep(1)
     controller.execute_move(row, col)
-    return f"AI Move Executed {row} {col}"
+    return f"AI Move Executed {row} {col} by {controller.player_to_str(current)}"
 
 # Returns True if the AI feature is enabled
 @app.route('/ai-status')
