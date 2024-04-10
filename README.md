@@ -39,6 +39,11 @@ Navigate to the `view/my-react-reversi` directory and run:
 npm install
 ```
 
+#### Firebase Dependencies
+```bash
+npm install firebase
+```
+
 
 ### Running the Application
 #### Console Interface (Command-Line Interface)
