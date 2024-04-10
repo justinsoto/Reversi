@@ -4,14 +4,14 @@
 from time import sleep
 from model.game import Game
 from model.ai import AI
-from model.ai_strategy import MinimaxStrategy, RandomStrategy
+from model.ai_strategy import MinimaxStrategy, RandomStrategy, MiniMaxAlphaBeta
 
 class GUIController:
     def __init__(self, model: Game):
         self.model = model
         self.aiEnabled = False
-        self.ai = AI(self.model, RandomStrategy(3, self.model))
-        self.players = self.model.get_players()
+        self.ai = AI(self.model, MiniMaxAlphaBeta(3, self.model))
+        self.players = self.model.get_all_players()
         self.player_to_string = {
             self.players[0]: "Player 1",
             self.players[1]: "Player 2"
@@ -21,12 +21,12 @@ class GUIController:
         self.model.make_move(row, col)
 
     def get_AI_move(self) -> tuple[int]:
-        # If the AI is enabled it will execute a move for player      
+        # If the AI is enabled it will execute a move for player
         if self.aiEnabled and self.model.get_current_player() == self.model.player2:
             row, col = self.ai.choose_move()
             return row, col
-        
-        return None, None
+
+        return -1, -1
 
     # Passes turn
     def pass_turn(self):
@@ -39,13 +39,13 @@ class GUIController:
         legal_moves = self.model.find_legal_moves()
         if [row, col] in legal_moves:
             return "Legal"
-        
+
         if not self.model.is_cell_empty(row, col):
             player = self.model.get_player_at_cell(row, col)
             return self.player_to_str(player)
-        
+
         return "Empty"
-    
+
     # Sets the game to its initial state
     def reset_game(self):
         self.model.reset_game()
@@ -59,8 +59,7 @@ class GUIController:
     # Returns the winner of the game, None if draw
     def get_winner(self):
         return self.model.declare_winner()
-    
+
     # Returns string representation of the player
     def player_to_str(self, player):
         return self.player_to_string[player]
-

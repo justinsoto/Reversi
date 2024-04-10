@@ -60,9 +60,9 @@ def execute_move(row, col):
 def trigger_AI():
     row, col = controller.get_AI_move()
 
-    if not row or not col: 
+    if row == -1 or col == -1:
         return "AI Disabled"
-    
+
     controller.execute_move(row, col)
     return f"AI Move Executed {row} {col}"
 
@@ -88,11 +88,11 @@ def reset_game():
 def get_message():
     if game.game_over():
         winner = controller.player_to_str(controller.get_winner())
-        return f'{winner} wins!' if winner else "Draw." 
+        return f'{winner} wins!' if winner else "Draw."
 
     return f"{get_current_player()}'s turn"
 
-# Returns the current state of the game 
+# Returns the current state of the game
 @app.route('/game-state')
 def get_game_state():
     p1, p2 = get_scores()

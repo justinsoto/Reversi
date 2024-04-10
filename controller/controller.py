@@ -14,7 +14,7 @@ class GameController:
             if p == 0:
                 self.ai = AI(self.model, RandomStrategy(0, self.model))
             elif p == 1:
-                depth = int(input("Please enter the difficulty level you would like (1-5)"))
+                depth = int(input("Please enter the difficulty level you would like (1-5) "))
                 t = int(input('Would you like to play against minimax (0) or minimax with Alpha Beta Pruning (1)? '))
                 if t == 0:
                     self.ai = AI(self.model, MinimaxStrategy(depth, self.model))
@@ -53,9 +53,6 @@ class GameController:
            loser = self.model.player2
         else:
            loser = self.model.player1
-
-        #Viraj - I'm a little confused on what we're going to be adding to the leaderboard so I'm not going to implement it yet
-
         self.view.display_final_scorebaord()
 
     # Calls the model to make a move if it is legal
