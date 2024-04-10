@@ -2,7 +2,6 @@ from model.game import Game
 from abc import ABC, abstractmethod
 import random
 import math
-from time import sleep
 
 class MoveStrategy(ABC):
     def __init__(self, depth, game: Game):
@@ -124,7 +123,6 @@ class RandomStrategy(MoveStrategy):
     def choose_move(self):
         # example of a simple strategy, selecting a move randomly
         possible_moves = self.game.find_legal_moves()
-        sleep(1)
         if possible_moves:
             return random.choice(possible_moves)
         return None

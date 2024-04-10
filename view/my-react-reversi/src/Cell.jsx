@@ -23,13 +23,12 @@ function Cell(props) {
     }
 
     async function executeMove() {
-        const response = await baseURL.get(`/execute-move/${rowIndex}/${colIndex}`)
+        // Calls the Flask server to execute a move in the game model
+        let response = await baseURL.get(`/execute-move/${rowIndex}/${colIndex}`)
         console.log(response.data)
-        triggerAI()
-    }
 
-    async function triggerAI() {
-        const response = await baseURL.get('/trigger-ai')
+        // Calls the Flask server to trigger the AI to make a move in the game model
+        response = await baseURL.get('/trigger-ai')
         console.log(response.data)
     }
 
