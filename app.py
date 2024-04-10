@@ -62,7 +62,7 @@ def execute_move(row, col):
 def trigger_AI():
     row, col = controller.get_AI_move()
 
-    if row is None or col is None:
+    if row == -1 or col == -1:
         return f"AI Disabled {controller.player_to_str(game.current_player)}'s turn"
 
     current = game.get_current_player()
