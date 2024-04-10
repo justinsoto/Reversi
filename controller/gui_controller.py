@@ -25,6 +25,8 @@ class GUIController:
         if self.aiEnabled and self.model.get_current_player() == self.model.player2:
             row, col = self.ai.choose_move()
             return row, col
+        
+        return None, None
 
     # Passes turn
     def pass_turn(self):

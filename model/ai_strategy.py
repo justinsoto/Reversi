@@ -13,53 +13,64 @@ class MoveStrategy(ABC):
         pass
 
 class MinimaxStrategy(MoveStrategy):
+    def choose_move(self):
+        _, best_move = self.minimax(self.depth, True)
+        return best_move
+    
     def minimax(self, depth, maximizing_player):
         if depth == 0 or self.game.game_over():
             return self.evaluate_board(), None
+        
+        legal_moves = self.game.find_legal_moves()
+        game_copy = self.game.clone()
 
         if maximizing_player:
             max_eval = -math.inf
             best_move = None
-            for move in self.game.find_legal_moves():
-                game_copy = self.game.clone()
-                game_copy.make_move(move[0], move[1])
+            for row, col in legal_moves:
+                game_copy.make_move(row, col)
                 eval, _ = self.minimax(depth - 1, False)
                 if eval > max_eval:
                     max_eval = eval
-                    best_move = move
-            return max_eval, best_move
+                    best_move = (row, col)
         else:
             min_eval = math.inf
             best_move = None
-            for move in self.game.find_legal_moves():
-                game_copy = self.game.clone()
-                game_copy.make_move(move[0], move[1])
+            for row, col in legal_moves:
+                game_copy.make_move(row, col)
                 eval, _ = self.minimax(depth - 1, True)
                 if eval < min_eval:
                     min_eval = eval
-                    best_move = move
-            return min_eval, best_move
+                    best_move = (row, col)
 
-    def choose_move(self):
-        _, best_move = self.minimax(self.depth, True)
-        return best_move
+        return min_eval, best_move
 
     def evaluate_board(self):
+        board_size = self.game.get_board_size()
         num_legal_moves = len(self.game.find_legal_moves())
 
-        score_diff = self.game.get_player_score(self.game.player2) - self.game.get_player_score(self.game.player1)
+        p1_score, p2_score = self.game.get_scores()
+        score_diff = p2_score - p1_score
+        # score_diff = self.game.get_player_score(self.game.player2) - self.game.get_player_score(self.game.player1)
 
-        corner_tiles = [(0, 0), (0, 7), (7, 0), (7, 7)]
-        corner_count = sum(1 for tile in corner_tiles if self.game.board.board[tile[0]][tile[1]] == self.game.player2)
+        corner_tiles = [(0, 0), (0, board_size - 1), (board_size - 1, 0), (board_size - 1, board_size - 1)]
+        # corner_count = sum(1 for tile in corner_tiles if self.game.board.board[tile[0]][tile[1]] == self.game.player2)
+        corner_count = len([(row, col) for row, col in corner_tiles if self.game.get_player_at_cell(row, col) == self.game.player2])
 
-        edge_tiles = [(0, i) for i in range(1, 7)] + [(7, i) for i in range(1, 7)] + [(i, 0) for i in range(1, 7)] + [(i, 7) for i in range(1, 7)]
-        edge_count = sum(1 for tile in edge_tiles if self.game.board.board[tile[0]][tile[1]] == self.game.player2)
+        edge_tiles = [(0, i) for i in range(1, board_size - 1)] + [(board_size - 1, i) for i in range(1, board_size - 1)] + \
+                     [(i, 0) for i in range(1, board_size - 1)] + [(i, board_size - 1) for i in range(1, board_size - 1)]
+        
+        edge_count = sum(1 for row, col in edge_tiles if self.game.get_player_at_cell(row, col) == self.game.player2)
 
         heuristic_score = num_legal_moves + score_diff + (10 * corner_count) + (5 * edge_count)
 
         return heuristic_score
 
 class MiniMaxAlphaBeta(MoveStrategy):
+    def choose_move(self):
+        _, best_move = self.minimaxAlphaBeta(self.depth, -math.inf, math.inf, True)
+        return best_move
+      
     def minimaxAlphaBeta(self, depth, alpha, beta, maximizing_player):
         if depth == 0 or self.game.game_over():
             return self.evaluate_board(), None
@@ -92,10 +103,6 @@ class MiniMaxAlphaBeta(MoveStrategy):
                 if beta <= alpha:
                     break
             return min_eval, best_move
-
-    def choose_move(self):
-        _, best_move = self.minimaxAlphaBeta(self.depth, -math.inf, math.inf, True)
-        return best_move
 
     def evaluate_board(self):
         num_legal_moves = len(self.game.find_legal_moves())

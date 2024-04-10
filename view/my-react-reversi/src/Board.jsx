@@ -5,8 +5,8 @@ import { baseURL } from "./ReversiApp";
 function Board(props) {
     const rows = []
     const size = props.size
-    // const [board, setBoard] = useState(null)
     const board = props.state
+    // const [board, setBoard] = useState(null)
 
     // useEffect(() => {
     //     baseURL.get('/board')

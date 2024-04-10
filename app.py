@@ -1,7 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from model.game import Game
-from model.player import Player
 from controller.gui_controller import GUIController
 
 app = Flask(__name__)
@@ -60,6 +59,10 @@ def execute_move(row, col):
 @app.route('/trigger-ai')
 def trigger_AI():
     row, col = controller.get_AI_move()
+
+    if not row or not col: 
+        return "AI Disabled"
+    
     controller.execute_move(row, col)
     return f"AI Move Executed {row} {col}"
 

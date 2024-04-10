@@ -25,6 +25,12 @@ function Cell(props) {
     async function executeMove() {
         const response = await baseURL.get(`/execute-move/${rowIndex}/${colIndex}`)
         console.log(response.data)
+        triggerAI()
+    }
+
+    async function triggerAI() {
+        const response = await baseURL.get('/trigger-ai')
+        console.log(response.data)
     }
 
     return (
