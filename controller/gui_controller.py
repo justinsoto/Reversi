@@ -4,13 +4,13 @@
 from time import sleep
 from model.game import Game
 from model.ai import AI
-from model.ai_strategy import MinimaxStrategy
+from model.ai_strategy import MinimaxStrategy, RandomStrategy
 
 class GUIController:
     def __init__(self, model: Game):
         self.model = model
         self.aiEnabled = False
-        self.ai = AI(self.model, MinimaxStrategy(3, self.model))
+        self.ai = AI(self.model, RandomStrategy(3, self.model))
         self.players = self.model.get_players()
         self.player_to_string = {
             self.players[0]: "Player 1",

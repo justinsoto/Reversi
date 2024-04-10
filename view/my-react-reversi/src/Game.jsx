@@ -44,10 +44,6 @@ function Game(props) {
 
     if (!gameState) { return <p>Loading...</p> }
 
-    if (gameState.aiStatus && gameState.currentPlayer === 'Player 2') {
-        triggerAI()
-    }
-
     return (
         <div className="game">
             <button

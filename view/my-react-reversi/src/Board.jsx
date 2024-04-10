@@ -6,12 +6,6 @@ function Board(props) {
     const rows = []
     const size = props.size
     const board = props.state
-    // const [board, setBoard] = useState(null)
-
-    // useEffect(() => {
-    //     baseURL.get('/board')
-    //         .then(response => setBoard(response.data.board))
-    // }, [board])
 
     if (!board) { return <p>Loading...</p>}
 
