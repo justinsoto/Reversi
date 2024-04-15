@@ -1,18 +1,12 @@
 import Cell from "./Cell"
 
 function Row(props) {
-    const cells = []
-    const index = props.index
-    const rowLength = props.length
     const rowState = props.state
-
-    for (let i = 0; i < rowLength; i++) {
-        cells.push(<Cell key={i} row={index} index={i} state={rowState[i]} />)
-    }
+    const rowIndex = props.index
 
     return (
         <div className="row">
-            {cells}
+            {rowState.map((cell, idx) => <Cell key={idx} row={rowIndex} col={idx} state={rowState[idx]} />)}
         </div>
     );
 }

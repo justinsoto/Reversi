@@ -93,6 +93,9 @@ def get_message():
     if game.game_over():
         winner = controller.player_to_str(controller.get_winner())
         return f'{winner} wins!' if winner else "Draw."
+    
+    if controller.is_AI_making_move():
+        return "AI is making a move..."
 
     return f"{get_current_player()}'s turn"
 
