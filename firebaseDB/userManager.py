@@ -7,6 +7,7 @@ class userManager():
         self.cred = credentials.Certificate(r"firebaseDB\softwareengineeringproje-b3db3-firebase-adminsdk-5k21y-3119caacb7.json")
         firebase_admin.initialize_app(self.cred)
         self.db = firestore.client()
+        self.col_ref = self.db.collection('UserCollection')
         self.doc_ref = self.db.collection('UserCollection').document()
 
 
@@ -22,9 +23,13 @@ class userManager():
         except Exception as e:
             print("Error updating user:", e)
 
+    def check_user_exists(self, username):
+        query_ref = self.col_ref.where("Username", "==", str(username))
+        print(query_ref)
+
 def main():
     p = userManager()
-    id = p.create_user("test", "test")
+    id = p.check_user_exists("test")
     print(id)
 
 if __name__ == "__main__":
