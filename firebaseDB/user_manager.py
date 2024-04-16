@@ -12,7 +12,7 @@ class UserManager():
 
 
     def create_user(self, username, password):
-        doc_ref = self.db.collection('UserCollection').document()
+        doc_ref = self.col_ref.document()
         try:
             if self.check_username_exists(username):
                 print("User already exists")
