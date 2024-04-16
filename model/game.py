@@ -8,9 +8,9 @@ import copy
 
 
 class Game(Prototype):
-    def __init__(self, size) -> None:
-        self.player1 = Player(PlayerColor.Black)
-        self.player2 = Player(PlayerColor.White)
+    def __init__(self, size, player1ID, player2ID) -> None:
+        self.player1 = Player(PlayerColor.Black, player1ID)
+        self.player2 = Player(PlayerColor.White, player2ID)
         self.board = Board(size)
         self.size = size
         self.current_player = self.player1

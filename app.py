@@ -116,6 +116,8 @@ def get_game_state():
 def login(username, password):
     return password
 
+#for register and login functions return a boolean to represent if the authentication was successful or not
+
 # Registers user in the database based on the entered username and password
 @app.route('/register/<username>/<password>')
 def register(username, password):
@@ -131,5 +133,5 @@ if __name__ == '__main__':
 # Once game config page is added, add function that creates a model based off of passed in parameters and then creates the game in the database
 
 #other things we gotta do
-# Edit UI so you can't make a move if its not your turn
+# Edit make move function in the server to check current player's user ID with login_userID stored in database manager to determine if player can make a move or not
 # figure out how we're going to set player 1 and player 2 in the database for a game when we run the server on two different devices
