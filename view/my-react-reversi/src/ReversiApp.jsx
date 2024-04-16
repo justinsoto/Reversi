@@ -2,23 +2,28 @@ import Title from "./Title";
 import Game from "./Game";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Login from "./pages/Login";
 
-function ReversiApp() {
-    const [size, setSize] = useState(8);
+export default function ReversiApp() {
 
-    useEffect(() => {
-        baseURL.get('/board-size').then(response => setSize(response.data['size']))
-    }, [])
+    const size = () => {
+        baseURL.get('/board-size')
+            .then(res => { return res.data.size })
+    }
+
+    const router = createBrowserRouter([
+        {path: '/', element: <Login />},
+        {path: '/game', element: <Game size={size} />}
+    ])
 
     return (
         <>
-            <Title />
-            <Game size={size} />
+            <RouterProvider router={router} />
         </>
     );
 }
 
-export default ReversiApp
 export const baseURL = axios.create({
     baseURL: 'http://127.0.0.1:5000',
     timeout: 1000,

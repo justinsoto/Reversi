@@ -4,7 +4,7 @@ import { baseURL } from "./ReversiApp";
 function Cell(props) {
     const cellState = props.state
     const rowIndex = props.row
-    const colIndex = props.index
+    const colIndex = props.col
     let disc = renderDisc()
 
     function renderDisc() {

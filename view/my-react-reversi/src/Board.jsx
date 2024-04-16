@@ -3,20 +3,13 @@ import { useEffect, useState } from "react";
 import { baseURL } from "./ReversiApp";
 
 function Board(props) {
-    const rows = []
-    const size = props.size
     const board = props.state
 
-    if (!board) { return <p>Loading...</p>}
-
-    for (let row = 0; row < size; row++) {
-        rows.push(<Row key={row} index={row} length={size} 
-                        state={board[row] ? board[row] : "Empty"}/>);
-    }
+    if (!board) { return <p>Loading...</p> }
 
     return (
         <div className="board">
-            {rows}
+            {board.map((row, idx) => <Row key={idx} index={idx} state={board[idx]} />)}
         </div>
     );
 }

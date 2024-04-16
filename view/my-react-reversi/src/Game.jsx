@@ -1,9 +1,11 @@
 import Board from "./Board";
 import { useEffect, useState } from "react";
 import { baseURL } from "./ReversiApp";
+import { Link } from "react-router-dom";
+import Title from "./Title";
 
 function Game(props) {
-    const size = props.size;
+    const size = props.size
     const [gameState, setGameState] = useState(null)
 
     useEffect(() => {
@@ -24,6 +26,7 @@ function Game(props) {
     async function passTurn() {
         const response = await baseURL.get('pass-turn')
         console.log(response.data)
+        baseURL.get('/trigger-ai')
     }
 
     async function resetGame() {
@@ -41,10 +44,16 @@ function Game(props) {
         console.log(response.data)
     }
 
-    if (!gameState) { return <p>Loading...</p> }
+    if (!size | !gameState) { return <p>Loading...</p> }
 
     return (
+        <>
+        <Title />
         <div className="game">
+            <Link to={'/'}>
+                <button>Home</button>
+            </Link>
+            
             <button
                 className="new-game-button"
                 onClick={resetGame}>
@@ -77,6 +86,7 @@ function Game(props) {
                 {gameState.aiStatus ? "Multiplayer" : "Play AI"}
             </button>
         </div>
+        </>
     );
 }
 

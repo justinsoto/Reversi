@@ -1,7 +1,6 @@
 from model.board import Board
 from model.player_color import PlayerColor
 from model.player import Player
-from model.player_color import color_to_symbol
 from model.game_state import GameState
 from model.prototype import Prototype
 import json
