@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from model.game import Game
 from controller.gui_controller import GUIController
@@ -110,6 +110,16 @@ def get_game_state():
         'aiStatus': get_ai_status(),
         'board': get_board_state()
     })
+
+# Logs in user based on the entered username and password
+@app.route('/login/<username>/<password>')
+def login(username, password):
+    return password
+
+# Registers user in the database based on the entered username and password
+@app.route('/register/<username>/<password>')
+def register(username, password):
+    return password
 
 if __name__ == '__main__':
     app.run(debug=True)

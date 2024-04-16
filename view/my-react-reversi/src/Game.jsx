@@ -2,6 +2,7 @@ import Board from "./Board";
 import { useEffect, useState } from "react";
 import { baseURL } from "./ReversiApp";
 import { Link } from "react-router-dom";
+import Title from "./Title";
 
 function Game(props) {
     const size = props.size
@@ -46,6 +47,8 @@ function Game(props) {
     if (!size | !gameState) { return <p>Loading...</p> }
 
     return (
+        <>
+        <Title />
         <div className="game">
             <Link to={'/'}>
                 <button>Home</button>
@@ -83,6 +86,7 @@ function Game(props) {
                 {gameState.aiStatus ? "Multiplayer" : "Play AI"}
             </button>
         </div>
+        </>
     );
 }
 
