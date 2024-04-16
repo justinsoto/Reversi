@@ -68,10 +68,3 @@ class GamesManager():
         else:
             print(f"Game {game_id} does not exist")
             return False
-
-def main():
-    p = GamesManager()
-    print(p.get_game("Jeql2TECAhZ0WMtJ1zbR"))
-
-if __name__ == "__main__":
-    main()
