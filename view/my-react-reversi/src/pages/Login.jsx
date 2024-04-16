@@ -20,3 +20,5 @@ export default function Login() {
         </div>
     )
 }
+
+//main change needed here is to have the page return the username and password that are entered in the inputs whenever a button is clicked

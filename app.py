@@ -93,7 +93,7 @@ def get_message():
     if game.game_over():
         winner = controller.player_to_str(controller.get_winner())
         return f'{winner} wins!' if winner else "Draw."
-    
+
     if controller.is_AI_making_move():
         return "AI is making a move..."
 
@@ -113,3 +113,13 @@ def get_game_state():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+#add login and registration functions.
+# Login use login users function to check if the passed username and password are in the database and if they are return verified authentication method, and if not return error message
+# Registration function should check if the user already exists, and if it doesn't create the new user
+# add opponent selection page that returns the opponent's userID or guest. If guest is selected, don't create a game in the database, otherwise check if a game exists, and if it does load the game, otherwise create a game
+# Once game config page is added, add function that creates a model based off of passed in parameters and then creates the game in the database
+
+#other things we gotta do
+# Edit UI so you can't make a move if its not your turn
+# figure out how we're going to set player 1 and player 2 in the database for a game when we run the server on two different devices
