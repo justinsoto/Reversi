@@ -9,6 +9,10 @@ export default function Login() {
     const navigate = useNavigate()
 
     function login() {
+        if (username === "" | password === "") {
+            return
+        }
+        
         baseURL.get(`/login/${username}/${password}`)
         .then(res => {
             console.log(username)
@@ -22,8 +26,9 @@ export default function Login() {
         .then(res => {
             console.log(username)
             console.log(res.data)
+            navigate('/game')
         })
-        navigate('/game')
+        
     }
 
     return (
