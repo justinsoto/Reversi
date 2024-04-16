@@ -7,7 +7,7 @@ from time import sleep
 app = Flask(__name__)
 CORS(app)
 
-game = Game(8)
+game = Game(8, "test", "test")
 controller = GUIController(game)
 
 @app.route('/')
@@ -131,7 +131,5 @@ if __name__ == '__main__':
 # Registration function should check if the user already exists, and if it doesn't create the new user
 # add opponent selection page that returns the opponent's userID or guest. If guest is selected, don't create a game in the database, otherwise check if a game exists, and if it does load the game, otherwise create a game
 # Once game config page is added, add function that creates a model based off of passed in parameters and then creates the game in the database
-
-#other things we gotta do
 # Edit make move function in the server to check current player's user ID with login_userID stored in database manager to determine if player can make a move or not
-# figure out how we're going to set player 1 and player 2 in the database for a game when we run the server on two different devices
+# move play ai button to opponent selection page
