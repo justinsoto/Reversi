@@ -126,6 +126,7 @@ def register(username, password):
 if __name__ == '__main__':
     app.run(debug=True)
 
+#TODO:
 #add login and registration functions.
 # Login use login users function to check if the passed username and password are in the database and if they are return verified authentication method, and if not return error message
 # Registration function should check if the user already exists, and if it doesn't create the new user
