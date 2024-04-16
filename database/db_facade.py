@@ -1,7 +1,4 @@
-from model.game import Game
-from view.console_items.console_game_view import ConsoleGameView
-from controller.controller import GameController
-from mysql.connector import connect, Error
+from mysql.connector import connect
 from getpass import getpass
 from database.user_manager_proxy import UserManagerProxy
 from database.db_management.games_manager import GamesManager

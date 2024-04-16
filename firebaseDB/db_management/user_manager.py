@@ -3,11 +3,8 @@ from firebase_admin import credentials, firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
 
 class UserManager():
-    def __init__(self):
-        #Change filepath to your file's path
-        self.cred = credentials.Certificate(r"firebaseDB\softwareengineeringproje-b3db3-firebase-adminsdk-5k21y-3119caacb7.json")
-        firebase_admin.initialize_app(self.cred)
-        self.db = firestore.client()
+    def __init__(self, db):
+        self.db = db
         self.col_ref = self.db.collection('UserCollection')
 
 

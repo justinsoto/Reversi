@@ -4,11 +4,8 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 import math
 
 class RatingsManager():
-    def __init__(self):
-        #Change filepath to your file's path
-        self.cred = credentials.Certificate(r"firebaseDB\softwareengineeringproje-b3db3-firebase-adminsdk-5k21y-3119caacb7.json")
-        firebase_admin.initialize_app(self.cred)
-        self.db = firestore.client()
+    def __init__(self, db):
+        self.db = db
         self.col_ref = self.db.collection('RatingCollection')
 
     def check_rating_exists(self, user_id):
@@ -97,9 +94,8 @@ class RatingsManager():
         sorted_scores = sorted(scores, key=lambda x: x[1], reverse=True)
         return sorted_scores[:5]
 
-    def update_elo_rating(self, user_id, opponent_id, result):
+    def update_elo_rating(self, user_id, opponent_elo_rating, result):
         user_elo_rating = self.get_elo_rating(user_id)
-        opponent_elo_rating = self.get_elo_rating(opponent_id)
         expected_score = 1 / (1 + math.pow(10, (opponent_elo_rating - user_elo_rating) / 400))
         actual_score = 1 if result == 1 else 0.5 if result == 0 else 0
         k_factor = 32  # You can adjust the K-factor based on your ELO rating system's requirements
@@ -111,10 +107,3 @@ class RatingsManager():
     def delete_rating(self, user_id):
         doc_ref = self.col_ref.document(self.check_rating_exists(user_id))
         doc_ref.delete()
-
-def main():
-    p = RatingsManager()
-    print(p.delete_rating("P8CxfJ2Hx0Zejn8gJpDi"))
-
-if __name__ == "__main__":
-    main()
