@@ -44,6 +44,9 @@ npm install
 npm install firebase
 ```
 
+```bash
+pip install firebase_admin
+```
 
 ### Running the Application
 #### Console Interface (Command-Line Interface)
