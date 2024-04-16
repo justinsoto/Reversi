@@ -1,8 +1,8 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
-from db_management.user_manager import UserManager
-from db_management.games_manager import GamesManager
-from db_management.ratings_manager import RatingsManager
+from firebaseDB.db_management.user_manager import UserManager
+from firebaseDB.db_management.games_manager import GamesManager
+from firebaseDB.db_management.ratings_manager import RatingsManager
 
 cred = credentials.Certificate(r"firebaseDB\softwareengineeringproje-b3db3-firebase-adminsdk-5k21y-3119caacb7.json")
 firebase_admin.initialize_app(cred)

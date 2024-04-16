@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from model.game import Game
 from controller.gui_controller import GUIController
+from firebaseDB.db_facade import database
 from time import sleep
 
 app = Flask(__name__)
@@ -9,6 +10,8 @@ CORS(app)
 
 game = Game(8, "test", "test")
 controller = GUIController(game)
+
+db = database()
 
 @app.route('/')
 def main_page():
@@ -114,14 +117,25 @@ def get_game_state():
 # Logs in user based on the entered username and password
 @app.route('/login/<username>/<password>')
 def login(username, password):
-    return password
-
-#for register and login functions return a boolean to represent if the authentication was successful or not
+    loginResult = db.login_user(username, password)
+    if loginResult:
+        print("Login Successful")
+        return "True"
+    else:
+        print("Login Unsuccessful")
+        return "False"
+#getting a TypeError when I try to return boolean for these functions so i just used strings for now
 
 # Registers user in the database based on the entered username and password
 @app.route('/register/<username>/<password>')
 def register(username, password):
-    return password
+    registerResult = db.create_user(username,password)
+    if registerResult:
+        print("Registration Successful")
+        return "True"
+    else:
+        print("Registration Unsuccessful")
+        return "False"
 
 if __name__ == '__main__':
     app.run(debug=True)

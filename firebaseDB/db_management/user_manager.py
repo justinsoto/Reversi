@@ -36,18 +36,16 @@ class UserManager():
                 return False
 
     def login_user(self, username, password):
-        if self.check_username_exists(username):
-            filter = FieldFilter("Password", "==", str(password))
-            query_ref = self.col_ref.where(filter = filter).get()
-            for doc in query_ref:
-                if doc:
-                    print("Username/Password Combo is valid")
-                    return doc.id
-            print("Password is incorrect")
-            return False
-        else:
-            ("Username Doesn't Exist")
-            return False
+        filter1 = FieldFilter("Username", "==", str(username))
+        filter2 = FieldFilter("Password", "==", str(password))
+        query_ref = self.col_ref.where(filter = filter1).where(filter = filter2).get()
+        for doc in query_ref:
+            if doc:
+                print("Username/Password Combo is valid")
+                return doc.id
+            else:
+                print("Password is incorrect")
+                return False
 
     def get_user_by_id(self, user_id):
         # Reference to the document
