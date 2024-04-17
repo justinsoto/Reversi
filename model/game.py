@@ -205,7 +205,7 @@ class Game(Prototype):
             'current_player_symbol': color_to_symbol[self.get_current_player_color()],
             'board': [[color_to_symbol[cell] for cell in row] for row in self.board.get_board()],
             'player_scores':{color_to_symbol[self.player1.get_color()]: self.get_player_score(self.player1),
-                             color_to_symbol[self.player2.get_color()]: self.get_player_score(self.player2)}
+                             color_to_symbol[self.player2.get_color()]: self.get_player_score(self.player2)},
         }
         return json.dumps(game_state)
 
