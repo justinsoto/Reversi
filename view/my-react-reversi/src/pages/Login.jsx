@@ -44,6 +44,11 @@ export default function Login() {
         }
     }
 
+    function playLocalGame() {
+        navigate('/game')
+        baseURL.get('/reset')
+    }
+
     return (
         <div className="login-container">
             <div className="user-form">
@@ -61,7 +66,7 @@ export default function Login() {
             <Link onClick={register}>
                 <button>Register</button>
             </Link>
-            <Link onClick={() => navigate('/game')}>
+            <Link onClick={playLocalGame}>
                 <button>Play Local</button>
             </Link>
         </div>
