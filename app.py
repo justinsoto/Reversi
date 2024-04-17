@@ -191,20 +191,17 @@ def playUser(username):
         game.deserialize_game_state(game_state)
         game.player1.id = db.loginPlayerID
         game.player2.id = db.OpponentPlayerID
-        return
     elif q:
         print("loading game")
         game_state = db.get_game_state(p)
         game.deserialize_game_state(game_state)
         game.player2.id = db.loginPlayerID
         game.player1.id = db.OpponentPlayerID
-        return
     else:
         print("creating game")
         db.create_game(game.serialize_game_state())
         game.player1.id = db.loginPlayerID
         game.player2.id = db.OpponentPlayerID
-        return
 
 
     print(database_Flag)
