@@ -158,6 +158,7 @@ def playAI():
 @app.route('/play-user/<username>')
 def playUser(username):
     database_Flag = True
+    controller.aiEnabled = False
     db.set_opponent(username)
     p = db.check_game_exists(db.loginPlayerID, db.OpponentPlayerID) or db.check_game_exists(db.OpponentPlayerID, db.loginPlayerID)
     if p:
