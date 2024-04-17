@@ -64,7 +64,7 @@ def execute_move(row, col):
         if game.current_player.id == db.loginPlayerID:
             game.deserialize_game_state(db.get_game_state(db.gameID))
             controller.execute_move(row, col)
-            db.update_game_state(game.serialize_game_state())
+            db.update_game_state(db.gameID, game.serialize_game_state())
     else:
         controller.execute_move(row, col)
     return f'Move Executed {row} {col} by {controller.player_to_str(current)}'
@@ -152,7 +152,7 @@ def register(username, password):
     print(registerResult)
     return jsonify({'regAuth': registerResult, 'message': user_message})
 
-# Returns a list of all registered users 
+# Returns a list of all registered users
 @app.route('/users')
 def get_users():
     users = db.list_current_users()
@@ -162,9 +162,9 @@ def get_users():
 @app.route('/play-ai')
 def playAI():
     controller.toggle_ai_status()
-    return 
+    return
 
-# Starts a game with two human players 
+# Starts a game with two human players
 @app.route('/play-user/<username>')
 def playUser(username):
     database_Flag = True
@@ -172,12 +172,17 @@ def playUser(username):
         controller.aiEnabled = False
     db.set_opponent(username)
     p = db.check_game_exists(db.loginPlayerID, db.OpponentPlayerID) or db.check_game_exists(db.OpponentPlayerID, db.loginPlayerID)
+    print("gameID: ", p)
     if p:
+        print("loading game")
         game_state = db.get_game_state(p)
+        print("game_state")
         game.deserialize_game_state(game_state)
     else:
         db.create_game(game.serialize_game_state())
-    return 
+
+    print(game.board.get_board())
+    return
 
 if __name__ == '__main__':
     app.run(debug=True)
