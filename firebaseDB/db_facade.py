@@ -70,7 +70,7 @@ class database:
         Parameters:
         game_id (str): The ID of the game to update.
         new_game_state (dict): A dictionary representing the new state of the game.
-        """       
+        """
         self.gameManager.update_game_state(game_id, new_game_state)
 
     def get_game_state(self, game_id):
@@ -83,7 +83,7 @@ class database:
 
         Returns:
         dict: The current state of the game.
-        """        
+        """
         return self.gameManager.get_game_state(game_id)
 
     def create_game(self, gameState):
@@ -93,7 +93,7 @@ class database:
 
         Parameters:
         gameState (dict): A dictionary representing the initial state of the game.
-        """        
+        """
         self.gameID = self.gameManager.create_game(self.loginPlayerID, self.OpponentPlayerID, gameState)
 
     def update_ratings_win(self, winner_id, loser_id, topScore):
@@ -105,7 +105,7 @@ class database:
         winner_id (str): The ID of the player who won the game.
         loser_id (str): The ID of the player who lost the game.
         topScore (int): The top score achieved in the game, used to update the rating.
-        """        
+        """
         self.ratingManager.update_top_score(winner_id, topScore)
         self.ratingManager.update_wins(winner_id)
         self.ratingManager.update_losses(loser_id)
@@ -120,8 +120,15 @@ class database:
         Parameters:
         player1_id (str): The ID of the first player.
         player2_id (str): The ID of the second player.
-        """        
+        """
         self.ratingManager.update_ties(player1_id)
         self.ratingManager.update_ties(player2_id)
         self.ratingManager.update_elo_rating(player1_id, self.ratingManager.get_elo_rating(player2_id), 0)
         self.ratingManager.update_elo_rating(player2_id, self.ratingManager.get_elo_rating(player1_id), 0)
+
+    def list_current_users(self):
+        return self.userManager.list_current_users(self)
+
+    def set_opponent(self, username):
+        self.OpponentPlayerID = self.userManager.check_username_exists(username)
+        return self.OpponentPlayerID
