@@ -4,11 +4,27 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 
 class UserManager():
     def __init__(self, db):
+        """
+        Initializes the UserManager with a reference to the Firestore database.
+
+        Parameters:
+        db (firestore.client): The Firestore database client instance.
+        """        
         self.db = db
         self.col_ref = self.db.collection('UserCollection')
 
 
     def create_user(self, username, password):
+        """
+        Creates a new user in the database with a specified username and password. Checks if the username already exists before creating.
+
+        Parameters:
+        username (str): The username for the new user.
+        password (str): The password for the new user.
+
+        Returns:
+        str/bool: The document ID of the newly created user if successful, False otherwise.
+        """        
         doc_ref = self.col_ref.document()
         try:
             if self.check_username_exists(username):
@@ -25,6 +41,15 @@ class UserManager():
             print("Error updating user:", e)
 
     def check_username_exists(self, username):
+        """
+        Checks if a specified username exists in the database.
+
+        Parameters:
+        username (str): The username to check.
+
+        Returns:
+        str/bool: The document ID of the user if the username exists, False otherwise.
+        """        
         filter = FieldFilter("Username", "==", str(username))
         query_ref = self.col_ref.where(filter = filter).get()
         for doc in query_ref:
@@ -36,6 +61,16 @@ class UserManager():
                 return False
 
     def login_user(self, username, password):
+        """
+        Validates a username and password combination against the database.
+
+        Parameters:
+        username (str): The username to validate.
+        password (str): The password to validate.
+
+        Returns:
+        str/bool: The document ID of the user if the credentials are valid, False otherwise.
+        """        
         filter1 = FieldFilter("Username", "==", str(username))
         filter2 = FieldFilter("Password", "==", str(password))
         query_ref = self.col_ref.where(filter = filter1).where(filter = filter2).get()
@@ -48,6 +83,15 @@ class UserManager():
                 return False
 
     def get_user_by_id(self, user_id):
+        """
+        Retrieves a user by their document ID from the database.
+
+        Parameters:
+        user_id (str): The document ID of the user to retrieve.
+
+        Returns:
+        str/None: The username of the user if found, None otherwise.
+        """        
         # Reference to the document
         temp_ref = self.col_ref.document(user_id)
         # Get the document snapshot
@@ -64,6 +108,12 @@ class UserManager():
             return None
 
     def delete_user(self, username):
+        """
+        Deletes a user from the database by their username after verifying the username exists.
+
+        Parameters:
+        username (str): The username of the user to delete.
+        """        
         id = self.check_username_exists(username)
         if id:
             temp_ref = self.col_ref.document(id)
@@ -73,6 +123,12 @@ class UserManager():
             print("User could not be found")
 
     def list_current_users(self):
+        """
+        Lists all current users in the database by their usernames.
+
+        Returns:
+        list: A list of usernames of all current users.
+        """        
         docs = self.col_ref.stream()
         usernames = []
 
