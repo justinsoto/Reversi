@@ -107,9 +107,13 @@ def reset_game():
 
 @app.route('/default-settings')
 def default_settings():
-    global ai_Flag, database_Flag
-    ai_Flag = False
+    global database_Flag
+    
+    if controller.aiEnabled:
+        toggle_ai_status()
+
     database_Flag = False
+    return
 
 @app.route('/message')
 def get_message():
