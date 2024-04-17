@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { baseURL } from "../ReversiApp";
 import UserRow from "../UserRow";
+import { useNavigate } from "react-router-dom";
 
 export default function UserTable() {
     const [userList, setUserList] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
         baseURL.get('/users')
@@ -12,14 +14,15 @@ export default function UserTable() {
             })
     }, [])
 
-    function playAI() {
-        
+    function playAgainstAI() {
+        baseURL.get('/play-ai')
+        navigate('/game')
     }
 
     return (
         <>
             <div className="user-top-row">
-                <button>Play AI</button>
+                <button onClick={playAgainstAI}>Play AI</button>
             </div>
 
             <UserRow username={'user1'} />

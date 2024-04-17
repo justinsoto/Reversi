@@ -152,15 +152,19 @@ def register(username, password):
     print(registerResult)
     return jsonify({'regAuth': registerResult, 'message': user_message})
 
+# Returns a list of all registered users 
 @app.route('/users')
 def get_users():
     users = db.list_current_users()
     return jsonify({'users': users})
 
-@app.route('/playAI')
+# Starts a game with one human player and the AI
+@app.route('/play-ai')
 def playAI():
     controller.toggle_ai_status()
+    return 
 
+# Starts a game with two human players 
 @app.route('/play-user/<username>')
 def playUser(username):
     database_Flag = True
@@ -173,6 +177,7 @@ def playUser(username):
         game.deserialize_game_state(game_state)
     else:
         db.create_game(game.serialize_game_state())
+    return 
 
 if __name__ == '__main__':
     app.run(debug=True)
