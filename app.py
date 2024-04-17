@@ -63,6 +63,7 @@ def execute_move(row, col):
     print("database flag:", database_Flag)
     if database_Flag:
         print("making move to database")
+        print(game.current_player.id)
         if game.current_player.id == db.loginPlayerID:
             print("pulling from database")
             game.deserialize_game_state(db.get_game_state(db.gameID))
@@ -103,6 +104,12 @@ def toggle_ai_status():
 def reset_game():
     controller.reset_game()
     return "Game Reset"
+
+@app.route('/default-settings')
+def default_settings():
+    global ai_Flag, database_Flag
+    ai_Flag = False
+    database_Flag = False
 
 @app.route('/message')
 def get_message():
