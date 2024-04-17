@@ -118,24 +118,30 @@ def get_game_state():
 @app.route('/login/<username>/<password>')
 def login(username, password):
     loginResult = db.login_user(username, password)
+    user_message = ''
     if loginResult:
-        print("Login Successful")
-        return "True"
+        user_message = "Login Successful"
     else:
-        print("Login Unsuccessful")
-        return "False"
+        user_message = "Login Unsuccessful"
+    
+    print(user_message)
+    print(loginResult)
+    return jsonify({'auth': loginResult, 'message': user_message})
 #getting a TypeError when I try to return boolean for these functions so i just used strings for now
 
 # Registers user in the database based on the entered username and password
 @app.route('/register/<username>/<password>')
 def register(username, password):
     registerResult = db.create_user(username,password)
+    user_message = ''
     if registerResult:
-        print("Registration Successful")
-        return "True"
+        user_message = "Registration Successful"
     else:
-        print("Registration Unsuccessful")
-        return "False"
+        user_message = "User already exists"
+    
+    print(user_message)
+    print(registerResult)
+    return jsonify({'regAuth': registerResult, 'message': user_message})
 
 if __name__ == '__main__':
     app.run(debug=True)

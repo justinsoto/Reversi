@@ -16,9 +16,12 @@ export default function Login() {
         else {
             baseURL.get(`/login/${username}/${password}`)
                 .then(res => {
-                    console.log(username)
-                    console.log(res.data)
-                    navigate('/game')
+                    if (res.data.auth) {
+                        navigate('/game')
+                    }
+                    else {
+                        setMessage(res.data.message)
+                    }
                 })
         }
 
@@ -31,9 +34,12 @@ export default function Login() {
         else {
             baseURL.get(`/register/${username}/${password}`)
                 .then(res => {
-                    console.log(username)
-                    console.log(res.data)
-                    navigate('/game')
+                    if (res.data.regAuth) {
+                        navigate('/game')
+                    }
+                    else {
+                        setMessage(res.data.message)
+                    }
                 })
         }
     }

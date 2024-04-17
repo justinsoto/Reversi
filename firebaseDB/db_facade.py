@@ -36,6 +36,7 @@ class database:
         password (str): The password for the new user.
         """
         self.loginPlayerID = self.userManager.create_user(username, password)
+        return self.loginPlayerID
 
     def login_user(self, username, password):
         #use for login button
@@ -48,6 +49,7 @@ class database:
         password (str): The password of the user attempting to log in.
         """
         self.loginPlayerID = self.userManager.login_user(username, password)
+        return self.loginPlayerID
 
     def check_ratings_exist(self, user_id):
         #use after login and opponent user are confirmed
