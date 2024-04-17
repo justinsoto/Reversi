@@ -8,7 +8,7 @@ from time import sleep
 app = Flask(__name__)
 CORS(app)
 
-game = Game(8, "test", "test")
+game = Game(8, "", "")
 controller = GUIController(game)
 
 db = database()
@@ -136,7 +136,6 @@ def login(username, password):
     print(user_message)
     print(loginResult)
     return jsonify({'auth': loginResult, 'message': user_message})
-#getting a TypeError when I try to return boolean for these functions so i just used strings for now
 
 # Registers user in the database based on the entered username and password
 @app.route('/register/<username>/<password>')

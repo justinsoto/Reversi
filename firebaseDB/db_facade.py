@@ -136,3 +136,6 @@ class database:
     def set_opponent(self, username):
         self.OpponentPlayerID = self.userManager.check_username_exists(username)
         return self.OpponentPlayerID
+
+    def get_username_current_player(self, user_id):
+        return self.userManager.get_user_by_id(user_id)
