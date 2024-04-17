@@ -61,9 +61,12 @@ def execute_move(row, col):
     row, col = int(row), int(col)
     current = game.get_current_player()
     if database_Flag:
+        print("making move to database")
         if game.current_player.id == db.loginPlayerID:
+            print("pulling from database")
             game.deserialize_game_state(db.get_game_state(db.gameID))
             controller.execute_move(row, col)
+            print("updating database")
             db.update_game_state(db.gameID, game.serialize_game_state())
     else:
         controller.execute_move(row, col)
@@ -171,15 +174,14 @@ def playUser(username):
         controller.aiEnabled = False
     db.set_opponent(username)
     p = db.check_game_exists(db.loginPlayerID, db.OpponentPlayerID) or db.check_game_exists(db.OpponentPlayerID, db.loginPlayerID)
-    print("gameID: ", p)
     if p:
         print("loading game")
         game_state = db.get_game_state(p)
         print("game_state")
         game.deserialize_game_state(game_state)
     else:
+        print("creating game")
         db.create_game(game.serialize_game_state())
-
     print(game.board.get_board())
     return
 
@@ -187,10 +189,5 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 #TODO:
-#add login and registration functions.
-# Login use login users function to check if the passed username and password are in the database and if they are return verified authentication method, and if not return error message
-# Registration function should check if the user already exists, and if it doesn't create the new user
-# add opponent selection page that returns the opponent's userID or guest. If guest is selected, don't create a game in the database, otherwise check if a game exists, and if it does load the game, otherwise create a game
-# Once game config page is added, add function that creates a model based off of passed in parameters and then creates the game in the database
 # Edit make move function in the server to check current player's user ID with login_userID stored in database manager to determine if player can make a move or not
 # move play ai button to opponent selection page
