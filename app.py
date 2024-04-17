@@ -203,7 +203,9 @@ def playUser(username):
         game.player1.id = db.loginPlayerID
         game.player2.id = db.OpponentPlayerID
 
-
+    print("player1ID: ", game.player1.id)
+    print("player2ID: ", game.player2.id)
+    print("currentPlayerID: ", game.current_player.id)
     print(database_Flag)
     return
 
