@@ -37,6 +37,7 @@ pip install flask flask-cors mysql-connector-python
 Navigate to the `view/my-react-reversi` directory and run:
 ```bash
 npm install
+npm install react-router-dom
 ```
 
 #### Firebase Dependencies
