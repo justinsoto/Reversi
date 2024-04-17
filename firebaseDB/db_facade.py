@@ -1,10 +1,13 @@
+import os
 import firebase_admin
 from firebase_admin import credentials, firestore
 from firebaseDB.db_management.user_manager import UserManager
 from firebaseDB.db_management.games_manager import GamesManager
 from firebaseDB.db_management.ratings_manager import RatingsManager
 
-cred = credentials.Certificate(r"firebaseDB\softwareengineeringproje-b3db3-firebase-adminsdk-5k21y-3119caacb7.json")
+# Construct the file path using os.path.join
+cred_path = os.path.join("firebaseDB", "softwareengineeringproje-b3db3-firebase-adminsdk-5k21y-3119caacb7.json")
+cred = credentials.Certificate(cred_path)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
