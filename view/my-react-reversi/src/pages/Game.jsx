@@ -55,7 +55,7 @@ function Game(props) {
         <Title />
         <div className="game">
             <Link to={'/'}>
-                <button onClick={setDefaultSettings}>Home</button>
+                <button>Home</button>
             </Link>
             
             <button
