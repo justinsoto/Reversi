@@ -5,10 +5,25 @@ import math
 
 class RatingsManager():
     def __init__(self, db):
+        """
+        Initializes the RatingsManager with a reference to the Firestore database.
+
+        Parameters:
+        db (firestore.client): The Firestore database client instance.
+        """        
         self.db = db
         self.col_ref = self.db.collection('RatingCollection')
 
     def check_rating_exists(self, user_id):
+        """
+        Checks if a rating exists for a specified user.
+
+        Parameters:
+        user_id (str): The ID of the user.
+
+        Returns:
+        str/bool: Returns the rating document ID if found, False otherwise.
+        """        
         filter1 = FieldFilter("User_ID", "==", str(user_id))
         query_ref = self.col_ref.where(filter = filter1).get()
         for doc in query_ref:
@@ -19,6 +34,20 @@ class RatingsManager():
                 return False
 
     def create_rating(self, user_id, top_score = 0, number_wins = 0, number_losses = 0, elo_rating = 1000, number_ties = 0):
+        """
+        Creates a new rating record for a user if it does not already exist.
+
+        Parameters:
+        user_id (str): The ID of the user.
+        top_score (int): Initial top score to set.
+        number_wins (int): Initial number of wins to set.
+        number_losses (int): Initial number of losses to set.
+        elo_rating (int): Initial ELO rating to set.
+        number_ties (int): Initial number of ties to set.
+
+        Returns:
+        str/bool: Returns the new rating document ID if created, False otherwise.
+        """        
         doc_ref = self.col_ref.document()
         if self.check_rating_exists(user_id):
             print("Rating already exists")
