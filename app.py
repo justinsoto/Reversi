@@ -62,8 +62,6 @@ def execute_move(row, col):
     current = game.get_current_player()
     print("database flag:", database_Flag)
     if database_Flag:
-        print("making move to database")
-        print(game.current_player.id)
         if game.current_player.id == db.loginPlayerID:
             print("pulling from database")
             game.deserialize_game_state(db.get_game_state(db.gameID))
@@ -107,8 +105,9 @@ def reset_game():
 
 @app.route('/default-settings')
 def default_settings():
-    global ai_Flag, database_Flag
-    ai_Flag = False
+    global ai_Flag
+    global database_Flag
+
     database_Flag = False
 
 @app.route('/message')
@@ -186,14 +185,16 @@ def playUser(username):
     p = db.check_game_exists(db.loginPlayerID, db.OpponentPlayerID)
     q = db.check_game_exists(db.OpponentPlayerID, db.loginPlayerID)
     if p:
-        print("loading game")
+        print("loading game 1")
         game_state = db.get_game_state(p)
         game.deserialize_game_state(game_state)
+        db.gameID = p
         game.player1.id = db.loginPlayerID
         game.player2.id = db.OpponentPlayerID
     elif q:
-        print("loading game")
-        game_state = db.get_game_state(p)
+        print("loading game 2")
+        game_state = db.get_game_state(q)
+        db.gameID = q
         game.deserialize_game_state(game_state)
         game.player2.id = db.loginPlayerID
         game.player1.id = db.OpponentPlayerID
