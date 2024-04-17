@@ -163,7 +163,8 @@ def get_users():
 # Starts a game with one human player and the AI
 @app.route('/play-ai')
 def playAI():
-    controller.toggle_ai_status()
+    if controller.aiEnabled:
+        controller.toggle_ai_status()
     return
 
 # Starts a game with two human players

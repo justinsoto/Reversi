@@ -25,7 +25,6 @@ export default function UserTable() {
                 <button onClick={playAgainstAI}>Play AI</button>
             </div>
 
-            <UserRow username={'user1'} />
             {userList && userList.map((user, idx) => <UserRow key={idx} username={user} />)}
         </>
     );
