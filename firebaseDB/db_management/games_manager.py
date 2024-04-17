@@ -9,7 +9,7 @@ class GamesManager():
 
         Parameters:
         db (firestore.client): The Firestore database client instance.
-        """        
+        """
         self.db = db
         self.col_ref = self.db.collection('GameCollection')
 
@@ -23,7 +23,7 @@ class GamesManager():
 
         Returns:
         str/bool: Returns the game ID if found, False otherwise.
-        """        
+        """
         filter1 = FieldFilter("Player1_ID", "==", str(player1_id))
         filter2 = FieldFilter("Player2_ID", "==", str(player2_id))
 
@@ -46,9 +46,12 @@ class GamesManager():
 
         Returns:
         str/bool: Returns the newly created game ID if successful, False otherwise.
-        """        
+        """
         doc_ref = self.col_ref.document()
         if self.check_game_exists(player1_id, player2_id):
+            print("Game already exists")
+            return False
+        if self.check_game_exists(player2_id, player1_id):
             print("Game already exists")
             return False
         data = {
@@ -66,7 +69,7 @@ class GamesManager():
 
         Parameters:
         game_id (str): The ID of the game to delete.
-        """        
+        """
         temp_ref = self.col_ref.document(game_id)
         doc = temp_ref.get()
         if doc:
@@ -82,7 +85,7 @@ class GamesManager():
         Parameters:
         game_id (str): The ID of the game to update.
         new_game_state (dict): The new state to update the game with.
-        """        
+        """
         doc_ref = self.col_ref.document(game_id)
         doc_ref.update({"Game_State": new_game_state})
         print("Game state updated")
@@ -96,7 +99,7 @@ class GamesManager():
 
         Returns:
         dict/bool: Returns the current state of the game if found, False otherwise.
-        """        
+        """
         doc_ref = self.col_ref.document(game_id)
         doc = doc_ref.get()
         if doc:
@@ -115,7 +118,7 @@ class GamesManager():
 
         Returns:
         dict/bool: Returns the complete game data if found, False otherwise.
-        """        
+        """
         doc_ref = self.col_ref.document(game_id)
         doc = doc_ref.get()
         if doc:

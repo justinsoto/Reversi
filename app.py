@@ -60,7 +60,13 @@ def get_board_state():
 def execute_move(row, col):
     row, col = int(row), int(col)
     current = game.get_current_player()
-    controller.execute_move(row, col)
+    if database_Flag:
+        if game.current_player.id == db.loginPlayerID:
+            game.deserialize_game_state(db.get_game_state(db.gameID))
+            controller.execute_move(row, col)
+            db.update_game_state(game.serialize_game_state())
+    else:
+        controller.execute_move(row, col)
     return f'Move Executed {row} {col} by {controller.player_to_str(current)}'
 
 # Triggers the AI to execute a move
@@ -158,7 +164,8 @@ def playAI():
 @app.route('/play-user/<username>')
 def playUser(username):
     database_Flag = True
-    controller.aiEnabled = False
+    if controller.aiEnabled == True:
+        controller.aiEnabled = False
     db.set_opponent(username)
     p = db.check_game_exists(db.loginPlayerID, db.OpponentPlayerID) or db.check_game_exists(db.OpponentPlayerID, db.loginPlayerID)
     if p:

@@ -5,6 +5,7 @@ from time import sleep
 from model.game import Game
 from model.ai import AI
 from model.ai_strategy import MinimaxStrategy, RandomStrategy, MiniMaxAlphaBeta
+from firebaseDB.db_facade import database
 from time import sleep
 
 class GUIController:
