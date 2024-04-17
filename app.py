@@ -60,6 +60,7 @@ def get_board_state():
 def execute_move(row, col):
     row, col = int(row), int(col)
     current = game.get_current_player()
+    print("database flag:", database_Flag)
     if database_Flag:
         print("making move to database")
         if game.current_player.id == db.loginPlayerID:
@@ -170,6 +171,7 @@ def playAI():
 # Starts a game with two human players
 @app.route('/play-user/<username>')
 def playUser(username):
+    global database_Flag
     database_Flag = True
     if controller.aiEnabled == True:
         controller.aiEnabled = False
@@ -178,12 +180,11 @@ def playUser(username):
     if p:
         print("loading game")
         game_state = db.get_game_state(p)
-        print("game_state")
         game.deserialize_game_state(game_state)
     else:
         print("creating game")
         db.create_game(game.serialize_game_state())
-    print(game.board.get_board())
+    print(database_Flag)
     return
 
 if __name__ == '__main__':
