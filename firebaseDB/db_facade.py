@@ -38,6 +38,10 @@ class database:
         self.loginPlayerID = self.userManager.create_user(username, password)
         return self.loginPlayerID
 
+    def check_game_exists(self, player1ID, player2ID):
+        self.gameID = self.gameManager.check_game_exists(player1ID, player2ID)
+        return self.gameID
+
     def login_user(self, username, password):
         #use for login button
         """

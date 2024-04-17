@@ -1,5 +1,5 @@
 from model.board import Board
-from model.player_color import PlayerColor
+from model.player_color import PlayerColor, color_to_symbol
 from model.player import Player
 from model.game_state import GameState
 from model.prototype import Prototype

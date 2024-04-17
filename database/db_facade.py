@@ -61,3 +61,5 @@ class database:
     def update_ratings_draw(self):
         self.ratings_manager.update_elo_rating(self.player1_id, self.ratings_manager.get_elo_rating(self.player2_id), 0)
         self.ratings_manager.update_elo_rating(self.player2_id, self.ratings_manager.get_elo_rating(self.player2_id), 0)
+
+    def

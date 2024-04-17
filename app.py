@@ -13,6 +13,9 @@ controller = GUIController(game)
 
 db = database()
 
+ai_Flag = False
+database_Flag = False
+
 @app.route('/')
 def main_page():
     return "Main Page"
@@ -123,7 +126,7 @@ def login(username, password):
         user_message = "Login Successful"
     else:
         user_message = "Login Unsuccessful"
-    
+
     print(user_message)
     print(loginResult)
     return jsonify({'auth': loginResult, 'message': user_message})
@@ -138,7 +141,7 @@ def register(username, password):
         user_message = "Registration Successful"
     else:
         user_message = "User already exists"
-    
+
     print(user_message)
     print(registerResult)
     return jsonify({'regAuth': registerResult, 'message': user_message})
@@ -147,6 +150,21 @@ def register(username, password):
 def get_users():
     users = db.list_current_users()
     return jsonify({'users': users})
+
+@app.route('/playAI')
+def playAI():
+    controller.toggle_ai_status()
+
+@app.route('/play-user/<username>')
+def playUser(username):
+    database_Flag = True
+    db.set_opponent(username)
+    p = db.check_game_exists(db.loginPlayerID, db.OpponentPlayerID) or db.check_game_exists(db.OpponentPlayerID, db.loginPlayerID)
+    if p:
+        game_state = db.get_game_state(p)
+        game.deserialize_game_state(game_state)
+    else:
+        db.create_game(game.serialize_game_state())
 
 if __name__ == '__main__':
     app.run(debug=True)
