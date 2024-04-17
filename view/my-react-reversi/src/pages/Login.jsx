@@ -17,7 +17,7 @@ export default function Login() {
             baseURL.get(`/login/${username}/${password}`)
                 .then(res => {
                     if (res.data.auth) {
-                        navigate('/game')
+                        navigate('/users')
                     }
                     else {
                         setMessage(res.data.message)
@@ -35,7 +35,7 @@ export default function Login() {
             baseURL.get(`/register/${username}/${password}`)
                 .then(res => {
                     if (res.data.regAuth) {
-                        navigate('/game')
+                        navigate('/users')
                     }
                     else {
                         setMessage(res.data.message)
@@ -60,6 +60,9 @@ export default function Login() {
             </Link>
             <Link onClick={register}>
                 <button>Register</button>
+            </Link>
+            <Link onClick={() => navigate('/game')}>
+                <button>Play Local</button>
             </Link>
         </div>
     )

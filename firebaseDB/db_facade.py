@@ -127,7 +127,7 @@ class database:
         self.ratingManager.update_elo_rating(player2_id, self.ratingManager.get_elo_rating(player1_id), 0)
 
     def list_current_users(self):
-        return self.userManager.list_current_users(self)
+        return self.userManager.list_current_users()
 
     def set_opponent(self, username):
         self.OpponentPlayerID = self.userManager.check_username_exists(username)

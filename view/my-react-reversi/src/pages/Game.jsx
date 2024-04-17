@@ -1,8 +1,8 @@
-import Board from "./Board";
+import Board from "../Board";
 import { useEffect, useState } from "react";
-import { baseURL } from "./ReversiApp";
+import { baseURL } from "../ReversiApp";
 import { Link } from "react-router-dom";
-import Title from "./Title";
+import Title from "../Title";
 
 function Game(props) {
     const size = props.size
@@ -80,11 +80,11 @@ function Game(props) {
                 Pass
             </button>
 
-            <button
+            {/* <button
                 className="multiplayer-button"
                 onClick={toggleAI}>
                 {gameState.aiStatus ? "Multiplayer" : "Play AI"}
-            </button>
+            </button> */}
         </div>
         </>
     );

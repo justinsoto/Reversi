@@ -1,9 +1,10 @@
 import Title from "./Title";
-import Game from "./Game";
+import Game from "./pages/Game";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
+import UserTable from "./pages/UserTable";
 
 export default function ReversiApp() {
 
@@ -14,6 +15,7 @@ export default function ReversiApp() {
 
     const router = createBrowserRouter([
         {path: '/', element: <Login />},
+        {path: '/users', element: <UserTable />},
         {path: '/game', element: <Game size={size} />}
     ])
 

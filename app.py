@@ -143,6 +143,11 @@ def register(username, password):
     print(registerResult)
     return jsonify({'regAuth': registerResult, 'message': user_message})
 
+@app.route('/users')
+def get_users():
+    users = db.list_current_users()
+    return jsonify({'users': users})
+
 if __name__ == '__main__':
     app.run(debug=True)
 

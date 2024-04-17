@@ -158,3 +158,21 @@ button:hover {
     font-family: sans-serif;
     margin: 30px;
 }
+
+.user-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.25em;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: hsl(120, 88%, 40%);
+    border: 2px solid black;
+    width: 30vw;
+}
+
+.user-top-row {
+    display: flex;
+    justify-content: center;
+    background-color: hsl(120, 88%, 40%);
+    border: 2px solid black;
+    width: 30vw;
+}
