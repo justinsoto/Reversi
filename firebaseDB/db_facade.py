@@ -139,3 +139,12 @@ class database:
 
     def get_username_current_player(self, user_id):
         return self.userManager.get_user_by_id(user_id)
+
+    def check_rating_exists(self, player_id):
+        return self.ratingManager.check_rating_exists(player_id)
+
+    def create_rating(self, player_id):
+        return self.ratingManager.create_rating(player_id)
+
+    def delete_game(self, game_id):
+        self.gameManager.delete_game(game_id)

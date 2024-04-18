@@ -177,6 +177,18 @@ class Game(Prototype):
             if self.player_scores[player] == winning_score:
                 return player
 
+    def declare_loser(self) -> Player:
+        scores = self.player_scores.values()
+
+        # Handles draw
+        if len(set(scores)) == 1:
+            return None
+
+        losing_score = min(self.player_scores.values())
+        for player in self.get_all_players():
+            if self.player_scores[player] == losing_score:
+                return player
+
     # Stores the current state of the game
     def store_game_state(self):
         state = GameState(self.current_player, self.player_scores, self.board)

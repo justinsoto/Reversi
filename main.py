@@ -3,7 +3,7 @@ from view.console_items.console_game_view import ConsoleGameView
 from controller.controller import GameController
 
 size = 8
-game = Game(size)
+game = Game(size, "", "")
 view = ConsoleGameView(game)
 controller = GameController(game,view)
 controller.start_game()

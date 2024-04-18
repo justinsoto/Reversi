@@ -61,13 +61,14 @@ def execute_move(row, col):
     row, col = int(row), int(col)
     current = game.get_current_player()
     print("database flag:", database_Flag)
+    print(db.get_username_current_player(game.current_player.id))
     if database_Flag:
         if game.current_player.id == db.loginPlayerID:
-            print("pulling from database")
             game.deserialize_game_state(db.get_game_state(db.gameID))
             controller.execute_move(row, col)
             print("updating database")
             db.update_game_state(db.gameID, game.serialize_game_state())
+        game.deserialize_game_state(db.get_game_state(db.gameID))
     else:
         controller.execute_move(row, col)
     return f'Move Executed {row} {col} by {controller.player_to_str(current)}'
@@ -106,19 +107,23 @@ def reset_game():
 @app.route('/default-settings')
 def default_settings():
     global database_Flag
-
     if controller.aiEnabled:
-        toggle_ai_status()
-
+        controller.toggle_ai_status()
     database_Flag = False
-    return
+    return 'OK'
 
 @app.route('/message')
 def get_message():
     if game.game_over():
-        winner = controller.player_to_str(controller.get_winner())
-        return f'{winner} wins!' if winner else "Draw."
-
+        if controller.get_winner():
+            winner = controller.player_to_str(controller.get_winner())
+            winner_id = controller.get_winner().id
+            loser_id = controller.get_loser().id
+            db.update_ratings_win(winner_id, loser_id, game.get_player_score(winner))
+            return f'{winner} wins!' if winner else "Draw."
+        else:
+            db.update_ratings_draw(game.player1.id, game.player2.id)
+        db.delete_game(db.gameID)
     if controller.is_AI_making_move():
         return "AI is making a move..."
 
@@ -185,6 +190,12 @@ def playUser(username):
     if controller.aiEnabled == True:
         controller.aiEnabled = False
     db.set_opponent(username)
+
+    if not db.check_rating_exists(db.loginPlayerID):
+        db.create_rating(db.loginPlayerID)
+    if not db.check_rating_exists(db.OpponentPlayerID):
+        db.create_rating(db.OpponentPlayerID)
+
     p = db.check_game_exists(db.loginPlayerID, db.OpponentPlayerID)
     q = db.check_game_exists(db.OpponentPlayerID, db.loginPlayerID)
     if p:
@@ -211,11 +222,7 @@ def playUser(username):
     print("player2ID: ", game.player2.id)
     print("currentPlayerID: ", game.current_player.id)
     print(database_Flag)
-    return
+    return "ok"
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-#TODO:
-# Edit make move function in the server to check current player's user ID with login_userID stored in database manager to determine if player can make a move or not
-# move play ai button to opponent selection page

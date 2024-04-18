@@ -66,6 +66,9 @@ class GUIController:
     def get_winner(self):
         return self.model.declare_winner()
 
+    def get_loser(self):
+        return self.model.declare_loser()
+
     # Returns string representation of the player
     def player_to_str(self, player):
         return self.player_to_string[player]

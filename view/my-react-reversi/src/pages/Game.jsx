@@ -46,6 +46,7 @@ function Game(props) {
 
     async function setDefaultSettings() {
         const response = await baseURL.get('/default-settings')
+
     }
 
     if (!size | !gameState) { return <p>Loading...</p> }
@@ -57,7 +58,7 @@ function Game(props) {
             <Link to={'/'}>
                 <button onClick={setDefaultSettings}>Home</button>
             </Link>
-            
+
             <button
                 className="new-game-button"
                 onClick={resetGame}>
@@ -95,4 +96,3 @@ function Game(props) {
 }
 
 export default Game
-
