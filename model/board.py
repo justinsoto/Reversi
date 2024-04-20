@@ -25,10 +25,10 @@ class Board(Prototype):
         self.board = [[PlayerColor.Empty for _ in range(self.size)] for _ in range(self.size)]
         center = self.size // 2
 
-        self.board[center - 1][center - 1] = PlayerColor.Black
-        self.board[center - 1][center] = PlayerColor.White
-        self.board[center][center - 1] = PlayerColor.White
-        self.board[center][center] = PlayerColor.Black
+        self.board[center - 1][center - 1] = PlayerColor.White
+        self.board[center - 1][center] = PlayerColor.Black
+        self.board[center][center - 1] = PlayerColor.Black
+        self.board[center][center] = PlayerColor.White
 
     def get_board(self):
         return [[color for color in row] for row in self.board]
