@@ -6,6 +6,17 @@ from model.ai_strategy import MinimaxStrategy, RandomStrategy, MiniMaxAlphaBeta
 
 class GameController:
     def __init__(self, model: Game, view: ConsoleGameView) -> None:
+        """
+        Initializes the game controller with game model and view. Optionally sets up an AI player based on user input.
+
+        Parameters:
+        model (Game): The game model handling the game logic and state.
+        view (ConsoleGameView): The console-based view component to handle all user interactions and display.
+
+        During initialization, the user is asked whether they would like to play against an AI. If yes, the user
+        can choose between different AI strategies (Random, Minimax, or Minimax with Alpha-Beta Pruning) and set
+        the difficulty level.
+        """        
         self.model = model
         self.view = view
         self.ai_dec = input("would you like to play against AI? (y/n)") == "y"
@@ -23,7 +34,13 @@ class GameController:
 
     def start_game(self):
         """
-        Runs the main loop of the game
+        Initiates and runs the main game loop until the game is over. Handles the game flow, including display updates
+        and move execution, whether manual or via AI.
+
+        The method continuously checks for game over conditions, updates the display, and alternates between player
+        and AI moves based on the game setup. It manages displaying the board, the current player, the current score,
+        and legal moves. It also handles player input for moves and swaps turns or executes moves as necessary. After
+        the game concludes, it displays the winner or a draw message and shows the final scoreboard.
         """
         while not self.model.game_over():
             self.view.display_board()
@@ -57,6 +74,14 @@ class GameController:
 
     # Calls the model to make a move if it is legal
     def execute_move(self, row, col) -> None:
+        """
+        Executes a move at the specified row and column if it is legal. If the move is illegal, displays an
+        illegal move message.
+
+        Parameters:
+        row (int): The row number where the move is to be made.
+        col (int): The column number where the move is to be made.
+        """        
         current_player = self.model.get_current_player()
         if not self.model.is_move_legal(row, col, current_player):
             self.view.display_illegal_move_message()
