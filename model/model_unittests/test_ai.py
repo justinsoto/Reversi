@@ -3,7 +3,6 @@ from model.ai import AI
 from model.game import Game 
 from model.ai_strategy import MoveStrategy
 
-
 class MockStrategy(MoveStrategy):
     """
     A mock strategy class that simulates an AI strategy by always returning a predetermined move.
