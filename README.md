@@ -43,9 +43,6 @@ npm install react-router-dom
 #### Firebase Dependencies
 ```bash
 npm install firebase
-```
-
-```bash
 pip install firebase_admin
 ```
 
