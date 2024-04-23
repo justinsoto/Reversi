@@ -18,21 +18,45 @@ database_Flag = False
 
 @app.route('/')
 def main_page():
+    """
+    Serves the main page of the application.
+
+    Returns:
+    str: A simple string indicating the user has reached the main page.
+    """
     return "Main Page"
 
 @app.route('/hello')
 def hello():
+    """
+    A simple endpoint for testing that the service is operational.
+
+    Returns:
+    str: A greeting string 'Hello, World!'
+    """    
     return 'Hello, World!'
 
 # Returns the size of the board
 @app.route('/board-size')
 def get_board_size():
+    """
+    Retrieves the current size of the game board.
+
+    Returns:
+    JSON: A JSON object containing the size of the board.
+    """    
     size = game.get_board_size()
     return jsonify({'size': size})
 
 # Returns the player's current score
 @app.route('/scores')
 def get_scores():
+    """
+    Retrieves the current scores for both players in the game.
+
+    Returns:
+    tuple: A tuple containing the scores for player 1 and player 2.
+    """
     p1 = game.get_player_score(game.player1)
     p2 = game.get_player_score(game.player2)
     return p1, p2
@@ -40,16 +64,34 @@ def get_scores():
 # Swaps player's turn, returns the new current player
 @app.route('/pass-turn')
 def pass_turn():
+    """
+    Passes the turn to the next player and returns the current player after the turn is passed.
+
+    Returns:
+    str: The string representation of the current player after passing the turn.
+    """    
     controller.pass_turn()
     return get_current_player()
 
 # Returns the player whose currently making a move
 @app.route('/current-player')
 def get_current_player():
+    """
+    Retrieves the current player of the game.
+
+    Returns:
+    str: The string representation of the current player.
+    """    
     return controller.player_to_str(game.current_player)
 
 @app.route('/board')
 def get_board_state():
+    """
+    Retrieves the entire state of the game board.
+
+    Returns:
+    list: A nested list representing the state of each cell on the game board.
+    """    
     size = game.get_board_size()
     board = [[controller.get_cell(row, col) for col in range(size)] for row in range(size)]
     # return jsonify({'board': board})
@@ -58,6 +100,16 @@ def get_board_state():
 # Calls controller to execute a move
 @app.route('/execute-move/<row>/<col>')
 def execute_move(row, col):
+    """
+    Executes a move on the board at the specified row and column indices.
+
+    Parameters:
+    row (str): The row index where the move is to be made.
+    col (str): The column index where the move is to be made.
+
+    Returns:
+    str: A message indicating that the move has been executed and which player made the move.
+    """    
     row, col = int(row), int(col)
     current = game.get_current_player()
     print("database flag:", database_Flag)
@@ -76,6 +128,12 @@ def execute_move(row, col):
 # Triggers the AI to execute a move
 @app.route('/trigger-ai')
 def trigger_AI():
+    """
+    Triggers the AI to execute a move if enabled.
+
+    Returns:
+    str: A message indicating the result of the AI's action or stating that the AI is disabled.
+    """    
     row, col = controller.get_AI_move()
 
     if row == -1 or col == -1:
@@ -89,11 +147,23 @@ def trigger_AI():
 # Returns True if the AI feature is enabled
 @app.route('/ai-status')
 def get_ai_status():
+    """
+    Checks if the AI feature is enabled in the game.
+
+    Returns:
+    bool: True if AI is enabled, False otherwise.
+    """    
     return controller.aiEnabled
 
 # Toggles AI Status
 @app.route('/toggle-ai')
 def toggle_ai_status():
+    """
+    Toggles the AI feature on or off and resets the game to its initial state.
+
+    Returns:
+    str: A message indicating the AI status has been updated.
+    """    
     controller.toggle_ai_status()
     controller.reset_game()
     return 'AI Status Updated'
@@ -101,11 +171,23 @@ def toggle_ai_status():
 # Restarts the game
 @app.route('/reset')
 def reset_game():
+    """
+    Resets the game to its initial state.
+
+    Returns:
+    str: A message indicating the game has been reset.
+    """    
     controller.reset_game()
     return "Game Reset"
 
 @app.route('/default-settings')
 def default_settings():
+    """
+    Resets the game to default settings, disabling AI and any database flags.
+
+    Returns:
+    str: A simple OK message indicating successful resetting to default settings.
+    """    
     global database_Flag
     if controller.aiEnabled:
         controller.toggle_ai_status()
@@ -114,6 +196,12 @@ def default_settings():
 
 @app.route('/message')
 def get_message():
+    """
+    Generates a message based on the current game state, including game over conditions.
+
+    Returns:
+    str: A message reflecting the current state or outcome of the game.
+    """    
     if game.game_over():
         if controller.get_winner():
             winner = controller.player_to_str(controller.get_winner())
@@ -132,6 +220,12 @@ def get_message():
 # Returns the current state of the game
 @app.route('/game-state')
 def get_game_state():
+    """
+    Retrieves the complete current state of the game, including player scores, the current player, and board state.
+
+    Returns:
+    JSON: A JSON object containing comprehensive game state information.
+    """    
     p1, p2 = get_scores()
     return jsonify({
         'currentPlayer': controller.player_to_str(game.get_current_player()),
@@ -144,6 +238,16 @@ def get_game_state():
 # Logs in user based on the entered username and password
 @app.route('/login/<username>/<password>')
 def login(username, password):
+    """
+    Attempts to log in a user with the provided username and password.
+
+    Parameters:
+    username (str): The username of the user attempting to log in.
+    password (str): The password of the user attempting to log in.
+
+    Returns:
+    JSON: A JSON object indicating the result of the login attempt and any associated messages.
+    """    
     loginResult = db.login_user(username, password)
     user_message = ''
     if loginResult:
@@ -158,6 +262,16 @@ def login(username, password):
 # Registers user in the database based on the entered username and password
 @app.route('/register/<username>/<password>')
 def register(username, password):
+    """
+    Registers a new user with the provided username and password.
+
+    Parameters:
+    username (str): The username for the new user.
+    password (str): The password for the new user.
+
+    Returns:
+    JSON: A JSON object indicating the result of the registration attempt and any associated messages.
+    """    
     registerResult = db.create_user(username,password)
     user_message = ''
     if registerResult:
@@ -172,12 +286,24 @@ def register(username, password):
 # Returns a list of all registered users
 @app.route('/users')
 def get_users():
+    """
+    Retrieves a list of all registered users.
+
+    Returns:
+    JSON: A JSON object containing a list of registered users.
+    """    
     users = db.list_current_users()
     return jsonify({'users': users})
 
 # Starts a game with one human player and the AI
 @app.route('/play-ai')
 def playAI():
+    """
+    Starts a game against the AI.
+
+    Returns:
+    None
+    """    
     if not controller.aiEnabled:
         controller.toggle_ai_status()
     return
@@ -185,6 +311,15 @@ def playAI():
 # Starts a game with two human players
 @app.route('/play-user/<username>')
 def playUser(username):
+    """
+    Initiates a game against another human player identified by username.
+
+    Parameters:
+    username (str): The username of the opponent player.
+
+    Returns:
+    str: A simple OK message indicating that the game setup is complete.
+    """    
     global database_Flag
     database_Flag = True
     if controller.aiEnabled == True:
